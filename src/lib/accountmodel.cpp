@@ -81,7 +81,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
     if (role == Qt::DecorationRole) {
         QFile file(m_users.value(m_userPath.at(index.row()))->iconFile());
         if (!file.exists()) {
-            return QIcon::fromTheme("user-identity");
+            return QIcon::fromTheme("user-identity").pixmap(48, 48);
         }
 
         return QPixmap(file.fileName()).scaled(48, 48);
