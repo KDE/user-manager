@@ -22,6 +22,7 @@
 
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
+#include <QDBusObjectPath>
 
 class OrgFreedesktopAccountsInterface;
 class OrgFreedesktopAccountsUserInterface;
@@ -34,6 +35,10 @@ class AccountModel : public QAbstractListModel
         virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
         virtual QVariant data(const QModelIndex& index, int role) const;
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+    public Q_SLOTS:
+        void UserAdded(const QDBusObjectPath &path);
+        void UserDeleted(const QDBusObjectPath &path);
 
     private:
         QStringList m_userPath;

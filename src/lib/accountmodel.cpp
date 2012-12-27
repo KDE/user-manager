@@ -41,6 +41,9 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
         m_userPath.append(path.path());
         m_users.insert(path.path(), new OrgFreedesktopAccountsUserInterface("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this));
     }
+
+    connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
+    connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
 }
 
 AccountModel::~AccountModel()
@@ -96,3 +99,19 @@ QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int 
     return i18n("Users");
 }
 
+void AccountModel::UserAdded(const QDBusObjectPath& path)
+{
+    int row = m_users.count();
+    beginInsertRows(QModelIndex(), row, row);
+    m_userPath.append(path.path());
+    m_users.insert(path.path(), new OrgFreedesktopAccountsUserInterface("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this));
+    endInsertRows();
+}
+
+void AccountModel::UserDeleted(const QDBusObjectPath& path)
+{
+    beginRemoveRows(QModelIndex(), m_userPath.indexOf(path.path()), m_userPath.indexOf(path.path()));
+    m_userPath.removeAll(path.path());
+    delete m_users.take(path.path());
+    endRemoveRows();
+}
