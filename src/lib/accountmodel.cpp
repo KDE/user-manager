@@ -48,7 +48,8 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
 
 AccountModel::~AccountModel()
 {
-
+    delete m_dbus;
+    qDeleteAll(m_users);
 }
 
 int AccountModel::rowCount(const QModelIndex& parent) const
