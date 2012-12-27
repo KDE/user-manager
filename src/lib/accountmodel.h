@@ -39,6 +39,7 @@ class AccountModel : public QAbstractListModel
     public Q_SLOTS:
         void UserAdded(const QDBusObjectPath &path);
         void UserDeleted(const QDBusObjectPath &path);
+        void Changed();
 
     private:
         QStringList m_userPath;

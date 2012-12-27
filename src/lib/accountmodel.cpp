@@ -101,10 +101,18 @@ QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int 
 
 void AccountModel::UserAdded(const QDBusObjectPath& path)
 {
+    OrgFreedesktopAccountsUserInterface* acc = new OrgFreedesktopAccountsUserInterface(
+                                                            "org.freedesktop.Accounts",
+                                                            path.path(),
+                                                            QDBusConnection::systemBus(),
+                                                            this
+                                                    );
+    connect(acc, SIGNAL(Changed()), SLOT(Changed()));
+
     int row = m_users.count();
     beginInsertRows(QModelIndex(), row, row);
     m_userPath.append(path.path());
-    m_users.insert(path.path(), new OrgFreedesktopAccountsUserInterface("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this));
+    m_users.insert(path.path(), acc);
     endInsertRows();
 }
 
@@ -114,4 +122,13 @@ void AccountModel::UserDeleted(const QDBusObjectPath& path)
     m_userPath.removeAll(path.path());
     delete m_users.take(path.path());
     endRemoveRows();
+}
+
+void AccountModel::Changed()
+{
+    OrgFreedesktopAccountsUserInterface* acc = qobject_cast<OrgFreedesktopAccountsUserInterface*>(sender());
+    acc->path();
+
+    QModelIndex accountIndex = index(m_userPath.indexOf(acc->path()), 0);
+    Q_EMIT dataChanged(accountIndex, accountIndex);
 }
