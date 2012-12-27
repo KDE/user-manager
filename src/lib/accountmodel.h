@@ -16,34 +16,29 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
-#include "usermanager.h"
-#include "ui_kcm.h"
-#include "lib/accountmodel.h"
-#include "lib/modeltest.h"
 
-#include <QtCore/QDebug>
-#include <QtGui/QListView>
+#ifndef ACCOUNTMODEL_H
+#define ACCOUNTMODEL_H
 
-#include <kpluginfactory.h>
+#include <QtCore/QStringList>
+#include <QtCore/QAbstractListModel>
 
-K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
-K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
-
-UserManager::UserManager(QWidget* parent, const QVariantList& args) 
- : KCModule(UserManagerFactory::componentData(), parent)
- , m_ui(new Ui::KCMUserManager)
+class OrgFreedesktopAccountsInterface;
+class OrgFreedesktopAccountsUserInterface;
+class AccountModel : public QAbstractListModel
 {
-    Q_UNUSED(args);
-    m_ui->setupUi(this);
+    Q_OBJECT
+    public:
+        AccountModel(QObject* parent);
+        ~AccountModel();
+        virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
+        virtual QVariant data(const QModelIndex& index, int role) const;
+        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-    AccountModel* model = new AccountModel(this);
-    m_ui->userList->setModel(model);
+    private:
+        QStringList m_userPath;
+        OrgFreedesktopAccountsInterface* m_dbus;
+        QHash<QString, OrgFreedesktopAccountsUserInterface*> m_users;
+};
 
-    ModelTest* test = new ModelTest(model, 0);
-}
-
-UserManager::~UserManager()
-{
-}
-
-#include "usermanager.moc"
+#endif // ACCOUNTMODEL_H

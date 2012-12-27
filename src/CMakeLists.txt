@@ -1,4 +1,6 @@
 set(user_manager_SRCS
+   lib/accountmodel.cpp
+   lib/modeltest.cpp
    usermanager.cpp
 )
 
