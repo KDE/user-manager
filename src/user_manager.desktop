@@ -1,0 +1,19 @@
+[Desktop Entry]
+Exec=kcmshell4 user-manager
+Icon=applications-internet
+Type=Service
+
+X-KDE-ServiceTypes=KCModule
+
+X-KDE-Library=user_manager
+X-KDE-ParentApp=kcontrol
+
+X-KDE-System-Settings-Parent-Category=network-and-connectivity
+
+Name=User Manager
+
+Comment=Add remove or edit system users
+
+X-KDE-Keywords=users,system
+
+Categories=Qt;KDE;X-KDE-settings-user_manager;
