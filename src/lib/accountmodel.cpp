@@ -71,7 +71,11 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
     }
 
     if (role == Qt::DisplayRole) {
-        return m_users.value(m_userPath.at(index.row()))->realName();
+        OrgFreedesktopAccountsUserInterface* acc = m_users.value(m_userPath.at(index.row()));
+        if (!acc->realName().isEmpty()) {
+            return acc->realName();
+        }
+        return acc->userName();
     }
 
     if (role == Qt::DecorationRole) {
