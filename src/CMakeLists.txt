@@ -20,7 +20,7 @@ qt4_add_dbus_interface(user_manager_SRCS
     user_interface
 )
 
-kde4_add_ui_files(user_manager_SRCS kcm.ui)
+kde4_add_ui_files(user_manager_SRCS kcm.ui account.ui)
 
 kde4_add_plugin(user_manager ${user_manager_SRCS})
 

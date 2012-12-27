@@ -25,6 +25,7 @@ namespace Ui
 {
     class KCMUserManager;
 };
+class QStackedLayout;
 class UserManager : public KCModule
 {
     Q_OBJECT
@@ -34,6 +35,7 @@ class UserManager : public KCModule
 
     private:
         Ui::KCMUserManager* m_ui;
+        QStackedLayout* m_layout;
 };
 
 #endif // USER-MANAGER_H_

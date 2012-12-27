@@ -18,11 +18,13 @@
 
 #include "usermanager.h"
 #include "ui_kcm.h"
+#include "ui_account.h"
 #include "lib/accountmodel.h"
 #include "lib/modeltest.h"
 
 #include <QtCore/QDebug>
 #include <QtGui/QListView>
+#include <QtGui/QStackedLayout>
 
 #include <kpluginfactory.h>
 
@@ -32,14 +34,24 @@ K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
 UserManager::UserManager(QWidget* parent, const QVariantList& args) 
  : KCModule(UserManagerFactory::componentData(), parent)
  , m_ui(new Ui::KCMUserManager)
+ , m_layout(new QStackedLayout)
 {
     Q_UNUSED(args);
     m_ui->setupUi(this);
+    m_ui->accountInfo->setLayout(m_layout);
 
     AccountModel* model = new AccountModel(this);
     m_ui->userList->setModel(model);
 
     ModelTest* test = new ModelTest(model, 0);
+
+    Ui::AccountInfo *info = new Ui::AccountInfo();
+    QWidget *widget = new QWidget();
+    info->setupUi(widget);
+
+    m_layout->addWidget(widget);
+    m_layout->setCurrentWidget(widget);
+
 }
 
 UserManager::~UserManager()
