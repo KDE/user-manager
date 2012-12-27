@@ -25,9 +25,11 @@
 
 #include <KLocalizedString>
 
+typedef OrgFreedesktopAccountsInterface AccountsManager;
+typedef OrgFreedesktopAccountsUserInterface Account;
 AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
 {
-    m_dbus = new OrgFreedesktopAccountsInterface("org.freedesktop.Accounts", "/org/freedesktop/Accounts", QDBusConnection::systemBus(), this);
+    m_dbus = new AccountsManager("org.freedesktop.Accounts", "/org/freedesktop/Accounts", QDBusConnection::systemBus(), this);
     QDBusPendingReply <QList <QDBusObjectPath > > reply = m_dbus->ListCachedUsers();
     reply.waitForFinished();
 
@@ -39,7 +41,7 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
     QList<QDBusObjectPath> users = reply.value();
     Q_FOREACH(const QDBusObjectPath& path, users) {
         m_userPath.append(path.path());
-        m_users.insert(path.path(), new OrgFreedesktopAccountsUserInterface("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this));
+        m_users.insert(path.path(), new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this));
     }
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
@@ -72,7 +74,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
     }
 
     if (role == Qt::DisplayRole) {
-        OrgFreedesktopAccountsUserInterface* acc = m_users.value(m_userPath.at(index.row()));
+        Account* acc = m_users.value(m_userPath.at(index.row()));
         if (!acc->realName().isEmpty()) {
             return acc->realName();
         }
@@ -106,12 +108,7 @@ QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int 
 
 void AccountModel::UserAdded(const QDBusObjectPath& path)
 {
-    OrgFreedesktopAccountsUserInterface* acc = new OrgFreedesktopAccountsUserInterface(
-                                                            "org.freedesktop.Accounts",
-                                                            path.path(),
-                                                            QDBusConnection::systemBus(),
-                                                            this
-                                                    );
+    Account* acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
     int row = m_users.count();
@@ -131,7 +128,7 @@ void AccountModel::UserDeleted(const QDBusObjectPath& path)
 
 void AccountModel::Changed()
 {
-    OrgFreedesktopAccountsUserInterface* acc = qobject_cast<OrgFreedesktopAccountsUserInterface*>(sender());
+    Account* acc = qobject_cast<Account*>(sender());
     acc->path();
 
     QModelIndex accountIndex = index(m_userPath.indexOf(acc->path()), 0);
