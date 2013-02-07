@@ -65,7 +65,22 @@ UserManager::~UserManager()
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
+    if (m_accountWidgets.contains(selected)) {
+        m_layout->setCurrentWidget(m_accountWidgets[selected]);
+        return;
+    }
 
+    QWidget* widget = createWidgetForAccount(selected);
+    m_layout->addWidget(widget);
+    m_layout->setCurrentWidget(widget);
+}
+
+QWidget* UserManager::createWidgetForAccount(const QModelIndex& selected)
+{
+    AccountInfo *widget = new AccountInfo(m_model);
+    widget->setModelIndex(selected);
+
+    return widget;
 }
 
 #include "usermanager.moc"
