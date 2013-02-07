@@ -71,11 +71,25 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     m_layout->setCurrentWidget(widget);
 }
 
+void UserManager::accountModified(bool modified)
+{
+    AccountInfo* widget = qobject_cast<AccountInfo*>(sender());
+    QModelIndex index = widget->modelIndex();
+
+    if (m_modifiedAccounts.contains(index)) {
+        m_modifiedAccounts[index] = modified;
+    } else {
+        m_modifiedAccounts.insert(index, modified);
+    }
+
+    Q_EMIT changed(!m_modifiedAccounts.keys(true).isEmpty());
+}
+
 QWidget* UserManager::createWidgetForAccount(const QModelIndex& selected)
 {
     AccountInfo *widget = new AccountInfo(m_model);
     widget->setModelIndex(selected);
-    connect(widget, SIGNAL(changed(bool)), SIGNAL(changed(bool)));
+    connect(widget, SIGNAL(changed(bool)), SLOT(accountModified(bool)));
 
     return widget;
 }

@@ -39,10 +39,12 @@ class UserManager : public KCModule
 
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
+        void accountModified(bool modified);
 
     private:
         QWidget* createWidgetForAccount(const QModelIndex &selected);
 
+        QMap<QModelIndex, bool> m_modifiedAccounts;
         QMap<QModelIndex, QWidget*> m_accountWidgets;
         Ui::KCMUserManager* m_ui;
         QStackedLayout* m_layout;
