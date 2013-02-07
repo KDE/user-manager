@@ -39,6 +39,7 @@ class UserManager : public KCModule
         virtual ~UserManager();
 
         virtual void load();
+        virtual void save();
 
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);

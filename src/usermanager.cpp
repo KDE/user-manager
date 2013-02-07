@@ -68,6 +68,19 @@ void UserManager::load()
     }
 }
 
+void UserManager::save()
+{
+    if (!m_saveNeeded) {
+        return;
+    }
+
+    QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
+    Q_FOREACH(const QModelIndex& index, modified) {
+        Q_ASSERT(m_accountWidgets.contains(index));
+//         m_accountWidgets[index];
+    }
+}
+
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
     if (m_accountWidgets.contains(selected)) {
