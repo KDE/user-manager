@@ -30,6 +30,16 @@ class AccountModel : public QAbstractListModel
 {
     Q_OBJECT
     public:
+        enum {
+            FriendlyName = Qt::DisplayRole,
+            Face = Qt::DecorationRole,
+            RealName = Qt::UserRole,
+            Username,
+            Email,
+            Administrator,
+            AutomaticLogin
+        };
+
         AccountModel(QObject* parent);
         ~AccountModel();
         virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
