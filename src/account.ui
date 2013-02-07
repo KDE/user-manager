@@ -24,7 +24,7 @@
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="username">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -32,12 +32,12 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>afiestas</string>
+         <string/>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="face">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -62,7 +62,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_2">
+       <widget class="QLineEdit" name="realName">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -70,7 +70,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Àlex Fiestas</string>
+         <string/>
         </property>
         <property name="echoMode">
          <enum>QLineEdit::Normal</enum>
@@ -85,7 +85,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_3">
+       <widget class="QLineEdit" name="email">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -93,7 +93,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>afiestas@kde.org</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -105,7 +105,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QCheckBox" name="checkBox_2">
+       <widget class="QCheckBox" name="administrator">
         <property name="text">
          <string/>
         </property>
@@ -119,7 +119,7 @@
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="automaticLogin">
         <property name="text">
          <string/>
         </property>
@@ -189,8 +189,6 @@
    </item>
   </layout>
   <zorder>widget_2</zorder>
-  <zorder>lineEdit</zorder>
-  <zorder>widget</zorder>
   <zorder>widget</zorder>
   <zorder>verticalSpacer</zorder>
  </widget>
