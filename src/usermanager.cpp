@@ -44,19 +44,13 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     m_ui->accountInfo->setLayout(m_layout);
 
     QItemSelectionModel* selectionModel = new QItemSelectionModel(m_model);
-    selectionModel->setCurrentIndex(m_model->index(0), QItemSelectionModel::Current);
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
+    selectionModel->setCurrentIndex(m_model->index(0), QItemSelectionModel::Current);
 
     m_ui->userList->setModel(m_model);
     m_ui->userList->setSelectionModel(selectionModel);
 
     ModelTest* test = new ModelTest(m_model, 0);
-
-    AccountInfo *widget = new AccountInfo(m_model);
-    widget->setModelIndex(selectionModel->currentIndex());
-
-    m_layout->addWidget(widget);
-    m_layout->setCurrentWidget(widget);
 }
 
 UserManager::~UserManager()
