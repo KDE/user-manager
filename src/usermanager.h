@@ -27,6 +27,7 @@ namespace Ui
 };
 
 class QModelIndex;
+class AccountModel;
 class QItemSelection;
 class QStackedLayout;
 class UserManager : public KCModule
@@ -42,6 +43,7 @@ class UserManager : public KCModule
     private:
         Ui::KCMUserManager* m_ui;
         QStackedLayout* m_layout;
+        AccountModel* m_model;
 };
 
 #endif // USER-MANAGER_H_

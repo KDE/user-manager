@@ -37,22 +37,22 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
  : KCModule(UserManagerFactory::componentData(), parent)
  , m_ui(new Ui::KCMUserManager)
  , m_layout(new QStackedLayout)
+ , m_model(new AccountModel(this))
 {
     Q_UNUSED(args);
     m_ui->setupUi(this);
     m_ui->accountInfo->setLayout(m_layout);
 
-    AccountModel* model = new AccountModel(this);
-    QItemSelectionModel* selectionModel = new QItemSelectionModel(model);
-    selectionModel->setCurrentIndex(model->index(0), QItemSelectionModel::Current);
+    QItemSelectionModel* selectionModel = new QItemSelectionModel(m_model);
+    selectionModel->setCurrentIndex(m_model->index(0), QItemSelectionModel::Current);
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
 
-    m_ui->userList->setModel(model);
+    m_ui->userList->setModel(m_model);
     m_ui->userList->setSelectionModel(selectionModel);
 
-    ModelTest* test = new ModelTest(model, 0);
+    ModelTest* test = new ModelTest(m_model, 0);
 
-    AccountInfo *widget = new AccountInfo(model);
+    AccountInfo *widget = new AccountInfo(m_model);
     widget->setModelIndex(selectionModel->currentIndex());
 
     m_layout->addWidget(widget);
