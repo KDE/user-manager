@@ -35,6 +35,13 @@ class AccountInfo : public QWidget
         virtual ~AccountInfo();
 
         void setModelIndex(const QModelIndex &index);
+
+    public Q_SLOTS:
+        void hasChanged();
+
+    Q_SIGNALS:
+        void changed(bool changed);
+
     private:
         Ui::AccountInfo * m_info;
         QModelIndex m_index;

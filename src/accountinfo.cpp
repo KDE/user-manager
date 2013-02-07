@@ -28,11 +28,15 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
  , m_model(model)
 {
     m_info->setupUi(this);
+    connect(m_info->username, SIGNAL(textChanged(QString)), SLOT(hasChanged()));
+    connect(m_info->realName, SIGNAL(textChanged(QString)), SLOT(hasChanged()));
+    connect(m_info->email, SIGNAL(textChanged(QString)), SLOT(hasChanged()));
+    connect(m_info->administrator, SIGNAL(toggled(bool)), SLOT(hasChanged()));
+    connect(m_info->automaticLogin, SIGNAL(toggled(bool)), SLOT(hasChanged()));
 }
 
 AccountInfo::~AccountInfo()
 {
-
 }
 
 void AccountInfo::setModelIndex(const QModelIndex& index)
@@ -46,4 +50,34 @@ void AccountInfo::setModelIndex(const QModelIndex& index)
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
     m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
+}
+
+void AccountInfo::hasChanged()
+{
+    if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
+        Q_EMIT changed(true);
+        return;
+    }
+
+    if (m_info->username->text() != m_model->data(m_index, AccountModel::Username).toString()) {
+        Q_EMIT changed(true);
+        return;
+    }
+
+    if (m_info->email->text() != m_model->data(m_index, AccountModel::Email).toString()) {
+        Q_EMIT changed(true);
+        return;
+    }
+
+    if (m_info->administrator->isChecked() != m_model->data(m_index, AccountModel::Administrator).toBool()) {
+        Q_EMIT changed(true);
+        return;
+    }
+
+    if (m_info->automaticLogin->isChecked() != m_model->data(m_index, AccountModel::AutomaticLogin).toBool()) {
+        Q_EMIT changed(true);
+        return;
+    }
+
+    Q_EMIT changed(false);
 }
