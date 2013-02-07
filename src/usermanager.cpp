@@ -65,7 +65,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
         return;
     }
 
-    QWidget* widget = createWidgetForAccount(selected);
+    AccountInfo* widget = createWidgetForAccount(selected);
     m_accountWidgets.insert(selected, widget);
     m_layout->addWidget(widget);
     m_layout->setCurrentWidget(widget);
@@ -85,7 +85,7 @@ void UserManager::accountModified(bool modified)
     Q_EMIT changed(!m_modifiedAccounts.keys(true).isEmpty());
 }
 
-QWidget* UserManager::createWidgetForAccount(const QModelIndex& selected)
+AccountInfo* UserManager::createWidgetForAccount(const QModelIndex& selected)
 {
     AccountInfo *widget = new AccountInfo(m_model);
     widget->setModelIndex(selected);

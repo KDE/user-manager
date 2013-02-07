@@ -27,6 +27,7 @@ namespace Ui
 };
 
 class QModelIndex;
+class AccountInfo;
 class AccountModel;
 class QItemSelection;
 class QStackedLayout;
@@ -42,10 +43,10 @@ class UserManager : public KCModule
         void accountModified(bool modified);
 
     private:
-        QWidget* createWidgetForAccount(const QModelIndex &selected);
+        AccountInfo* createWidgetForAccount(const QModelIndex &selected);
 
         QMap<QModelIndex, bool> m_modifiedAccounts;
-        QMap<QModelIndex, QWidget*> m_accountWidgets;
+        QMap<QModelIndex, AccountInfo*> m_accountWidgets;
         Ui::KCMUserManager* m_ui;
         QStackedLayout* m_layout;
         AccountModel* m_model;
