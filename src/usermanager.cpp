@@ -61,6 +61,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
 UserManager::~UserManager()
 {
+    delete m_model;
 }
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
