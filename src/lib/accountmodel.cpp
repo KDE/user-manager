@@ -94,6 +94,10 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
         return QPixmap(file.fileName()).scaled(48, 48);
     }
 
+    if (role == AccountModel::RealName) {
+        return acc->realName();
+    }
+
     if (role == AccountModel::Username) {
         return acc->userName();
     }
