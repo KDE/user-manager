@@ -24,10 +24,10 @@
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
+ , m_info(new Ui::AccountInfo())
  , m_model(model)
 {
-    Ui::AccountInfo *info = new Ui::AccountInfo();
-    info->setupUi(this);
+    m_info->setupUi(this);
 }
 
 AccountInfo::~AccountInfo()

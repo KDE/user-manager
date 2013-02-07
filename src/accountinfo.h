@@ -23,6 +23,9 @@
 
 #include <QtGui/QWidget>
 
+namespace Ui {
+    class AccountInfo;
+}
 class AccountModel;
 class AccountInfo : public QWidget
 {
@@ -33,6 +36,7 @@ class AccountInfo : public QWidget
 
         void setModelIndex(const QModelIndex &index);
     private:
+        Ui::AccountInfo * m_info;
         QModelIndex m_index;
         AccountModel* m_model;
 };
