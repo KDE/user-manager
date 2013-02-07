@@ -58,6 +58,15 @@ UserManager::~UserManager()
     delete m_model;
 }
 
+void UserManager::load()
+{
+    QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
+    Q_FOREACH(const QModelIndex& index, modified) {
+        Q_ASSERT(m_accountWidgets.contains(index));
+        m_accountWidgets[index]->loadFromModel();
+    }
+}
+
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
     if (m_accountWidgets.contains(selected)) {

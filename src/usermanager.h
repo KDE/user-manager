@@ -38,6 +38,8 @@ class UserManager : public KCModule
         explicit UserManager(QWidget *parent, const QVariantList& args);
         virtual ~UserManager();
 
+        virtual void load();
+
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
         void accountModified(bool modified);
