@@ -38,6 +38,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
  , m_ui(new Ui::KCMUserManager)
  , m_layout(new QStackedLayout)
  , m_model(new AccountModel(this))
+ , m_saveNeeded(false)
 {
     Q_UNUSED(args);
     m_ui->setupUi(this);
@@ -91,7 +92,8 @@ void UserManager::accountModified(bool modified)
         m_modifiedAccounts.insert(index, modified);
     }
 
-    Q_EMIT changed(!m_modifiedAccounts.keys(true).isEmpty());
+    m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
+    Q_EMIT changed(m_saveNeeded);
 }
 
 AccountInfo* UserManager::createWidgetForAccount(const QModelIndex& selected)

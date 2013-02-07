@@ -52,6 +52,7 @@ class UserManager : public KCModule
         Ui::KCMUserManager* m_ui;
         QStackedLayout* m_layout;
         AccountModel* m_model;
+        bool m_saveNeeded;
 };
 
 #endif // USER-MANAGER_H_
