@@ -53,6 +53,11 @@ void AccountInfo::setModelIndex(const QModelIndex& index)
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
 }
 
+QModelIndex AccountInfo::modelIndex() const
+{
+    return m_index;
+}
+
 void AccountInfo::hasChanged()
 {
     if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
