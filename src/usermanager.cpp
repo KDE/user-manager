@@ -66,6 +66,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     }
 
     QWidget* widget = createWidgetForAccount(selected);
+    m_accountWidgets.insert(selected, widget);
     m_layout->addWidget(widget);
     m_layout->setCurrentWidget(widget);
 }
