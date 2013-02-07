@@ -2,6 +2,7 @@ set(user_manager_SRCS
    lib/accountmodel.cpp
    lib/modeltest.cpp
    usermanager.cpp
+   accountinfo.cpp
 )
 
 set_source_files_properties(lib/org.freedesktop.Accounts.xml
