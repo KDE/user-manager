@@ -74,6 +74,7 @@ QWidget* UserManager::createWidgetForAccount(const QModelIndex& selected)
 {
     AccountInfo *widget = new AccountInfo(m_model);
     widget->setModelIndex(selected);
+    connect(widget, SIGNAL(changed(bool)), SIGNAL(changed(bool)));
 
     return widget;
 }

@@ -37,6 +37,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
 
 AccountInfo::~AccountInfo()
 {
+    delete m_info;
 }
 
 void AccountInfo::setModelIndex(const QModelIndex& index)
