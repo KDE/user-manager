@@ -53,6 +53,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     ModelTest* test = new ModelTest(model, 0);
 
     AccountInfo *widget = new AccountInfo(model);
+    widget->setModelIndex(selectionModel->currentIndex());
 
     m_layout->addWidget(widget);
     m_layout->setCurrentWidget(widget);

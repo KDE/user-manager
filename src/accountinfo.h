@@ -19,6 +19,8 @@
 #ifndef ACCOUNT_INFO_WIDGET
 #define ACCOUNT_INFO_WIDGET
 
+#include <QtCore/QModelIndex>
+
 #include <QtGui/QWidget>
 
 class AccountModel;
@@ -29,7 +31,9 @@ class AccountInfo : public QWidget
         explicit AccountInfo(AccountModel* model, QWidget* parent = 0, Qt::WindowFlags f = 0);
         virtual ~AccountInfo();
 
+        void setModelIndex(const QModelIndex &index);
     private:
+        QModelIndex m_index;
         AccountModel* m_model;
 };
 

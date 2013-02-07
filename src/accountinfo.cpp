@@ -20,6 +20,8 @@
 #include "ui_account.h"
 #include "lib/accountmodel.h"
 
+#include <QtCore/QDebug>
+
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
  , m_model(model)
@@ -31,4 +33,11 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
 AccountInfo::~AccountInfo()
 {
 
+}
+
+void AccountInfo::setModelIndex(const QModelIndex& index)
+{
+    m_index = index;
+
+    qDebug() << m_model->data(m_index, Qt::DisplayRole).toString();
 }
