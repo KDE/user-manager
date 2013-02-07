@@ -41,7 +41,11 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     m_ui->accountInfo->setLayout(m_layout);
 
     AccountModel* model = new AccountModel(this);
+    QItemSelectionModel* selectionModel = new QItemSelectionModel(model);
+    connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
+
     m_ui->userList->setModel(model);
+    m_ui->userList->setSelectionModel(selectionModel);
 
     ModelTest* test = new ModelTest(model, 0);
 
@@ -51,11 +55,15 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     m_layout->addWidget(widget);
     m_layout->setCurrentWidget(widget);
-
 }
 
 UserManager::~UserManager()
 {
+}
+
+void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
+{
+
 }
 
 #include "usermanager.moc"

@@ -25,6 +25,9 @@ namespace Ui
 {
     class KCMUserManager;
 };
+
+class QModelIndex;
+class QItemSelection;
 class QStackedLayout;
 class UserManager : public KCModule
 {
@@ -32,6 +35,9 @@ class UserManager : public KCModule
     public:
         explicit UserManager(QWidget *parent, const QVariantList& args);
         virtual ~UserManager();
+
+    public Q_SLOTS:
+        void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
 
     private:
         Ui::KCMUserManager* m_ui;
