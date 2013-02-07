@@ -43,7 +43,16 @@ AccountInfo::~AccountInfo()
 void AccountInfo::setModelIndex(const QModelIndex& index)
 {
     m_index = index;
+    loadFromModel();
+}
 
+QModelIndex AccountInfo::modelIndex() const
+{
+    return m_index;
+}
+
+void AccountInfo::loadFromModel()
+{
     m_info->username->setText(m_model->data(m_index, AccountModel::Username).toString());
     m_info->face->setIconSize(QSize(32,32));
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
@@ -51,11 +60,6 @@ void AccountInfo::setModelIndex(const QModelIndex& index)
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
     m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
-}
-
-QModelIndex AccountInfo::modelIndex() const
-{
-    return m_index;
 }
 
 void AccountInfo::hasChanged()

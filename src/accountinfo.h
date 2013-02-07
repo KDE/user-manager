@@ -37,6 +37,8 @@ class AccountInfo : public QWidget
         void setModelIndex(const QModelIndex &index);
         QModelIndex modelIndex() const;
 
+        void loadFromModel();
+
     public Q_SLOTS:
         void hasChanged();
 
