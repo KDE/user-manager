@@ -44,6 +44,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     AccountModel* model = new AccountModel(this);
     QItemSelectionModel* selectionModel = new QItemSelectionModel(model);
+    selectionModel->setCurrentIndex(model->index(0), QItemSelectionModel::Current);
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
 
     m_ui->userList->setModel(model);
