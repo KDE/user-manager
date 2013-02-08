@@ -30,6 +30,8 @@
 
 #include <kpluginfactory.h>
 
+#include <kauth.h>
+
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
 
@@ -75,6 +77,18 @@ void UserManager::save()
     }
 
     QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
+    if (modified.isEmpty()) {
+        return;
+    }
+
+    KAuth::Action* action = new KAuth::Action(QLatin1String("org.freedesktop.accounts.user-administration"));
+    action->setParentWidget(this);
+    KAuth::ActionReply reply =  action->execute();
+
+    if (reply.failed()) {
+        return;
+    }
+
     Q_FOREACH(const QModelIndex& index, modified) {
         Q_ASSERT(m_accountWidgets.contains(index));
 //         m_accountWidgets[index];
