@@ -38,10 +38,18 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
         return;
     }
 
+    Account *acc = 0;
     QList<QDBusObjectPath> users = reply.value();
     Q_FOREACH(const QDBusObjectPath& path, users) {
+        acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
+        acc->locked();
+        if (!acc->isValid() || acc->lastError().isValid()) {
+            continue;
+        }
+
+        qDebug() << "Adding user: " << path.path() << " " << acc->lastError().message();
         m_userPath.append(path.path());
-        m_users.insert(path.path(), new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this));
+        m_users.insert(path.path(), acc);
     }
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
