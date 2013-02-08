@@ -75,7 +75,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
 
     Account* acc = m_users.value(m_userPath.at(index.row()));
     if (!acc) {
-        return false;
+        return QVariant();
     }
 
     if (role == Qt::DisplayRole || role == AccountModel::FriendlyName) {
