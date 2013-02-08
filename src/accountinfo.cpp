@@ -62,6 +62,28 @@ void AccountInfo::loadFromModel()
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
 }
 
+bool AccountInfo::save()
+{
+    qDebug() << "Saving on Index: " << m_index.row();
+    if (!m_model->setData(m_index, m_info->username->text(), AccountModel::Username)) {
+        return false;
+    }
+    if (!m_model->setData(m_index, m_info->realName->text(), AccountModel::RealName)) {
+        return false;
+    }
+    if (!m_model->setData(m_index, m_info->email->text(), AccountModel::Email)) {
+        return false;
+    }
+    if (!m_model->setData(m_index, m_info->administrator->isChecked(), AccountModel::Administrator)) {
+        return false;
+    }
+    if (!m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
+        return false;
+    }
+
+    return true;
+}
+
 void AccountInfo::hasChanged()
 {
     if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
