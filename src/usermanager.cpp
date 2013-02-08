@@ -91,7 +91,7 @@ void UserManager::save()
 
     Q_FOREACH(const QModelIndex& index, modified) {
         Q_ASSERT(m_accountWidgets.contains(index));
-//         m_accountWidgets[index];
+        m_accountWidgets[index]->save();
     }
 }
 
