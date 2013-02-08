@@ -117,6 +117,90 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
+bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int role)
+{
+    if(!index.isValid()) {
+        return false;
+    }
+
+    if (index.row() >= m_users.count()) {
+        return false;
+    }
+
+    Account* acc = m_users.value(m_userPath.at(index.row()));
+    if (!acc) {
+        return false;
+    }
+
+    if (role == AccountModel::RealName) {
+        QDBusPendingReply <void > reply = acc->SetRealName(value.toString());
+        reply.waitForFinished();
+        if (reply.isError()) {
+            qDebug() << reply.error().name();
+            qDebug() << reply.error().message();
+            return false;
+        }
+
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    if (role == AccountModel::Username) {
+        QDBusPendingReply <void > reply = acc->SetUserName(value.toString());
+        reply.waitForFinished();
+        if (reply.isError()) {
+            qDebug() << reply.error().name();
+            qDebug() << reply.error().message();
+            return false;
+        }
+
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    if (role == AccountModel::Email) {
+        QDBusPendingReply <void > reply = acc->SetEmail(value.toString());
+        reply.waitForFinished();
+        if (reply.isError()) {
+            qDebug() << reply.error().name();
+            qDebug() << reply.error().message();
+            return false;
+        }
+
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    if (role == AccountModel::Administrator) {
+        int userType = value.toBool() ? 1 : 0;
+        QDBusPendingReply <void > reply = acc->SetAccountType(userType);
+        reply.waitForFinished();
+        if (reply.isError()) {
+            qDebug() << reply.error().name();
+            qDebug() << reply.error().message();
+            return false;
+        }
+
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    if (role == AccountModel::AutomaticLogin) {
+        QDBusPendingReply <void > reply = acc->SetAutomaticLogin(value.toBool());
+        reply.waitForFinished();
+        if (reply.isError()) {
+            qDebug() << reply.error().name();
+            qDebug() << reply.error().message();
+            return false;
+        }
+
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    return QAbstractItemModel::setData(index, value, role);
+}
+
 QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role != Qt::DisplayRole) {
