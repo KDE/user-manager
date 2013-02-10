@@ -30,7 +30,7 @@ class AccountModel : public QAbstractListModel
 {
     Q_OBJECT
     public:
-        enum {
+        enum Role {
             FriendlyName = Qt::DisplayRole,
             Face = Qt::DecorationRole,
             RealName = Qt::UserRole,
