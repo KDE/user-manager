@@ -31,6 +31,7 @@ class AccountInfo;
 class AccountModel;
 class QItemSelection;
 class QStackedLayout;
+class QItemSelectionModel;
 class UserManager : public KCModule
 {
     Q_OBJECT
@@ -53,6 +54,7 @@ class UserManager : public KCModule
         Ui::KCMUserManager* m_ui;
         QStackedLayout* m_layout;
         AccountModel* m_model;
+        QItemSelectionModel* m_selectionModel;
         bool m_saveNeeded;
 };
 
