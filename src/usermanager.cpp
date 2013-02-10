@@ -54,6 +54,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     m_ui->userList->setSelectionModel(m_selectionModel);
 
     ModelTest* test = new ModelTest(m_model, 0);
+    Q_UNUSED(test)
 
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
 }

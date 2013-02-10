@@ -225,8 +225,38 @@ QVariant AccountModel::newUserData(int role) const
     return QVariant();
 }
 
+bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
+{
+    AccountModel::Role role = (AccountModel::Role) roleInt;
+    m_newUserData[role] = value;
+    if (m_newUserData.count() < 5) {
+        return true;
+    }
+
+    int userType = value.toBool() ? 1 : 0;
+    QDBusPendingReply <QDBusObjectPath > reply = m_dbus->CreateUser(m_newUserData[Username].toString(), m_newUserData[RealName].toString(), userType);
+    reply.waitForFinished();
+
+    if (reply.isError()) {
+        qDebug() << reply.error().name();
+        qDebug() << reply.error().message();
+        return false;
+    }
+
+    Account *acc = new Account("org.freedesktop.Accounts", reply.value().path(), QDBusConnection::systemBus(), this);
+    acc->SetAutomaticLogin(m_newUserData[AutomaticLogin].toBool());
+    acc->SetEmail(m_newUserData[AutomaticLogin].toString());
+    acc->deleteLater();
+
+    m_newUserData.clear();
+
+    return true;
+}
+
+
 QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    Q_UNUSED(section);
     if (role != Qt::DisplayRole) {
         return QVariant();
     }
