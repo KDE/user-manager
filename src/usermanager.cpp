@@ -55,6 +55,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     ModelTest* test = new ModelTest(m_model, 0);
 
+    connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
 }
 
 UserManager::~UserManager()
@@ -122,6 +123,11 @@ void UserManager::accountModified(bool modified)
 
     m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
     Q_EMIT changed(m_saveNeeded);
+}
+
+void UserManager::addNewUser()
+{
+    m_selectionModel->setCurrentIndex(m_model->index(m_model->rowCount()-1), QItemSelectionModel::SelectCurrent);
 }
 
 AccountInfo* UserManager::createWidgetForAccount(const QModelIndex& selected)

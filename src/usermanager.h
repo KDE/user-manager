@@ -45,6 +45,7 @@ class UserManager : public KCModule
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
         void accountModified(bool modified);
+        void addNewUser();
 
     private:
         AccountInfo* createWidgetForAccount(const QModelIndex &selected);
