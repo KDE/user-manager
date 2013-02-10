@@ -34,6 +34,9 @@
         <property name="text">
          <string/>
         </property>
+        <property name="placeholderText">
+         <string>Jhon</string>
+        </property>
        </widget>
       </item>
       <item row="0" column="0">
@@ -75,6 +78,9 @@
         <property name="echoMode">
          <enum>QLineEdit::Normal</enum>
         </property>
+        <property name="placeholderText">
+         <string>Jhon Doe</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="0">
@@ -94,6 +100,9 @@
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="placeholderText">
+         <string>jhon@doe.es</string>
         </property>
        </widget>
       </item>
