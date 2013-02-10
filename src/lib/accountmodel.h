@@ -47,6 +47,7 @@ class AccountModel : public QAbstractListModel
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
         virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
+        QVariant newUserData(int role) const;
     public Q_SLOTS:
         void UserAdded(const QDBusObjectPath &path);
         void UserDeleted(const QDBusObjectPath &path);

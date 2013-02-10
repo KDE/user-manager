@@ -52,6 +52,9 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
         m_users.insert(path.path(), acc);
     }
 
+    m_userPath.append("new-user");
+    m_users.insert("new-user", 0);
+
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
 }
@@ -83,7 +86,8 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
 
     Account* acc = m_users.value(m_userPath.at(index.row()));
     if (!acc) {
-        return QVariant();
+        //new user
+        return newUserData(role);
     }
 
     if (role == Qt::DisplayRole || role == AccountModel::FriendlyName) {
@@ -208,6 +212,17 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
     }
 
     return QAbstractItemModel::setData(index, value, role);
+}
+
+QVariant AccountModel::newUserData(int role) const
+{
+    switch(role) {
+        case Qt::DisplayRole || AccountModel::FriendlyName:
+            return i18n("New User");
+        case Qt::DecorationRole || AccountModel::Face:
+            return QIcon::fromTheme("list-add-user").pixmap(48, 48);
+    }
+    return QVariant();
 }
 
 QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int role) const
