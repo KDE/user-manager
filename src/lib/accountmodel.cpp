@@ -243,9 +243,9 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
     Account* acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
-    int row = m_users.count();
+    int row = m_users.count()-1;
     beginInsertRows(QModelIndex(), row, row);
-    m_userPath.append(path.path());
+    m_userPath.insert(row, path.path());
     m_users.insert(path.path(), acc);
     endInsertRows();
 }
