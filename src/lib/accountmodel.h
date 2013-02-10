@@ -48,6 +48,8 @@ class AccountModel : public QAbstractListModel
         virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
 
         QVariant newUserData(int role) const;
+        bool newUserSetData(const QVariant& value, int role);
+
     public Q_SLOTS:
         void UserAdded(const QDBusObjectPath &path);
         void UserDeleted(const QDBusObjectPath &path);
@@ -56,6 +58,7 @@ class AccountModel : public QAbstractListModel
     private:
         QStringList m_userPath;
         OrgFreedesktopAccountsInterface* m_dbus;
+        QHash<AccountModel::Role, QVariant> m_newUserData;
         QHash<QString, OrgFreedesktopAccountsUserInterface*> m_users;
 };
 

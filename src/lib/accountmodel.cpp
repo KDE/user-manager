@@ -141,7 +141,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
 
     Account* acc = m_users.value(m_userPath.at(index.row()));
     if (!acc) {
-        return false;
+        return newUserSetData(value, role);
     }
 
     if (role == AccountModel::RealName) {
