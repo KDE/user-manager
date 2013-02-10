@@ -48,7 +48,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     QItemSelectionModel* selectionModel = new QItemSelectionModel(m_model);
     connect(selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
-    selectionModel->setCurrentIndex(m_model->index(0), QItemSelectionModel::Current);
+    selectionModel->setCurrentIndex(m_model->index(0), QItemSelectionModel::SelectCurrent);
 
     m_ui->userList->setModel(m_model);
     m_ui->userList->setSelectionModel(selectionModel);
