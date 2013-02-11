@@ -104,6 +104,7 @@ void UserManager::save()
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
+    m_cachedInfo.clear();
     if (m_widget->hasChanges()) {
         m_cachedInfo = m_widget->changes();
     }
