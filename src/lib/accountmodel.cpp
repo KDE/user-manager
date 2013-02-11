@@ -254,7 +254,7 @@ bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
 
     Account *acc = new Account("org.freedesktop.Accounts", reply.value().path(), QDBusConnection::systemBus(), this);
     acc->SetAutomaticLogin(m_newUserData[AutomaticLogin].toBool());
-    acc->SetEmail(m_newUserData[AutomaticLogin].toString());
+    acc->SetEmail(m_newUserData[Email].toString());
     acc->deleteLater();
 
     m_newUserData.clear();
