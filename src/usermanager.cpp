@@ -93,7 +93,9 @@ void UserManager::save()
     }
 
     Q_FOREACH(const QModelIndex& index, modified) {
+        qDebug() << "Saving: " << index.row();
         m_accountWidgets[index.row()]->save();
+        m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
     }
 }
 
