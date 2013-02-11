@@ -19,6 +19,8 @@
 #ifndef USER_MANAGER_H
 #define USER_MANAGER_H
 
+#include "lib/accountmodel.h"
+
 #include <KCModule>
 
 namespace Ui
@@ -28,7 +30,6 @@ namespace Ui
 
 class QModelIndex;
 class AccountInfo;
-class AccountModel;
 class QItemSelection;
 class QStackedLayout;
 class QItemSelectionModel;
@@ -54,6 +55,7 @@ class UserManager : public KCModule
         AccountInfo* m_widget;
         Ui::KCMUserManager* m_ui;
         QItemSelectionModel* m_selectionModel;
+        QMap<AccountModel::Role, QVariant> m_cachedInfo;
 };
 
 #endif // USER-MANAGER_H_
