@@ -31,8 +31,6 @@
 #include <kpluginfactory.h>
 #include <KMessageWidget>
 
-#include <kauth.h>
-
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
 
