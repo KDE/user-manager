@@ -61,6 +61,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="addBtn">
+          <property name="toolTip">
+           <string>Add user account</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -74,6 +77,9 @@
          <widget class="QPushButton" name="removeBtn">
           <property name="enabled">
            <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>Remove user account</string>
           </property>
           <property name="text">
            <string/>
