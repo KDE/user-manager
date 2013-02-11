@@ -99,6 +99,12 @@ void UserManager::save()
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
     int row = selected.row();
+    if (row == m_model->rowCount() - 1) {
+        m_ui->removeBtn->setEnabled(false);
+    } else {
+        m_ui->removeBtn->setEnabled(true);
+    }
+
     if (!m_accountWidgets.isEmpty() &&  m_accountWidgets.count() - 1 >= row) {
         m_layout->setCurrentWidget(m_accountWidgets[row]);
         return;
