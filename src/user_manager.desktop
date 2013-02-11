@@ -11,9 +11,24 @@ X-KDE-ParentApp=kcontrol
 X-KDE-System-Settings-Parent-Category=system-administration
 
 Name=User Manager
+Name[de]=Benutzerverwaltung
+Name[nl]=Gebruikersbeheerder
+Name[pt]=Gestor de Utilizadores
+Name[pt_BR]=Gerenciador de usuários
+Name[sk]=Správca užívateľov
+Name[uk]=Керування користувачами
+Name[x-test]=xxUser Managerxx
 
 Comment=Add, remove or edit system users
+Comment[uk]=Додавання, вилучення або зміна записів користувачів системи
 
 X-KDE-Keywords=users,system,administration
+X-KDE-Keywords[de]=Benutzer,System,Verwaltung
+X-KDE-Keywords[nl]=gebruikers,systeem,beheer
+X-KDE-Keywords[pt]=utilizadores,sistema,administração
+X-KDE-Keywords[pt_BR]=usuários,sistema,administração
+X-KDE-Keywords[sk]=používatelia,systém,správa
+X-KDE-Keywords[uk]=users,system,administration,користувачі,система,адміністрування
+X-KDE-Keywords[x-test]=xxusers,system,administrationxx
 
 Categories=Qt;KDE;X-KDE-settings-user_manager;
