@@ -104,7 +104,7 @@ void UserManager::save()
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
-
+    m_widget->setModelIndex(selected);
 }
 
 void UserManager::accountModified(bool modified)
