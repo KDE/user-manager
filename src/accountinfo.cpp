@@ -119,5 +119,5 @@ void AccountInfo::hasChanged()
         m_infoToSave.insert(AccountModel::AutomaticLogin, m_info->automaticLogin->isChecked());
     }
 
-    Q_EMIT changed();
+    Q_EMIT changed(hasChanges());
 }

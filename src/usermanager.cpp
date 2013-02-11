@@ -60,6 +60,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
     connect(m_ui->removeBtn, SIGNAL(clicked(bool)), SLOT(removeUser()));
+    connect(m_widget, SIGNAL(changed(bool)), SIGNAL(changed(bool)));
 }
 
 UserManager::~UserManager()

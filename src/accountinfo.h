@@ -47,7 +47,7 @@ class AccountInfo : public QWidget
         void hasChanged();
 
     Q_SIGNALS:
-        void changed();
+        void changed(bool changed);
 
     private:
         Ui::AccountInfo * m_info;
