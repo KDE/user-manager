@@ -89,6 +89,8 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
         m_cachedInfo = m_widget->changes();
     }
     m_widget->setModelIndex(selected);
+
+    m_ui->removeBtn->setEnabled(selected.row() < m_model->rowCount() - 1);
 }
 
 void UserManager::addNewUser()
