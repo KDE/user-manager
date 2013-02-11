@@ -105,13 +105,13 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
         m_ui->removeBtn->setEnabled(true);
     }
 
-    if (!m_accountWidgets.isEmpty() &&  m_accountWidgets.count() - 1 >= row) {
-        m_layout->setCurrentWidget(m_accountWidgets[row]);
-        return;
+    AccountInfo* widget = m_accountWidgets.value(row);
+    if (!widget) {
+        widget = new AccountInfo(m_model, this);
+        widget->setModelIndex(selected);
+        connect(widget, SIGNAL(changed(bool)), SLOT(accountModified(bool)));
     }
 
-    AccountInfo* widget = createWidgetForAccount(selected);
-    m_accountWidgets.insert(row, widget);
     m_layout->addWidget(widget);
     m_layout->setCurrentWidget(widget);
 }
