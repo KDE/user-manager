@@ -76,21 +76,12 @@ void UserManager::load()
 
 void UserManager::save()
 {
-    if (!m_widget->hasChanges()) {
-        return;
-    }
-
     m_widget->save();
 }
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
-    m_cachedInfo.clear();
-    if (m_widget->hasChanges()) {
-        m_cachedInfo = m_widget->changes();
-    }
     m_widget->setModelIndex(selected);
-
     m_ui->removeBtn->setEnabled(selected.row() < m_model->rowCount() - 1);
 }
 

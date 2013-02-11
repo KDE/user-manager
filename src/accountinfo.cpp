@@ -65,6 +65,10 @@ void AccountInfo::loadFromModel()
 
 bool AccountInfo::save()
 {
+    if (m_infoToSave.isEmpty()) {
+        return false;
+    }
+
     qDebug() << "Saving on Index: " << m_index.row();
     if (!m_model->setData(m_index, m_info->username->text(), AccountModel::Username)) {
         return false;
@@ -83,16 +87,6 @@ bool AccountInfo::save()
     }
 
     return true;
-}
-
-bool AccountInfo::hasChanges()
-{
-    return !m_infoToSave.isEmpty();
-}
-
-QMap< AccountModel::Role, QVariant > AccountInfo::changes() const
-{
-    return m_infoToSave;
 }
 
 void AccountInfo::hasChanged()
@@ -119,5 +113,5 @@ void AccountInfo::hasChanged()
         m_infoToSave.insert(AccountModel::AutomaticLogin, m_info->automaticLogin->isChecked());
     }
 
-    Q_EMIT changed(hasChanges());
+    Q_EMIT changed(!m_infoToSave.isEmpty());
 }

@@ -41,8 +41,6 @@ class AccountInfo : public QWidget
         void loadFromModel();
         bool save();
 
-        bool hasChanges();
-        QMap<AccountModel::Role, QVariant> changes() const;
     public Q_SLOTS:
         void hasChanged();
 
