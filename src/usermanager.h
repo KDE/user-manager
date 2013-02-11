@@ -53,7 +53,6 @@ class UserManager : public KCModule
         bool m_saveNeeded;
         AccountModel* m_model;
         AccountInfo* m_widget;
-        KMessageWidget *m_info;
         Ui::KCMUserManager* m_ui;
         QItemSelectionModel* m_selectionModel;
         QMap<AccountModel::Role, QVariant> m_cachedInfo;
