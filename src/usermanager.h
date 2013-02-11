@@ -51,7 +51,7 @@ class UserManager : public KCModule
         AccountInfo* createWidgetForAccount(const QModelIndex &selected);
 
         QMap<QModelIndex, bool> m_modifiedAccounts;
-        QMap<QModelIndex, AccountInfo*> m_accountWidgets;
+        QList<AccountInfo*> m_accountWidgets;
         Ui::KCMUserManager* m_ui;
         QStackedLayout* m_layout;
         AccountModel* m_model;

@@ -68,8 +68,7 @@ void UserManager::load()
 {
     QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
     Q_FOREACH(const QModelIndex& index, modified) {
-        Q_ASSERT(m_accountWidgets.contains(index));
-        m_accountWidgets[index]->loadFromModel();
+        m_accountWidgets[index.row()]->loadFromModel();
     }
 }
 
@@ -93,20 +92,20 @@ void UserManager::save()
     }
 
     Q_FOREACH(const QModelIndex& index, modified) {
-        Q_ASSERT(m_accountWidgets.contains(index));
-        m_accountWidgets[index]->save();
+        m_accountWidgets[index.row()]->save();
     }
 }
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
-    if (m_accountWidgets.contains(selected)) {
-        m_layout->setCurrentWidget(m_accountWidgets[selected]);
+    int row = selected.row();
+    if (!m_accountWidgets.isEmpty() &&  m_accountWidgets.count() - 1 >= row) {
+        m_layout->setCurrentWidget(m_accountWidgets[row]);
         return;
     }
 
     AccountInfo* widget = createWidgetForAccount(selected);
-    m_accountWidgets.insert(selected, widget);
+    m_accountWidgets.insert(row, widget);
     m_layout->addWidget(widget);
     m_layout->setCurrentWidget(widget);
 }
