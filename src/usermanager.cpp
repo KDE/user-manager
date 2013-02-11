@@ -100,16 +100,8 @@ void UserManager::addNewUser()
 
 void UserManager::removeUser()
 {
-//     QModelIndex selected = m_selectionModel->currentIndex();
-//     qDebug() << "Removing user: " << selected.row();
-//
-//     m_model->removeRow(selected.row());
-//     delete m_accountWidgets[selected.row()];
-//     m_accountWidgets.removeAt(selected.row());
-//     m_modifiedAccounts.remove(selected);
-//
-//     m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
-//     Q_EMIT changed(m_saveNeeded);
+    m_model->removeRow(m_selectionModel->currentIndex().row());
+    Q_EMIT changed(false);
 }
 
 #include "usermanager.moc"
