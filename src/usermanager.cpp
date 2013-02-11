@@ -96,6 +96,7 @@ void UserManager::save()
         qDebug() << "Saving: " << index.row();
         m_accountWidgets[index.row()]->save();
         m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
+        m_modifiedAccounts.remove(index);
     }
 }
 
