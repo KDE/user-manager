@@ -91,17 +91,6 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     m_widget->setModelIndex(selected);
 }
 
-void UserManager::accountModified(bool modified)
-{
-//     AccountInfo* widget = qobject_cast<AccountInfo*>(sender());
-//     QModelIndex index = widget->modelIndex();
-//
-//     m_modifiedAccounts[index] = modified;
-//
-//     m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
-//     Q_EMIT changed(m_saveNeeded);
-}
-
 void UserManager::addNewUser()
 {
     m_selectionModel->setCurrentIndex(m_model->index(m_model->rowCount()-1), QItemSelectionModel::SelectCurrent);
