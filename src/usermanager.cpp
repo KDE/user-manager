@@ -75,29 +75,11 @@ void UserManager::load()
 
 void UserManager::save()
 {
-//     if (!m_saveNeeded) {
-//         return;
-//     }
-//
-//     QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
-//     if (modified.isEmpty()) {
-//         return;
-//     }
-//
-//     KAuth::Action* action = new KAuth::Action(QLatin1String("org.freedesktop.accounts.user-administration"));
-//     action->setParentWidget(this);
-//     KAuth::ActionReply reply =  action->execute();
-//
-//     if (reply.failed()) {
-//         return;
-//     }
-//
-//     Q_FOREACH(const QModelIndex& index, modified) {
-//         qDebug() << "Saving: " << index.row();
-//         m_accountWidgets[index.row()]->save();
-//         m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
-//         m_modifiedAccounts.remove(index);
-//     }
+    if (!m_widget->hasChanges()) {
+        return;
+    }
+
+    m_widget->save();
 }
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
