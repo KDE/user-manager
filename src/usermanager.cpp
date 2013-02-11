@@ -70,10 +70,7 @@ UserManager::~UserManager()
 
 void UserManager::load()
 {
-//     QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
-//     Q_FOREACH(const QModelIndex& index, modified) {
-//         m_accountWidgets[index.row()]->loadFromModel();
-//     }
+    m_widget->loadFromModel();
 }
 
 void UserManager::save()
