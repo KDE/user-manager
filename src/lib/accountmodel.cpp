@@ -214,6 +214,15 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
     return QAbstractItemModel::setData(index, value, role);
 }
 
+bool AccountModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    Account* acc = m_users.value(m_userPath.at(row));
+    QDBusPendingReply <void > rep = m_dbus->DeleteUser(acc->uid(), true);
+    rep.waitForFinished();
+
+    return !rep.isError();
+}
+
 QVariant AccountModel::newUserData(int role) const
 {
     switch(role) {

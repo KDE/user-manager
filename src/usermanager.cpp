@@ -57,6 +57,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     Q_UNUSED(test)
 
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
+    connect(m_ui->removeBtn, SIGNAL(clicked(bool)), SLOT(removeUser()));
 }
 
 UserManager::~UserManager()
@@ -132,13 +133,19 @@ void UserManager::addNewUser()
     m_selectionModel->setCurrentIndex(m_model->index(m_model->rowCount()-1), QItemSelectionModel::SelectCurrent);
 }
 
-AccountInfo* UserManager::createWidgetForAccount(const QModelIndex& selected)
+void UserManager::removeUser()
 {
-    AccountInfo *widget = new AccountInfo(m_model);
-    widget->setModelIndex(selected);
-    connect(widget, SIGNAL(changed(bool)), SLOT(accountModified(bool)));
+    QModelIndex selected = m_selectionModel->currentIndex();
+    qDebug() << "Removing user: " << selected.row();
 
-    return widget;
+    m_model->removeRow(selected.row());
+    m_layout->removeWidget(m_accountWidgets[selected.row()]);
+    delete m_accountWidgets[selected.row()];
+    m_accountWidgets.removeAt(selected.row());
+    m_modifiedAccounts.remove(selected);
+
+    m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
+    Q_EMIT changed(m_saveNeeded);
 }
 
 #include "usermanager.moc"

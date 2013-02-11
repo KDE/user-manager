@@ -46,10 +46,9 @@ class UserManager : public KCModule
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
         void accountModified(bool modified);
         void addNewUser();
+        void removeUser();
 
     private:
-        AccountInfo* createWidgetForAccount(const QModelIndex &selected);
-
         QMap<QModelIndex, bool> m_modifiedAccounts;
         QList<AccountInfo*> m_accountWidgets;
         Ui::KCMUserManager* m_ui;
