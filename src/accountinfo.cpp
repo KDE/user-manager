@@ -43,6 +43,7 @@ AccountInfo::~AccountInfo()
 void AccountInfo::setModelIndex(const QModelIndex& index)
 {
     m_index = index;
+    m_infoToSave.clear();
     loadFromModel();
 }
 
@@ -84,32 +85,39 @@ bool AccountInfo::save()
     return true;
 }
 
+bool AccountInfo::hasChanges()
+{
+    return !m_infoToSave.isEmpty();
+}
+
+QMap< AccountModel::Role, QVariant > AccountInfo::changes() const
+{
+    return m_infoToSave;
+}
+
 void AccountInfo::hasChanged()
 {
+    m_infoToSave.clear();
+
     if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
-        Q_EMIT changed(true);
-        return;
+        m_infoToSave.insert(AccountModel::RealName, m_info->realName->text());
     }
 
     if (m_info->username->text() != m_model->data(m_index, AccountModel::Username).toString()) {
-        Q_EMIT changed(true);
-        return;
+        m_infoToSave.insert(AccountModel::Username, m_info->username->text());
     }
 
     if (m_info->email->text() != m_model->data(m_index, AccountModel::Email).toString()) {
-        Q_EMIT changed(true);
-        return;
+        m_infoToSave.insert(AccountModel::Email, m_info->email->text());
     }
 
     if (m_info->administrator->isChecked() != m_model->data(m_index, AccountModel::Administrator).toBool()) {
-        Q_EMIT changed(true);
-        return;
+        m_infoToSave.insert(AccountModel::Administrator, m_info->administrator->isChecked());
     }
 
     if (m_info->automaticLogin->isChecked() != m_model->data(m_index, AccountModel::AutomaticLogin).toBool()) {
-        Q_EMIT changed(true);
-        return;
+        m_infoToSave.insert(AccountModel::AutomaticLogin, m_info->automaticLogin->isChecked());
     }
 
-    Q_EMIT changed(false);
+    Q_EMIT changed();
 }
