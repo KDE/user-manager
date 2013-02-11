@@ -29,6 +29,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include <kpluginfactory.h>
+#include <KMessageWidget>
 
 #include <kauth.h>
 
@@ -40,13 +41,21 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
  , m_saveNeeded(false)
  , m_model(new AccountModel(this))
  , m_widget(new AccountInfo(m_model, this))
+ , m_info(new KMessageWidget(this))
  , m_ui(new Ui::KCMUserManager)
 {
     Q_UNUSED(args);
     QVBoxLayout *layout = new QVBoxLayout();
     m_ui->setupUi(this);
     m_ui->accountInfo->setLayout(layout);
+    layout->addWidget(m_info);
     layout->addWidget(m_widget);
+
+    m_info->setMessageType(KMessageWidget::Warning);
+    m_info->addAction(new QAction("Go Back", this));
+    m_info->setText("Some changes were made to the last contact");
+    m_info->setCloseButtonVisible(false);
+    m_info->hide();
 
     m_selectionModel = new QItemSelectionModel(m_model);
     connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
@@ -87,6 +96,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     m_cachedInfo.clear();
     if (m_widget->hasChanges()) {
         m_cachedInfo = m_widget->changes();
+        m_info->animatedShow();
     }
     m_widget->setModelIndex(selected);
 
