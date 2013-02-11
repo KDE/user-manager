@@ -22,6 +22,7 @@
 #include <QtCore/QModelIndex>
 
 #include <QtGui/QWidget>
+#include "lib/accountmodel.h"
 
 namespace Ui {
     class AccountInfo;
@@ -40,6 +41,8 @@ class AccountInfo : public QWidget
         void loadFromModel();
         bool save();
 
+        bool hasChanges();
+        QMap<AccountModel::Role, QVariant> changes() const;
     public Q_SLOTS:
         void hasChanged();
 
@@ -50,6 +53,7 @@ class AccountInfo : public QWidget
         Ui::AccountInfo * m_info;
         QModelIndex m_index;
         AccountModel* m_model;
+        QMap<AccountModel::Role, QVariant> m_infoToSave;
 };
 
 #endif //ACCOUNT_INFO_WIDGET

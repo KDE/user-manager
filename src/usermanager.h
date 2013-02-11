@@ -19,6 +19,8 @@
 #ifndef USER_MANAGER_H
 #define USER_MANAGER_H
 
+#include "lib/accountmodel.h"
+
 #include <KCModule>
 
 namespace Ui
@@ -28,9 +30,9 @@ namespace Ui
 
 class QModelIndex;
 class AccountInfo;
-class AccountModel;
 class QItemSelection;
 class QStackedLayout;
+class KMessageWidget;
 class QItemSelectionModel;
 class UserManager : public KCModule
 {
@@ -44,18 +46,16 @@ class UserManager : public KCModule
 
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
-        void accountModified(bool modified);
         void addNewUser();
         void removeUser();
 
     private:
-        QMap<QModelIndex, bool> m_modifiedAccounts;
-        QList<AccountInfo*> m_accountWidgets;
-        Ui::KCMUserManager* m_ui;
-        QStackedLayout* m_layout;
-        AccountModel* m_model;
-        QItemSelectionModel* m_selectionModel;
         bool m_saveNeeded;
+        AccountModel* m_model;
+        AccountInfo* m_widget;
+        Ui::KCMUserManager* m_ui;
+        QItemSelectionModel* m_selectionModel;
+        QMap<AccountModel::Role, QVariant> m_cachedInfo;
 };
 
 #endif // USER-MANAGER_H_
