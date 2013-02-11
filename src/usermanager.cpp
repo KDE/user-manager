@@ -112,6 +112,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     if (!widget) {
         widget = new AccountInfo(m_model, this);
         widget->setModelIndex(selected);
+        m_accountWidgets.insert(row, widget);
         connect(widget, SIGNAL(changed(bool)), SLOT(accountModified(bool)));
     }
 
