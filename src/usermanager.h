@@ -49,13 +49,11 @@ class UserManager : public KCModule
         void removeUser();
 
     private:
-        QMap<QModelIndex, bool> m_modifiedAccounts;
-        QList<AccountInfo*> m_accountWidgets;
-        Ui::KCMUserManager* m_ui;
-        QStackedLayout* m_layout;
-        AccountModel* m_model;
-        QItemSelectionModel* m_selectionModel;
         bool m_saveNeeded;
+        AccountModel* m_model;
+        AccountInfo* m_widget;
+        Ui::KCMUserManager* m_ui;
+        QItemSelectionModel* m_selectionModel;
 };
 
 #endif // USER-MANAGER_H_

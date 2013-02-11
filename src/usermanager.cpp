@@ -26,7 +26,7 @@
 
 #include <QtCore/QDebug>
 #include <QtGui/QListView>
-#include <QtGui/QStackedLayout>
+#include <QtGui/QVBoxLayout>
 
 #include <kpluginfactory.h>
 
@@ -37,14 +37,16 @@ K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
 
 UserManager::UserManager(QWidget* parent, const QVariantList& args) 
  : KCModule(UserManagerFactory::componentData(), parent)
- , m_ui(new Ui::KCMUserManager)
- , m_layout(new QStackedLayout)
- , m_model(new AccountModel(this))
  , m_saveNeeded(false)
+ , m_model(new AccountModel(this))
+ , m_widget(new AccountInfo(m_model, this))
+ , m_ui(new Ui::KCMUserManager)
 {
     Q_UNUSED(args);
+    QVBoxLayout *layout = new QVBoxLayout();
     m_ui->setupUi(this);
-    m_ui->accountInfo->setLayout(m_layout);
+    m_ui->accountInfo->setLayout(layout);
+    layout->addWidget(m_widget);
 
     m_selectionModel = new QItemSelectionModel(m_model);
     connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
@@ -67,69 +69,53 @@ UserManager::~UserManager()
 
 void UserManager::load()
 {
-    QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
-    Q_FOREACH(const QModelIndex& index, modified) {
-        m_accountWidgets[index.row()]->loadFromModel();
-    }
+//     QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
+//     Q_FOREACH(const QModelIndex& index, modified) {
+//         m_accountWidgets[index.row()]->loadFromModel();
+//     }
 }
 
 void UserManager::save()
 {
-    if (!m_saveNeeded) {
-        return;
-    }
-
-    QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
-    if (modified.isEmpty()) {
-        return;
-    }
-
-    KAuth::Action* action = new KAuth::Action(QLatin1String("org.freedesktop.accounts.user-administration"));
-    action->setParentWidget(this);
-    KAuth::ActionReply reply =  action->execute();
-
-    if (reply.failed()) {
-        return;
-    }
-
-    Q_FOREACH(const QModelIndex& index, modified) {
-        qDebug() << "Saving: " << index.row();
-        m_accountWidgets[index.row()]->save();
-        m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
-        m_modifiedAccounts.remove(index);
-    }
+//     if (!m_saveNeeded) {
+//         return;
+//     }
+//
+//     QList <QModelIndex > modified = m_modifiedAccounts.keys(true);
+//     if (modified.isEmpty()) {
+//         return;
+//     }
+//
+//     KAuth::Action* action = new KAuth::Action(QLatin1String("org.freedesktop.accounts.user-administration"));
+//     action->setParentWidget(this);
+//     KAuth::ActionReply reply =  action->execute();
+//
+//     if (reply.failed()) {
+//         return;
+//     }
+//
+//     Q_FOREACH(const QModelIndex& index, modified) {
+//         qDebug() << "Saving: " << index.row();
+//         m_accountWidgets[index.row()]->save();
+//         m_selectionModel->setCurrentIndex(index, QItemSelectionModel::SelectCurrent);
+//         m_modifiedAccounts.remove(index);
+//     }
 }
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
-    int row = selected.row();
-    if (row == m_model->rowCount() - 1) {
-        m_ui->removeBtn->setEnabled(false);
-    } else {
-        m_ui->removeBtn->setEnabled(true);
-    }
 
-    AccountInfo* widget = m_accountWidgets.value(row);
-    if (!widget) {
-        widget = new AccountInfo(m_model, this);
-        widget->setModelIndex(selected);
-        m_accountWidgets.insert(row, widget);
-        connect(widget, SIGNAL(changed(bool)), SLOT(accountModified(bool)));
-    }
-
-    m_layout->addWidget(widget);
-    m_layout->setCurrentWidget(widget);
 }
 
 void UserManager::accountModified(bool modified)
 {
-    AccountInfo* widget = qobject_cast<AccountInfo*>(sender());
-    QModelIndex index = widget->modelIndex();
-
-    m_modifiedAccounts[index] = modified;
-
-    m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
-    Q_EMIT changed(m_saveNeeded);
+//     AccountInfo* widget = qobject_cast<AccountInfo*>(sender());
+//     QModelIndex index = widget->modelIndex();
+//
+//     m_modifiedAccounts[index] = modified;
+//
+//     m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
+//     Q_EMIT changed(m_saveNeeded);
 }
 
 void UserManager::addNewUser()
@@ -139,17 +125,16 @@ void UserManager::addNewUser()
 
 void UserManager::removeUser()
 {
-    QModelIndex selected = m_selectionModel->currentIndex();
-    qDebug() << "Removing user: " << selected.row();
-
-    m_model->removeRow(selected.row());
-    m_layout->removeWidget(m_accountWidgets[selected.row()]);
-    delete m_accountWidgets[selected.row()];
-    m_accountWidgets.removeAt(selected.row());
-    m_modifiedAccounts.remove(selected);
-
-    m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
-    Q_EMIT changed(m_saveNeeded);
+//     QModelIndex selected = m_selectionModel->currentIndex();
+//     qDebug() << "Removing user: " << selected.row();
+//
+//     m_model->removeRow(selected.row());
+//     delete m_accountWidgets[selected.row()];
+//     m_accountWidgets.removeAt(selected.row());
+//     m_modifiedAccounts.remove(selected);
+//
+//     m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
+//     Q_EMIT changed(m_saveNeeded);
 }
 
 #include "usermanager.moc"
