@@ -115,11 +115,7 @@ void UserManager::accountModified(bool modified)
     AccountInfo* widget = qobject_cast<AccountInfo*>(sender());
     QModelIndex index = widget->modelIndex();
 
-    if (m_modifiedAccounts.contains(index)) {
-        m_modifiedAccounts[index] = modified;
-    } else {
-        m_modifiedAccounts.insert(index, modified);
-    }
+    m_modifiedAccounts[index] = modified;
 
     m_saveNeeded = !m_modifiedAccounts.keys(true).isEmpty();
     Q_EMIT changed(m_saveNeeded);
