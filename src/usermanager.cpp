@@ -29,7 +29,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include <kpluginfactory.h>
-#include <KMessageWidget>
 
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
