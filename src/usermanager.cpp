@@ -29,6 +29,8 @@
 #include <QtGui/QVBoxLayout>
 
 #include <kpluginfactory.h>
+#include <KLocalizedString>
+#include <KMessageBox>
 
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
@@ -89,7 +91,19 @@ void UserManager::addNewUser()
 
 void UserManager::removeUser()
 {
-    m_model->removeRow(m_selectionModel->currentIndex().row());
+    KGuiItem keep;
+    keep.setText(i18n("Delete files"));
+    KGuiItem deletefiles;
+    deletefiles.setText(i18n("Keep files"));
+
+    int result = KMessageBox::questionYesNoCancel(this, i18n("Are you should you want to "), i18n("AAA"), keep, deletefiles);
+    if (result == KMessageBox::Cancel) {
+        return;
+    }
+
+    bool deleteFiles  = result == KMessageBox::Yes ? true : false;
+    m_model->removeAccountKeepingFiles(m_selectionModel->currentIndex().row(), deleteFiles);
+
     Q_EMIT changed(false);
 }
 
