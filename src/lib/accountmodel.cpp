@@ -216,8 +216,13 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
 
 bool AccountModel::removeRows(int row, int count, const QModelIndex& parent)
 {
+    return removeAccountKeepingFiles(row, true);
+}
+
+bool AccountModel::removeAccountKeepingFiles(int row, bool keepFile)
+{
     Account* acc = m_users.value(m_userPath.at(row));
-    QDBusPendingReply <void > rep = m_dbus->DeleteUser(acc->uid(), true);
+    QDBusPendingReply <void > rep = m_dbus->DeleteUser(acc->uid(), keepFile);
     rep.waitForFinished();
 
     return !rep.isError();
