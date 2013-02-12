@@ -25,6 +25,9 @@
 
 #include <KLocalizedString>
 
+#include <sys/types.h>
+#include <unistd.h>
+
 typedef OrgFreedesktopAccountsInterface AccountsManager;
 typedef OrgFreedesktopAccountsUserInterface Account;
 AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
@@ -38,16 +41,25 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
         return;
     }
 
+    uid_t user = getuid();
+    qulonglong uid = 0;
     Account *acc = 0;
     QList<QDBusObjectPath> users = reply.value();
     Q_FOREACH(const QDBusObjectPath& path, users) {
         acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
-        acc->locked();
+        uid = acc->uid();
         if (!acc->isValid() || acc->lastError().isValid()) {
             continue;
         }
 
         qDebug() << "Adding user: " << path.path() << " " << acc->lastError().message();
+        if (uid == user) {
+            qDebug() << "Current user: " << uid;
+            m_userPath.insert(0, path.path());
+            m_users.insert(path.path(), acc);
+            continue;
+        }
+
         m_userPath.append(path.path());
         m_users.insert(path.path(), acc);
     }
