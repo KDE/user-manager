@@ -11,6 +11,7 @@ X-KDE-ParentApp=kcontrol
 X-KDE-System-Settings-Parent-Category=system-administration
 
 Name=User Manager
+Name[cs]=Správce uživatelů
 Name[de]=Benutzerverwaltung
 Name[nl]=Gebruikersbeheerder
 Name[pt]=Gestor de Utilizadores
