@@ -81,7 +81,14 @@ void UserManager::save()
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
     m_widget->setModelIndex(selected);
-    m_ui->removeBtn->setEnabled(selected.row() < m_model->rowCount() - 1);
+    bool enabled = false;
+
+    //If it is not last and not first
+    if (selected.row() < m_model->rowCount() - 1 && selected.row() > 0) {
+        enabled = true;
+    }
+
+    m_ui->removeBtn->setEnabled(enabled);
 }
 
 void UserManager::addNewUser()
