@@ -148,7 +148,6 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
 
     switch(role) {
         case AccountModel::RealName:
-        {
             if (checkForErrors(acc->SetRealName(value.toString()))) {
                 return false;
             }
@@ -156,43 +155,34 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             m_dbus->CacheUser(acc->userName());
             emit dataChanged(index, index);
             return true;
-        }
         case AccountModel::Username:
-        {
             if (checkForErrors(acc->SetUserName(value.toString()))) {
                 return false;
             }
 
             emit dataChanged(index, index);
             return true;
-        }
         case AccountModel::Email:
-        {
             if (checkForErrors(acc->SetEmail(value.toString()))) {
                 return false;
             }
 
             emit dataChanged(index, index);
             return true;
-        }
         case AccountModel::Administrator:
-        {
             if (checkForErrors(acc->SetAccountType(value.toBool() ? 1 : 0))) {
                 return false;
             }
 
             emit dataChanged(index, index);
             return true;
-        }
         case AccountModel::AutomaticLogin:
-        {
             if (checkForErrors(acc->SetAutomaticLogin(value.toBool()))) {
                 return false;
             }
 
             emit dataChanged(index, index);
             return true;
-        }
     }
 
     return QAbstractItemModel::setData(index, value, role);
