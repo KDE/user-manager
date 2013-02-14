@@ -152,6 +152,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
                 return false;
             }
 
+            m_dbus->UncacheUser(acc->userName()).waitForFinished();
             m_dbus->CacheUser(acc->userName());
             emit dataChanged(index, index);
             return true;
