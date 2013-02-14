@@ -102,40 +102,30 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
         return newUserData(role);
     }
 
-    if (role == Qt::DisplayRole || role == AccountModel::FriendlyName) {
-        if (!acc->realName().isEmpty()) {
+    switch(role) {
+        case Qt::DisplayRole || AccountModel::FriendlyName:
+            if (!acc->realName().isEmpty()) {
+                return acc->realName();
+            }
+            return acc->userName();
+        case Qt::DecorationRole || AccountModel::FriendlyName:
+        {
+            QFile file(m_users.value(m_userPath.at(index.row()))->iconFile());
+            if (!file.exists()) {
+                return QIcon::fromTheme("user-identity").pixmap(48, 48);
+            }
+            return QPixmap(file.fileName()).scaled(48, 48);
+        }
+        case AccountModel::RealName:
             return acc->realName();
-        }
-        return acc->userName();
-    }
-
-    if (role == Qt::DecorationRole || role == AccountModel::Face) {
-        QFile file(m_users.value(m_userPath.at(index.row()))->iconFile());
-        if (!file.exists()) {
-            return QIcon::fromTheme("user-identity").pixmap(48, 48);
-        }
-
-        return QPixmap(file.fileName()).scaled(48, 48);
-    }
-
-    if (role == AccountModel::RealName) {
-        return acc->realName();
-    }
-
-    if (role == AccountModel::Username) {
-        return acc->userName();
-    }
-
-    if (role == AccountModel::Email) {
-        return acc->email();
-    }
-
-    if (role == AccountModel::Administrator) {
-        return acc->accountType() == 1;
-    }
-
-    if (role == AccountModel::AutomaticLogin) {
-        return acc->automaticLogin();
+        case AccountModel::Username:
+            return acc->userName();
+        case AccountModel::Email:
+            return acc->email();
+        case AccountModel::Administrator:
+            return acc->accountType() == 1;
+        case AccountModel::AutomaticLogin:
+            return acc->automaticLogin();
     }
 
     return QVariant();
