@@ -110,7 +110,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
             return acc->userName();
         case Qt::DecorationRole || AccountModel::FriendlyName:
         {
-            QFile file(m_users.value(m_userPath.at(index.row()))->iconFile());
+            QFile file(acc->iconFile());
             if (!file.exists()) {
                 return QIcon::fromTheme("user-identity").pixmap(48, 48);
             }
