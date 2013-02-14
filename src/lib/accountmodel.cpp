@@ -149,11 +149,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
     switch(role) {
         case AccountModel::RealName:
         {
-            QDBusPendingReply <void > reply = acc->SetRealName(value.toString());
-            reply.waitForFinished();
-            if (reply.isError()) {
-                qDebug() << reply.error().name();
-                qDebug() << reply.error().message();
+            if (checkForErrors(acc->SetRealName(value.toString()))) {
                 return false;
             }
 
@@ -163,11 +159,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
         }
         case AccountModel::Username:
         {
-            QDBusPendingReply <void > reply = acc->SetUserName(value.toString());
-            reply.waitForFinished();
-            if (reply.isError()) {
-                qDebug() << reply.error().name();
-                qDebug() << reply.error().message();
+            if (checkForErrors(acc->SetUserName(value.toString()))) {
                 return false;
             }
 
@@ -176,11 +168,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
         }
         case AccountModel::Email:
         {
-            QDBusPendingReply <void > reply = acc->SetEmail(value.toString());
-            reply.waitForFinished();
-            if (reply.isError()) {
-                qDebug() << reply.error().name();
-                qDebug() << reply.error().message();
+            if (checkForErrors(acc->SetEmail(value.toString()))) {
                 return false;
             }
 
@@ -189,12 +177,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
         }
         case AccountModel::Administrator:
         {
-            int userType = value.toBool() ? 1 : 0;
-            QDBusPendingReply <void > reply = acc->SetAccountType(userType);
-            reply.waitForFinished();
-            if (reply.isError()) {
-                qDebug() << reply.error().name();
-                qDebug() << reply.error().message();
+            if (checkForErrors(acc->SetAccountType(value.toBool() ? 1 : 0))) {
                 return false;
             }
 
@@ -203,11 +186,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
         }
         case AccountModel::AutomaticLogin:
         {
-            QDBusPendingReply <void > reply = acc->SetAutomaticLogin(value.toBool());
-            reply.waitForFinished();
-            if (reply.isError()) {
-                qDebug() << reply.error().name();
-                qDebug() << reply.error().message();
+            if (checkForErrors(acc->SetAutomaticLogin(value.toBool()))) {
                 return false;
             }
 
@@ -272,6 +251,17 @@ bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
     return true;
 }
 
+bool AccountModel::checkForErrors(QDBusPendingReply<void> reply) const
+{
+    reply.waitForFinished();
+    if (reply.isError()) {
+        qDebug() << reply.error().name();
+        qDebug() << reply.error().message();
+        return true;
+    }
+
+    return false;
+}
 
 QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int role) const
 {

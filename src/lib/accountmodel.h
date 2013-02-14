@@ -23,6 +23,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
 #include <QDBusObjectPath>
+#include <QDBusPendingReply>
 
 class OrgFreedesktopAccountsInterface;
 class OrgFreedesktopAccountsUserInterface;
@@ -58,6 +59,8 @@ class AccountModel : public QAbstractListModel
         void Changed();
 
     private:
+        bool checkForErrors(QDBusPendingReply <void> reply) const;
+
         QStringList m_userPath;
         OrgFreedesktopAccountsInterface* m_dbus;
         QHash<AccountModel::Role, QVariant> m_newUserData;
