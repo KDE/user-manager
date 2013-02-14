@@ -48,7 +48,7 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
     Q_FOREACH(const QDBusObjectPath& path, users) {
         acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
         uid = acc->uid();
-        if (!acc->isValid() || acc->lastError().isValid()) {
+        if (!acc->isValid() || acc->lastError().isValid() || acc->systemAccount()) {
             continue;
         }
 
