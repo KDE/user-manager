@@ -25,6 +25,7 @@
 #include <QDBusObjectPath>
 #include <QDBusPendingReply>
 
+class UserSession;
 class OrgFreedesktopAccountsInterface;
 class OrgFreedesktopAccountsUserInterface;
 class AccountModel : public QAbstractListModel
@@ -58,12 +59,16 @@ class AccountModel : public QAbstractListModel
         void UserAdded(const QDBusObjectPath &path);
         void UserDeleted(const QDBusObjectPath &path);
         void Changed();
+        void userLogged(uint uid);
+        void userLogout(uint uid);
 
     private:
+        const QString accountPathForUid(uint uid) const;
         void addAccount(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
         void removeAccount(const QString &path);
         bool checkForErrors(QDBusPendingReply <void> reply) const;
 
+        UserSession* m_sessions;
         QStringList m_userPath;
         OrgFreedesktopAccountsInterface* m_dbus;
         QHash<AccountModel::Role, QVariant> m_newUserData;

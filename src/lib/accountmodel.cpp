@@ -18,6 +18,8 @@
 
 
 #include "accountmodel.h"
+#include "usersessions.h"
+
 #include "accounts_interface.h"
 #include "user_interface.h"
 
@@ -30,7 +32,9 @@
 
 typedef OrgFreedesktopAccountsInterface AccountsManager;
 typedef OrgFreedesktopAccountsUserInterface Account;
-AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
+AccountModel::AccountModel(QObject* parent)
+ : QAbstractListModel(parent)
+ , m_sessions(new UserSession(this))
 {
     m_dbus = new AccountsManager("org.freedesktop.Accounts", "/org/freedesktop/Accounts", QDBusConnection::systemBus(), this);
     QDBusPendingReply <QList <QDBusObjectPath > > reply = m_dbus->ListCachedUsers();
@@ -66,6 +70,9 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
+
+    connect(m_sessions, SIGNAL(userLogged(uint)), SLOT(userLogged(uint)));
+    connect(m_sessions, SIGNAL(userLogout(uint)), SLOT(userLogout(uint)));
 }
 
 AccountModel::~AccountModel()
@@ -316,4 +323,32 @@ void AccountModel::Changed()
 
     QModelIndex accountIndex = index(m_userPath.indexOf(acc->path()), 0);
     Q_EMIT dataChanged(accountIndex, accountIndex);
+}
+
+void AccountModel::userLogged(uint uid)
+{
+    QString path = accountPathForUid(uid);
+    if (m_loggedAccounts.contains(path)) {
+        m_loggedAccounts[path] = true;
+    }
+}
+
+void AccountModel::userLogout(uint uid)
+{
+    QString path = accountPathForUid(uid);
+    if (m_loggedAccounts.contains(path)) {
+        m_loggedAccounts[path] = false;
+    }
+}
+
+const QString AccountModel::accountPathForUid(uint uid) const
+{
+    QHash<QString, Account*>::ConstIterator i;
+    for (i = m_users.constBegin(); i != m_users.constEnd(); ++i) {
+        if (i.value() && i.value()->uid() == uid) {
+            return i.key();
+        }
+    }
+
+    return QString();
 }
