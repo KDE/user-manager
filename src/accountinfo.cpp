@@ -44,7 +44,6 @@ void AccountInfo::setModelIndex(const QModelIndex& index)
 {
     if (m_index.isValid() && m_index != index) {
         m_infoToSave.clear();
-        qDebug() << "Cleared: " << m_infoToSave.keys();
     }
 
     m_index = index;
