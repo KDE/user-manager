@@ -30,7 +30,7 @@ typedef OrgFreedesktopConsoleKitSeatInterface Seat;
 
 UserSession::UserSession(QObject* parent): QObject(parent)
 {
-    m_console = new Consolekit("org.freedesktop.Accounts", "/org/freedesktop/Accounts", QDBusConnection::systemBus(), this);
+    m_console = new Consolekit("org.freedesktop.ConsoleKit", "/org/freedesktop/ConsoleKit/Manager", QDBusConnection::systemBus(), this);
 
     QDBusPendingReply<QList<QDBusObjectPath> >  reply = m_console->GetSessions();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
@@ -95,6 +95,7 @@ void UserSession::addLoggedUser(const QDBusObjectPath& path)
     Session *session = 0;
     session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
     if (session->IsActive().value()) {
+        qDebug() << "Logged user: " << session->GetUnixUser().value();
         m_loggedUsers.append(session->GetUnixUser().value());
     }
     delete session;
@@ -104,6 +105,7 @@ void UserSession::removeLoggedUser(const QDBusObjectPath& path)
 {
     Session *session = 0;
     session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
+    qDebug() << "Removed user: " << session->GetUnixUser().value();
     m_loggedUsers.removeAll(session->GetUnixUser().value());
     delete session;
 }
