@@ -97,6 +97,7 @@ void UserSession::addLoggedUser(const QDBusObjectPath& path)
     if (session->IsActive().value()) {
         m_loggedUsers.append(session->GetUnixUser().value());
     }
+    delete session;
 }
 
 void UserSession::addSeatWatch(QList< QDBusObjectPath > list)
