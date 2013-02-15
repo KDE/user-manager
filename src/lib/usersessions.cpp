@@ -96,12 +96,14 @@ void UserSession::addLoggedUser(const QDBusObjectPath& path)
     session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
     m_loggedUsers.insert(path, session->GetUnixUser().value());
     qDebug() << "Added logged: " << m_loggedUsers.value(path) << " " << path.path();
+    Q_EMIT userLogged(m_loggedUsers.value(path));
     delete session;
 }
 
 void UserSession::removeLoggedUser(const QDBusObjectPath& path)
 {
     qDebug() << "Remove logged: " << m_loggedUsers.value(path) << " " << path.path();
+    Q_EMIT userLogout(m_loggedUsers.value(path));
     m_loggedUsers.remove(path);
 }
 

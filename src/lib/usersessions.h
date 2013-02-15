@@ -39,6 +39,10 @@ class UserSession : public QObject
         void addLoggedUser(const QDBusObjectPath &path);
         void removeLoggedUser(const QDBusObjectPath &path);
 
+    Q_SIGNALS:
+        void userLogged(uint uid);
+        void userLogout(uint uid);
+
     private:
         void addLoggedUsers(QList<QDBusObjectPath> list);
         void addSeatWatch(QList<QDBusObjectPath> list);
