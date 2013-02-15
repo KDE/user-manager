@@ -258,7 +258,7 @@ void AccountModel::addAccount(const QString& path)
     addAccountToCache(path, acc);
 }
 
-void AccountModel::addAccountToCache(const QString& path, OrgFreedesktopAccountsUserInterface* acc, int pos)
+void AccountModel::addAccountToCache(const QString& path, Account* acc, int pos)
 {
     if (pos > -1) {
         m_userPath.insert(pos, path);
