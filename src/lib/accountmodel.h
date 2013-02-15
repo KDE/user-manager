@@ -59,8 +59,7 @@ class AccountModel : public QAbstractListModel
         void UserAdded(const QDBusObjectPath &path);
         void UserDeleted(const QDBusObjectPath &path);
         void Changed();
-        void userLogged(uint uid);
-        void userLogout(uint uid);
+        void userLogged(uint uid, bool logged);
 
     private:
         const QString accountPathForUid(uint uid) const;

@@ -40,8 +40,7 @@ class UserSession : public QObject
         void removeLoggedUser(const QDBusObjectPath &path);
 
     Q_SIGNALS:
-        void userLogged(uint uid);
-        void userLogout(uint uid);
+        void userLogged(uint uid, bool logged);
 
     private:
         void addLoggedUsers(QList<QDBusObjectPath> list);

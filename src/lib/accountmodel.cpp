@@ -71,8 +71,7 @@ AccountModel::AccountModel(QObject* parent)
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
 
-    connect(m_sessions, SIGNAL(userLogged(uint)), SLOT(userLogged(uint)));
-    connect(m_sessions, SIGNAL(userLogout(uint)), SLOT(userLogout(uint)));
+    connect(m_sessions, SIGNAL(userLogged(uint, bool)), SLOT(userLogged(uint, bool)));
 }
 
 AccountModel::~AccountModel()
@@ -327,16 +326,10 @@ void AccountModel::Changed()
     Q_EMIT dataChanged(accountIndex, accountIndex);
 }
 
-void AccountModel::userLogged(uint uid)
+void AccountModel::userLogged(uint uid, bool logged)
 {
     QString path = accountPathForUid(uid);
-    m_loggedAccounts[path] = true;
-}
-
-void AccountModel::userLogout(uint uid)
-{
-    QString path = accountPathForUid(uid);
-    m_loggedAccounts[path] = false;
+    m_loggedAccounts[path] = logged;
 }
 
 const QString AccountModel::accountPathForUid(uint uid) const
