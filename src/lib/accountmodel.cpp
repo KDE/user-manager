@@ -55,17 +55,14 @@ AccountModel::AccountModel(QObject* parent): QAbstractListModel(parent)
         qDebug() << "Adding user: " << path.path() << " " << acc->lastError().message();
         if (uid == user) {
             qDebug() << "Current user: " << uid;
-            m_userPath.insert(0, path.path());
-            m_users.insert(path.path(), acc);
+            addUser(path.path(), acc, 0);
             continue;
         }
 
-        m_userPath.append(path.path());
-        m_users.insert(path.path(), acc);
+        addUser(path.path(), acc);
     }
 
-    m_userPath.append("new-user");
-    m_users.insert("new-user", 0);
+    addUser("new-user", 0);
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
@@ -240,6 +237,17 @@ bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
     m_newUserData.clear();
 
     return true;
+}
+
+void AccountModel::addUser(const QString& path, OrgFreedesktopAccountsUserInterface* acc, int pos)
+{
+    if (pos > -1) {
+        m_userPath.insert(pos, path);
+    } else {
+        m_userPath.append(path);
+    }
+
+    m_users.insert(path, acc);
 }
 
 bool AccountModel::checkForErrors(QDBusPendingReply<void> reply) const
