@@ -267,6 +267,7 @@ void AccountModel::addAccountToCache(const QString& path, Account* acc, int pos)
     }
 
     m_users.insert(path, acc);
+    m_loggedAccounts[path] = false;
 }
 
 
