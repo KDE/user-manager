@@ -33,9 +33,14 @@ class UserSession : public QObject
 
     public Q_SLOTS:
         void gotSessions(QDBusPendingCallWatcher* call);
+        void gotSeats(QDBusPendingCallWatcher* call);
+        void gotNewSeat(const QDBusObjectPath &path);
+
+        void addLoggedUser(const QDBusObjectPath &path);
 
     private:
         void addLoggedUsers(QList<QDBusObjectPath> list);
+        void addSeatWatch(QList<QDBusObjectPath> list);
 
         QList<uint> m_loggedUsers;
         OrgFreedesktopConsoleKitManagerInterface* m_console;

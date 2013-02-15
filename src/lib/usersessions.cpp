@@ -19,17 +19,28 @@
 #include "usersessions.h"
 #include "console_interface.h"
 #include "session_interface.h"
+#include "seat_interface.h"
+
 #include <QDBusPendingReply>
 #include <QDBusObjectPath>
 
 typedef OrgFreedesktopConsoleKitManagerInterface Consolekit;
 typedef OrgFreedesktopConsoleKitSessionInterface Session;
+typedef OrgFreedesktopConsoleKitSeatInterface Seat;
+
 UserSession::UserSession(QObject* parent): QObject(parent)
 {
     m_console = new Consolekit("org.freedesktop.Accounts", "/org/freedesktop/Accounts", QDBusConnection::systemBus(), this);
+
     QDBusPendingReply<QList<QDBusObjectPath> >  reply = m_console->GetSessions();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(gotSessions(QDBusPendingCallWatcher*)));
+
+    reply = m_console->GetSeats();
+    watcher = new QDBusPendingCallWatcher(reply, this);
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(gotSeats(QDBusPendingCallWatcher*)));
+
+    connect(m_console, SIGNAL(SeatAdded(QDBusObjectPath)), SLOT(gotNewSeat(QDBusObjectPath)));
 }
 
 UserSession::~UserSession()
@@ -50,13 +61,49 @@ void UserSession::gotSessions(QDBusPendingCallWatcher* call)
     call->deleteLater();
 }
 
+void UserSession::gotSeats(QDBusPendingCallWatcher* call)
+{
+    QDBusPendingReply<QList<QDBusObjectPath> >  reply = *call;
+    if (reply.isError()) {
+        qDebug() << reply.error().name();
+        qDebug() << reply.error().message();
+    } else {
+        addSeatWatch(reply.value());
+    }
+
+    call->deleteLater();
+}
+
+void UserSession::gotNewSeat(const QDBusObjectPath& path)
+{
+    Seat *seat = new Seat("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
+
+    QDBusPendingReply<QList<QDBusObjectPath> >  reply = seat->GetSessions();
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(gotSessions(QDBusPendingCallWatcher*)));
+}
+
 void UserSession::addLoggedUsers(QList< QDBusObjectPath > list)
 {
-    Session *session = 0;
     Q_FOREACH(const QDBusObjectPath &path, list) {
-        session = new Session("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
-        if (session->IsActive().value()) {
-            m_loggedUsers.append(session->GetUnixUser().value());
-        }
+        addLoggedUser(path);
+    }
+}
+
+void UserSession::addLoggedUser(const QDBusObjectPath& path)
+{
+    Session *session = 0;
+    session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
+    if (session->IsActive().value()) {
+        m_loggedUsers.append(session->GetUnixUser().value());
+    }
+}
+
+void UserSession::addSeatWatch(QList< QDBusObjectPath > list)
+{
+    Seat *seat = 0;
+    Q_FOREACH(const QDBusObjectPath &path, list) {
+        seat = new Seat("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
+        connect(seat, SIGNAL(SessionAdded(QDBusObjectPath)), SLOT(addLoggedUser(QDBusObjectPath)));
     }
 }

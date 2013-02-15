@@ -32,6 +32,11 @@ qt4_add_dbus_interface(user_manager_SRCS
     session_interface
 )
 
+qt4_add_dbus_interface(user_manager_SRCS
+    lib/org.freedesktop.ConsoleKit.Seat.xml
+    seat_interface
+)
+
 kde4_add_ui_files(user_manager_SRCS kcm.ui account.ui)
 
 kde4_add_plugin(user_manager ${user_manager_SRCS})

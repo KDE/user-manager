@@ -1,0 +1,30 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.freedesktop.ConsoleKit.Seat">
+        <method name="ActivateSession">
+            <arg name="ssid" type="o" direction="in"/>
+        </method>
+        <method name="CanActivateSessions">
+            <arg name="can_activate" type="b" direction="out"/>
+        </method>
+        <method name="GetActiveSession">
+            <arg name="ssid" type="o" direction="out"/>
+        </method>
+        <method name="GetSessions">
+            <arg name="sessions" type="ao" direction="out"/>
+        </method>
+        <method name="GetId">
+            <arg name="sid" type="o" direction="out"/>
+        </method>
+        <signal name="SessionRemoved">
+            <arg type="o"/>
+        </signal>
+        <signal name="SessionAdded">
+            <arg type="o"/>
+        </signal>
+        <signal name="ActiveSessionChanged">
+            <arg type="s"/>
+        </signal>
+    </interface>
+</node>
