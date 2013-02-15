@@ -38,7 +38,8 @@ class AccountModel : public QAbstractListModel
             Username,
             Email,
             Administrator,
-            AutomaticLogin
+            AutomaticLogin,
+            Logged
         };
 
         AccountModel(QObject* parent);
@@ -67,6 +68,7 @@ class AccountModel : public QAbstractListModel
         OrgFreedesktopAccountsInterface* m_dbus;
         QHash<AccountModel::Role, QVariant> m_newUserData;
         QHash<QString, OrgFreedesktopAccountsUserInterface*> m_users;
+        QHash<QString, bool> m_loggedAccounts;
 };
 
 #endif // ACCOUNTMODEL_H

@@ -93,7 +93,8 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    Account* acc = m_users.value(m_userPath.at(index.row()));
+    QString path = m_userPath.at(index.row());
+    Account* acc = m_users.value(path);
     if (!acc) {
         //new user
         return newUserData(role);
@@ -123,6 +124,8 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
             return acc->accountType() == 1;
         case AccountModel::AutomaticLogin:
             return acc->automaticLogin();
+        case AccountModel::Logged:
+            return m_loggedAccounts[path];
     }
 
     return QVariant();
@@ -138,7 +141,8 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
         return false;
     }
 
-    Account* acc = m_users.value(m_userPath.at(index.row()));
+    QString path = m_userPath.at(index.row());
+    Account* acc = m_users.value(path);
     if (!acc) {
         return newUserSetData(value, role);
     }
@@ -180,6 +184,9 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             }
 
             emit dataChanged(index, index);
+            return true;
+        case AccountModel::Logged:
+            m_loggedAccounts[path] = value.toBool();
             return true;
     }
 
@@ -248,12 +255,14 @@ void AccountModel::addAccount(const QString& path, OrgFreedesktopAccountsUserInt
     }
 
     m_users.insert(path, acc);
+    m_loggedAccounts.insert(path, false);
 }
 
 void AccountModel::removeAccount(const QString& path)
 {
     m_userPath.removeAll(path);
     delete m_users.take(path);
+    m_loggedAccounts.remove(path);
 }
 
 bool AccountModel::checkForErrors(QDBusPendingReply<void> reply) const
