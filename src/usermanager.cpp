@@ -98,18 +98,27 @@ void UserManager::addNewUser()
 
 void UserManager::removeUser()
 {
+    QModelIndex index = m_selectionModel->currentIndex();
+
     KGuiItem keep;
     keep.setText(i18n("Delete files"));
     KGuiItem deletefiles;
     deletefiles.setText(i18n("Keep files"));
 
-    int result = KMessageBox::questionYesNoCancel(this, i18n("Are you should you want to "), i18n("AAA"), keep, deletefiles);
+    QString warning;
+    if (m_model->data(index, AccountModel::Logged).toBool()) {
+        warning = i18n("Removing a logged user may cause inconsistencies");
+    } else {
+        warning = i18n("Are you should you want to ");
+    }
+
+    int result = KMessageBox::questionYesNoCancel(this, warning, i18n("AAA"), keep, deletefiles);
     if (result == KMessageBox::Cancel) {
         return;
     }
 
     bool deleteFiles  = result == KMessageBox::Yes ? true : false;
-    m_model->removeAccountKeepingFiles(m_selectionModel->currentIndex().row(), deleteFiles);
+    m_model->removeAccountKeepingFiles(index.row(), deleteFiles);
 
     Q_EMIT changed(false);
 }
