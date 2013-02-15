@@ -96,18 +96,14 @@ void UserSession::addLoggedUser(const QDBusObjectPath& path)
     session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
     if (session->IsActive().value()) {
         qDebug() << "Logged user: " << session->GetUnixUser().value();
-        m_loggedUsers.append(session->GetUnixUser().value());
+        m_loggedUsers.insert(path, session->GetUnixUser().value());
     }
     delete session;
 }
 
 void UserSession::removeLoggedUser(const QDBusObjectPath& path)
 {
-    Session *session = 0;
-    session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
-    qDebug() << "Removed user: " << session->GetUnixUser().value();
-    m_loggedUsers.removeAll(session->GetUnixUser().value());
-    delete session;
+    m_loggedUsers.remove(path);
 }
 
 void UserSession::addSeatWatch(QList< QDBusObjectPath > list)

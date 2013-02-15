@@ -43,7 +43,7 @@ class UserSession : public QObject
         void addLoggedUsers(QList<QDBusObjectPath> list);
         void addSeatWatch(QList<QDBusObjectPath> list);
 
-        QList<uint> m_loggedUsers;
+        QHash<QDBusObjectPath, uint> m_loggedUsers;
         OrgFreedesktopConsoleKitManagerInterface* m_console;
 };
 
