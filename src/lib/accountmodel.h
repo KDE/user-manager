@@ -59,7 +59,7 @@ class AccountModel : public QAbstractListModel
         void Changed();
 
     private:
-        void addUser(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
+        void addAccount(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
         bool checkForErrors(QDBusPendingReply <void> reply) const;
 
         QStringList m_userPath;
