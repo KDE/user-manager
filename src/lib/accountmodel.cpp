@@ -250,6 +250,12 @@ void AccountModel::addAccount(const QString& path, OrgFreedesktopAccountsUserInt
     m_users.insert(path, acc);
 }
 
+void AccountModel::removeAccount(const QString& path)
+{
+    m_userPath.removeAll(path);
+    delete m_users.take(path);
+}
+
 bool AccountModel::checkForErrors(QDBusPendingReply<void> reply) const
 {
     reply.waitForFinished();
@@ -290,8 +296,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
 void AccountModel::UserDeleted(const QDBusObjectPath& path)
 {
     beginRemoveRows(QModelIndex(), m_userPath.indexOf(path.path()), m_userPath.indexOf(path.path()));
-    m_userPath.removeAll(path.path());
-    delete m_users.take(path.path());
+    removeAccount(path.path());
     endRemoveRows();
 }
 

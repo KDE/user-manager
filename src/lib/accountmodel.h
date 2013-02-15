@@ -60,6 +60,7 @@ class AccountModel : public QAbstractListModel
 
     private:
         void addAccount(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
+        void removeAccount(const QString &path);
         bool checkForErrors(QDBusPendingReply <void> reply) const;
 
         QStringList m_userPath;
