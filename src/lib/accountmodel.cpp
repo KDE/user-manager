@@ -330,7 +330,9 @@ void AccountModel::Changed()
 void AccountModel::userLogged(uint uid, bool logged)
 {
     QString path = accountPathForUid(uid);
-    m_loggedAccounts[path] = logged;
+    int row = m_userPath.indexOf(path);
+
+    setData(index(row), logged, Logged);
 }
 
 const QString AccountModel::accountPathForUid(uint uid) const
