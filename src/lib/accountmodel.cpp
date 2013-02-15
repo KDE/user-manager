@@ -307,6 +307,9 @@ QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int 
 void AccountModel::UserAdded(const QDBusObjectPath& path)
 {
     Account* acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
+    if (acc->systemAccount()) {
+        return;
+    }
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
     int row = m_users.count()-1;
