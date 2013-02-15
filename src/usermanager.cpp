@@ -98,7 +98,6 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
 
 void UserManager::dataChanged(const QModelIndex& topLeft, const QModelIndex& topRight)
 {
-    qDebug() << "Data Changed: " << topLeft.row();
     if (m_selectionModel->currentIndex() != topLeft) {
         return;
     }
