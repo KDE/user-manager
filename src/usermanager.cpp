@@ -61,6 +61,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
     connect(m_ui->removeBtn, SIGNAL(clicked(bool)), SLOT(removeUser()));
     connect(m_widget, SIGNAL(changed(bool)), SIGNAL(changed(bool)));
+    connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex,QModelIndex)));
 }
 
 UserManager::~UserManager()
@@ -93,6 +94,16 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     }
 
     m_ui->removeBtn->setEnabled(enabled);
+}
+
+void UserManager::dataChanged(const QModelIndex& topLeft, const QModelIndex& topRight)
+{
+    qDebug() << "Data Changed: " << topLeft.row();
+    if (m_selectionModel->currentIndex() != topLeft) {
+        return;
+    }
+
+    currentChanged(topLeft, topLeft);
 }
 
 void UserManager::addNewUser()

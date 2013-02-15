@@ -46,6 +46,7 @@ class UserManager : public KCModule
 
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
+        void dataChanged(const QModelIndex &topLeft ,const QModelIndex &topRight);
         void addNewUser();
         void removeUser();
 
