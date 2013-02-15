@@ -94,10 +94,8 @@ void UserSession::addLoggedUser(const QDBusObjectPath& path)
 {
     Session *session = 0;
     session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
-    if (session->IsActive().value()) {
-        qDebug() << "Logged user: " << session->GetUnixUser().value();
-        m_loggedUsers.insert(path, session->GetUnixUser().value());
-    }
+    qDebug() << "Logged user: " << session->GetUnixUser().value();
+    m_loggedUsers.insert(path, session->GetUnixUser().value());
     delete session;
 }
 
