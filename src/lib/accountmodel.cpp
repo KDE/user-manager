@@ -196,6 +196,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             return true;
         case AccountModel::Logged:
             m_loggedAccounts[path] = value.toBool();
+            emit dataChanged(index, index);
             return true;
     }
 
