@@ -37,6 +37,7 @@ class UserSession : public QObject
         void gotNewSeat(const QDBusObjectPath &path);
 
         void addLoggedUser(const QDBusObjectPath &path);
+        void removeLoggedUser(const QDBusObjectPath &path);
 
     private:
         void addLoggedUsers(QList<QDBusObjectPath> list);

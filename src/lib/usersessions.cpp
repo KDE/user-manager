@@ -100,11 +100,20 @@ void UserSession::addLoggedUser(const QDBusObjectPath& path)
     delete session;
 }
 
+void UserSession::removeLoggedUser(const QDBusObjectPath& path)
+{
+    Session *session = 0;
+    session = new Session("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
+    m_loggedUsers.removeAll(session->GetUnixUser().value());
+    delete session;
+}
+
 void UserSession::addSeatWatch(QList< QDBusObjectPath > list)
 {
     Seat *seat = 0;
     Q_FOREACH(const QDBusObjectPath &path, list) {
         seat = new Seat("org.freedesktop.ConsoleKit", path.path(), QDBusConnection::systemBus(), this);
         connect(seat, SIGNAL(SessionAdded(QDBusObjectPath)), SLOT(addLoggedUser(QDBusObjectPath)));
+        connect(seat, SIGNAL(SessionRemoved(QDBusObjectPath)), SLOT(removeLoggedUser(QDBusObjectPath)));
     }
 }
