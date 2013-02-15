@@ -89,7 +89,8 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
         enabled = true;
     }
 
-    if (m_model->data(selected, AccountModel::Logged).isNull()) {
+    QVariant logged = m_model->data(selected, AccountModel::Logged);
+    if (logged.isNull() || logged.toBool()) {
         enabled = false;
     }
 
