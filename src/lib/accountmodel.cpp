@@ -312,7 +312,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
     }
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
-    int row = m_users.count()-1;
+    int row = rowCount() - 1;
     beginInsertRows(QModelIndex(), row, row);
     addAccountToCache(path.path(), acc, row);
     endInsertRows();
