@@ -1,0 +1,63 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+    <interface name="org.freedesktop.ConsoleKit.Manager">
+        <method name="GetSystemIdleSinceHint">
+            <arg name="iso8601_datetime" type="s" direction="out"/>
+        </method>
+        <method name="GetSystemIdleHint">
+            <arg name="idle_hint" type="b" direction="out"/>
+        </method>
+        <method name="GetSessionsForUser">
+            <arg name="uid" type="u" direction="in"/>
+            <arg name="sessions" type="ao" direction="out"/>
+        </method>
+        <method name="GetSessionsForUnixUser">
+            <arg name="uid" type="u" direction="in"/>
+            <arg name="sessions" type="ao" direction="out"/>
+        </method>
+        <method name="GetCurrentSession">
+            <arg name="ssid" type="o" direction="out"/>
+        </method>
+        <method name="GetSessionForUnixProcess">
+            <arg name="pid" type="u" direction="in"/>
+            <arg name="ssid" type="o" direction="out"/>
+        </method>
+        <method name="GetSessionForCookie">
+            <arg name="cookie" type="s" direction="in"/>
+            <arg name="ssid" type="o" direction="out"/>
+        </method>
+        <method name="GetSessions">
+            <arg name="sessions" type="ao" direction="out"/>
+        </method>
+        <method name="GetSeats">
+            <arg name="seats" type="ao" direction="out"/>
+        </method>
+        <method name="CloseSession">
+            <arg name="cookie" type="s" direction="in"/>
+            <arg name="result" type="b" direction="out"/>
+        </method>
+        <method name="OpenSession">
+            <arg name="cookie" type="s" direction="out"/>
+        </method>
+        <method name="CanStop">
+            <arg name="can_stop" type="b" direction="out"/>
+        </method>
+        <method name="Stop">
+        </method>
+        <method name="CanRestart">
+            <arg name="can_restart" type="b" direction="out"/>
+        </method>
+        <method name="Restart">
+        </method>
+        <signal name="SystemIdleHintChanged">
+            <arg type="b"/>
+        </signal>
+        <signal name="SeatRemoved">
+            <arg type="o"/>
+        </signal>
+        <signal name="SeatAdded">
+            <arg type="o"/>
+        </signal>
+    </interface>
+</node>

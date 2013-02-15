@@ -1,6 +1,7 @@
 set(user_manager_SRCS
    lib/accountmodel.cpp
    lib/modeltest.cpp
+   lib/usersessions.cpp
    usermanager.cpp
    accountinfo.cpp
 )
@@ -19,6 +20,16 @@ qt4_add_dbus_interface(user_manager_SRCS
 qt4_add_dbus_interface(user_manager_SRCS
     lib/org.freedesktop.Accounts.User.xml
     user_interface
+)
+
+qt4_add_dbus_interface(user_manager_SRCS
+    lib/org.freedesktop.ConsoleKit.xml
+    console_interface
+)
+
+qt4_add_dbus_interface(user_manager_SRCS
+    lib/org.freedesktop.ConsoleKit.Session.xml
+    session_interface
 )
 
 kde4_add_ui_files(user_manager_SRCS kcm.ui account.ui)
