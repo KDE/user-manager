@@ -88,6 +88,10 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
         enabled = true;
     }
 
+    if (m_model->data(selected, AccountModel::Logged).isNull()) {
+        enabled = false;
+    }
+
     m_ui->removeBtn->setEnabled(enabled);
 }
 

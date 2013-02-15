@@ -330,17 +330,13 @@ void AccountModel::Changed()
 void AccountModel::userLogged(uint uid)
 {
     QString path = accountPathForUid(uid);
-    if (m_loggedAccounts.contains(path)) {
-        m_loggedAccounts[path] = true;
-    }
+    m_loggedAccounts[path] = true;
 }
 
 void AccountModel::userLogout(uint uid)
 {
     QString path = accountPathForUid(uid);
-    if (m_loggedAccounts.contains(path)) {
-        m_loggedAccounts[path] = false;
-    }
+    m_loggedAccounts[path] = false;
 }
 
 const QString AccountModel::accountPathForUid(uint uid) const
