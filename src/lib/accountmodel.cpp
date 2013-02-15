@@ -283,8 +283,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
 
     int row = m_users.count()-1;
     beginInsertRows(QModelIndex(), row, row);
-    m_userPath.insert(row, path.path());
-    m_users.insert(path.path(), acc);
+    addAccount(path.path(), acc, row);
     endInsertRows();
 }
 
