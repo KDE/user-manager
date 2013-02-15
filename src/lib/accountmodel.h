@@ -63,7 +63,8 @@ class AccountModel : public QAbstractListModel
 
     private:
         const QString accountPathForUid(uint uid) const;
-        void addAccount(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
+        void addAccount(const QString &path);
+        void addAccountToCache(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
         void removeAccount(const QString &path);
         bool checkForErrors(QDBusPendingReply <void> reply) const;
 

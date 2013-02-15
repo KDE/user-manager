@@ -45,28 +45,13 @@ AccountModel::AccountModel(QObject* parent)
         return;
     }
 
-    uid_t user = getuid();
-    qulonglong uid = 0;
-    Account *acc = 0;
     QList<QDBusObjectPath> users = reply.value();
     Q_FOREACH(const QDBusObjectPath& path, users) {
-        acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
-        uid = acc->uid();
-        if (!acc->isValid() || acc->lastError().isValid() || acc->systemAccount()) {
-            continue;
-        }
-
-        qDebug() << "Adding user: " << path.path() << " " << acc->lastError().message();
-        if (uid == user) {
-            qDebug() << "Current user: " << uid;
-            addAccount(path.path(), acc, 0);
-            continue;
-        }
-
-        addAccount(path.path(), acc);
+        addAccount(path.path());
     }
 
-    addAccount("new-user", 0);
+    //Adding fake "new user" directly into cache
+    addAccountToCache("new-user", 0);
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
@@ -256,7 +241,24 @@ bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
     return true;
 }
 
-void AccountModel::addAccount(const QString& path, OrgFreedesktopAccountsUserInterface* acc, int pos)
+void AccountModel::addAccount(const QString& path)
+{
+    Account *acc = new Account("org.freedesktop.Accounts", path, QDBusConnection::systemBus(), this);
+    int uid = acc->uid();
+    if (!acc->isValid() || acc->lastError().isValid() || acc->systemAccount()) {
+        return;
+    }
+
+    connect(acc, SIGNAL(Changed()), SLOT(Changed()));
+    if (uid == getuid()) {
+        addAccountToCache(path, acc, 0);
+        return;
+    }
+
+    addAccountToCache(path, acc);
+}
+
+void AccountModel::addAccountToCache(const QString& path, OrgFreedesktopAccountsUserInterface* acc, int pos)
 {
     if (pos > -1) {
         m_userPath.insert(pos, path);
@@ -266,6 +268,7 @@ void AccountModel::addAccount(const QString& path, OrgFreedesktopAccountsUserInt
 
     m_users.insert(path, acc);
 }
+
 
 void AccountModel::removeAccount(const QString& path)
 {
@@ -307,7 +310,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
 
     int row = m_users.count()-1;
     beginInsertRows(QModelIndex(), row, row);
-    addAccount(path.path(), acc, row);
+    addAccountToCache(path.path(), acc, row);
     endInsertRows();
 }
 
