@@ -132,7 +132,10 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
         case AccountModel::AutomaticLogin:
             return acc->automaticLogin();
         case AccountModel::Logged:
-            return m_loggedAccounts[path];
+            if (m_loggedAccounts.contains(path)) {
+                return m_loggedAccounts[path];
+            }
+            return QVariant();
     }
 
     return QVariant();
@@ -262,7 +265,6 @@ void AccountModel::addAccount(const QString& path, OrgFreedesktopAccountsUserInt
     }
 
     m_users.insert(path, acc);
-    m_loggedAccounts.insert(path, false);
 }
 
 void AccountModel::removeAccount(const QString& path)
