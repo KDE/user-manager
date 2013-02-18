@@ -95,6 +95,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
     }
 
     m_ui->removeBtn->setEnabled(enabled);
+    m_selectionModel->setCurrentIndex(selected, QItemSelectionModel::SelectCurrent);
 }
 
 void UserManager::dataChanged(const QModelIndex& topLeft, const QModelIndex& topRight)
