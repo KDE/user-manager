@@ -320,6 +320,11 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
 
 void AccountModel::UserDeleted(const QDBusObjectPath& path)
 {
+    if (!m_userPath.contains(path.path())) {
+        qDebug() << "User Deleted but not found: " << path.path();
+        return;
+    }
+
     beginRemoveRows(QModelIndex(), m_userPath.indexOf(path.path()), m_userPath.indexOf(path.path()));
     removeAccount(path.path());
     endRemoveRows();
