@@ -17,6 +17,7 @@ Name[nl]=Gebruikersbeheerder
 Name[pt]=Gestor de Utilizadores
 Name[pt_BR]=Gerenciador de usuários
 Name[sk]=Správca užívateľov
+Name[sv]=Användarhanterare
 Name[uk]=Керування користувачами
 Name[x-test]=xxUser Managerxx
 
@@ -26,6 +27,7 @@ Comment[nl]=Systeemgebruikers toevoegen, verwijderen of bewerken
 Comment[pt]=Adicionar, remover ou editar utilizadores do sistema
 Comment[pt_BR]=Adiciona, remove ou edita usuários do sistema
 Comment[sk]=Pridať, odstrániť alebo upraviť systémových používateľov
+Comment[sv]=Lägg till, ta bort eller redigera systemanvändare
 Comment[uk]=Додавання, вилучення або зміна записів користувачів системи
 Comment[x-test]=xxAdd, remove or edit system usersxx
 
@@ -35,6 +37,7 @@ X-KDE-Keywords[nl]=gebruikers,systeem,beheer
 X-KDE-Keywords[pt]=utilizadores,sistema,administração
 X-KDE-Keywords[pt_BR]=usuários,sistema,administração
 X-KDE-Keywords[sk]=používatelia,systém,správa
+X-KDE-Keywords[sv]=användare,system,administration
 X-KDE-Keywords[uk]=users,system,administration,користувачі,система,адміністрування
 X-KDE-Keywords[x-test]=xxusers,system,administrationxx
 
