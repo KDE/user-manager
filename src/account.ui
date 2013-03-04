@@ -32,7 +32,7 @@
          <string/>
         </property>
         <property name="placeholderText">
-         <string>Jhon</string>
+         <string>John</string>
         </property>
        </widget>
       </item>
@@ -76,7 +76,7 @@
          <enum>QLineEdit::Normal</enum>
         </property>
         <property name="placeholderText">
-         <string>Jhon Doe</string>
+         <string>John Doe</string>
         </property>
        </widget>
       </item>
