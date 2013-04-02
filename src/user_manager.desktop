@@ -13,6 +13,7 @@ X-KDE-System-Settings-Parent-Category=system-administration
 Name=User Manager
 Name[cs]=Správce uživatelů
 Name[de]=Benutzerverwaltung
+Name[es]=Gestor de usuarios
 Name[fr]=Gestionnaire d'utilisateurs
 Name[mr]=वापरकर्ता व्यवस्थापक
 Name[nl]=Gebruikersbeheerder
@@ -27,6 +28,7 @@ Name[x-test]=xxUser Managerxx
 
 Comment=Add, remove or edit system users
 Comment[de]=Systembenutzer hinzufügen, entfernen oder bearbeiten
+Comment[es]=Añadir, eliminar y editar usuarios del sistema
 Comment[fr]=Ajoute, supprime ou modifie des utilisateurs système
 Comment[mr]=प्रणाली वापरकर्ते जोडा, काढून टाका किंवा संयोजीत करा
 Comment[nl]=Systeemgebruikers toevoegen, verwijderen of bewerken
@@ -41,6 +43,7 @@ Comment[x-test]=xxAdd, remove or edit system usersxx
 
 X-KDE-Keywords=users,system,administration
 X-KDE-Keywords[de]=Benutzer,System,Verwaltung
+X-KDE-Keywords[es]=usuarios,sistema,administración
 X-KDE-Keywords[fr]=utilisateurs,système,administration
 X-KDE-Keywords[mr]=वापरकर्ते, प्रणाली, व्यवस्थापन
 X-KDE-Keywords[nl]=gebruikers,systeem,beheer
