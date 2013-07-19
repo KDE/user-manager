@@ -45,4 +45,4 @@ target_link_libraries(user_manager ${KDE4_KDEUI_LIBS})
 
 install(TARGETS user_manager DESTINATION ${PLUGIN_INSTALL_DIR})
 
-install(PROGRAMS user_manager.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES user_manager.desktop DESTINATION ${SERVICES_INSTALL_DIR})
