@@ -99,7 +99,7 @@
          <string/>
         </property>
         <property name="placeholderText">
-         <string>jhon@doe.es</string>
+         <string>john.doe@example.com</string>
         </property>
        </widget>
       </item>
