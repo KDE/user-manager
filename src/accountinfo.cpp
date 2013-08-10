@@ -189,5 +189,6 @@ void AccountInfo::avatarCreated(KJob* job)
 
 void AccountInfo::clearAvatar()
 {
-
+    m_info->face->setIcon(QIcon::fromTheme("user-identity").pixmap(48, 48));
+    m_infoToSave.insert(AccountModel::Face, QString());
 }
