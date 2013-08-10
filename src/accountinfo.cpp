@@ -21,6 +21,8 @@
 #include "lib/accountmodel.h"
 
 #include <QtCore/QDebug>
+#include <QtGui/QMenu>
+#include <QtGui/QToolButton>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -33,6 +35,22 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     connect(m_info->email, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->administrator, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
+
+    m_info->face->setPopupMode(QToolButton::InstantPopup);
+    QMenu* menu = new QMenu(this);
+
+    QAction *openAvatar = new QAction(i18n("Load from file..."), this);
+    openAvatar->setIcon(QIcon::fromTheme(QLatin1String("document-open-folder")));
+    connect(openAvatar, SIGNAL(triggered(bool)), SLOT(openAvatarSlot()));
+
+    QAction *editClear = new QAction(i18n("Clear Avatar"), this);
+    editClear->setIcon(QIcon::fromTheme(QLatin1String("edit-clear")));
+    connect(editClear, SIGNAL(triggered(bool)), SLOT(clearAvatar()));
+
+    menu->addAction(openAvatar);
+    menu->addAction(editClear);
+
+    m_info->face->setMenu(menu);
 }
 
 AccountInfo::~AccountInfo()
@@ -129,4 +147,46 @@ void AccountInfo::hasChanged()
     }
 
     Q_EMIT changed(!m_infoToSave.isEmpty());
+}
+
+#include "createavatarjob.h"
+
+#include <KFileDialog>
+#include <KImageIO>
+#include <KImageFilePreview>
+#include <KPixmapRegionSelectorDialog>
+#include <KIO/Job>
+#include <kio/copyjob.h>
+#include <KTemporaryFile>
+void AccountInfo::openAvatarSlot()
+{
+
+    KFileDialog dlg(QDir::homePath(), KImageIO::pattern(KImageIO::Reading), this);
+
+    dlg.setOperationMode(KFileDialog::Opening);
+    dlg.setCaption(i18nc("@title:window", "Choose Image"));
+    dlg.setMode(KFile::File);
+
+    KImageFilePreview *imagePreviewer = new KImageFilePreview(&dlg);
+    dlg.setPreviewWidget(imagePreviewer);
+
+    if (dlg.exec() != QDialog::Accepted) {
+        return;
+    }
+
+    KUrl url(dlg.selectedFile());
+    CreateAvatarJob *job = new CreateAvatarJob(this);
+    connect(job, SIGNAL(finished(KJob*)), SLOT(avatarCreated(KJob*)));
+    job->setUrl(url);
+    job->start();
+}
+
+void AccountInfo::avatarCreated(KJob* job)
+{
+    qDebug() << "Avatar created";
+}
+
+void AccountInfo::clearAvatar()
+{
+
 }

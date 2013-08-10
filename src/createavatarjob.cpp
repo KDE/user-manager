@@ -16,46 +16,57 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
-#ifndef ACCOUNT_INFO_WIDGET
-#define ACCOUNT_INFO_WIDGET
+#include "createavatarjob.h"
 
-#include <QtCore/QModelIndex>
+#include <QDebug>
+#include <QDesktopServices>
+#include <kio/copyjob.h>
+#include <KTemporaryFile>
+#include <KPixmapRegionSelectorDialog>
 
-#include <QtGui/QWidget>
-#include "lib/accountmodel.h"
-
-class KJob;
-namespace Ui {
-    class AccountInfo;
-}
-class AccountModel;
-class AccountInfo : public QWidget
+CreateAvatarJob::CreateAvatarJob(QObject* parent) : KJob(parent)
 {
-    Q_OBJECT
-    public:
-        explicit AccountInfo(AccountModel* model, QWidget* parent = 0, Qt::WindowFlags f = 0);
-        virtual ~AccountInfo();
+}
 
-        void setModelIndex(const QModelIndex &index);
-        QModelIndex modelIndex() const;
+void CreateAvatarJob::setUrl(const KUrl& url)
+{
+    m_url = url;
+}
 
-        void loadFromModel();
-        bool save();
+void CreateAvatarJob::start()
+{
+    QMetaObject::invokeMethod(this, "doStart", Qt::QueuedConnection);
+}
 
-    public Q_SLOTS:
-        void hasChanged();
-        void openAvatarSlot();
-        void clearAvatar();
-        void avatarCreated(KJob* job);
+void CreateAvatarJob::doStart()
+{
+    qDebug() << "Starting: " << m_url;
 
-    Q_SIGNALS:
-        void changed(bool changed);
+    KTemporaryFile file;
+    file.open();
+    m_tmpFile = file.fileName();
+    file.remove();
 
-    private:
-        Ui::AccountInfo * m_info;
-        QModelIndex m_index;
-        AccountModel* m_model;
-        QMap<AccountModel::Role, QVariant> m_infoToSave;
-};
+    qDebug() << "From: " << m_url << "to: " << m_tmpFile;
+    KIO::CopyJob* job = KIO::copy(m_url, KUrl(m_tmpFile), KIO::HideProgressInfo);
+    connect(job, SIGNAL(finished(KJob*)), SLOT(copyDone(KJob*)));
+    job->setUiDelegate(0);
+    job->start();
+}
 
-#endif //ACCOUNT_INFO_WIDGET
+void CreateAvatarJob::copyDone(KJob* job)
+{
+    if (job->error()) {
+        qDebug() << "Error:" << job->errorString();
+        setError(job->error());
+        emitResult();
+        return;
+    }
+
+    QImage face = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 96, 96);
+    QFile::remove(m_tmpFile);
+    QString faceFile = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+    faceFile.append(QLatin1String("/.face"));
+    qDebug() << "Created " << faceFile << face.save(faceFile, "PNG", 10);
+    emitResult();
+}

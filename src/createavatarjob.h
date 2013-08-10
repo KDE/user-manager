@@ -16,46 +16,28 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
-#ifndef ACCOUNT_INFO_WIDGET
-#define ACCOUNT_INFO_WIDGET
+#ifndef CREATE_AVATAR_JOB_H
+#define CREATE_AVATAR_JOB_H
 
-#include <QtCore/QModelIndex>
+#include <kjob.h>
+#include <KUrl>
 
-#include <QtGui/QWidget>
-#include "lib/accountmodel.h"
-
-class KJob;
-namespace Ui {
-    class AccountInfo;
-}
-class AccountModel;
-class AccountInfo : public QWidget
+class CreateAvatarJob : public KJob
 {
-    Q_OBJECT
+     Q_OBJECT
     public:
-        explicit AccountInfo(AccountModel* model, QWidget* parent = 0, Qt::WindowFlags f = 0);
-        virtual ~AccountInfo();
+        explicit CreateAvatarJob(QObject* parent = 0);
 
-        void setModelIndex(const QModelIndex &index);
-        QModelIndex modelIndex() const;
+        virtual void start();
+        void setUrl(const KUrl &url);
 
-        void loadFromModel();
-        bool save();
-
-    public Q_SLOTS:
-        void hasChanged();
-        void openAvatarSlot();
-        void clearAvatar();
-        void avatarCreated(KJob* job);
-
-    Q_SIGNALS:
-        void changed(bool changed);
+    private Q_SLOTS:
+        void doStart();
+        void copyDone(KJob* job);
 
     private:
-        Ui::AccountInfo * m_info;
-        QModelIndex m_index;
-        AccountModel* m_model;
-        QMap<AccountModel::Role, QVariant> m_infoToSave;
+        KUrl m_url;
+        QString m_tmpFile;
 };
 
-#endif //ACCOUNT_INFO_WIDGET
+#endif //CREATE_AVATAR_JOB_H
