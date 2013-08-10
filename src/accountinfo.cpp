@@ -184,6 +184,7 @@ void AccountInfo::openAvatarSlot()
 void AccountInfo::avatarCreated(KJob* job)
 {
     qDebug() << "Avatar created";
+    m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
 }
 
 void AccountInfo::clearAvatar()
