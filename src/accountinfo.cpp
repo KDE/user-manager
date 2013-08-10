@@ -140,6 +140,7 @@ bool AccountInfo::save()
         moveJob->start();
     }
 
+    m_infoToSave.clear();
     return true;
 }
 
