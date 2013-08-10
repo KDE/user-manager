@@ -24,6 +24,7 @@
 #include <QtCore/QDebug>
 #include <QtGui/QMenu>
 #include <QtGui/QToolButton>
+#include <QtGui/QDesktopServices>
 
 #include <KImageIO>
 #include <KFileDialog>
@@ -127,34 +128,50 @@ bool AccountInfo::save()
     if (!m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
         return false;
     }
+    if (m_infoToSave.contains(AccountModel::Face)) {
+        const QString path = m_infoToSave[AccountModel::Face].toString();
+        QString faceFile = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+        faceFile.append(QLatin1String("/.face"));
+
+        QFile::remove(faceFile);
+        KIO::CopyJob* moveJob = KIO::move(KUrl(path), KUrl(faceFile), KIO::HideProgressInfo);
+        connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged()));
+        moveJob->setUiDelegate(0);
+        moveJob->start();
+    }
 
     return true;
 }
 
 void AccountInfo::hasChanged()
 {
-    m_infoToSave.clear();
 
+    QMap<AccountModel::Role, QVariant> infoToSave;
     if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
-        m_infoToSave.insert(AccountModel::RealName, m_info->realName->text());
+        infoToSave.insert(AccountModel::RealName, m_info->realName->text());
     }
 
     if (m_info->username->text() != m_model->data(m_index, AccountModel::Username).toString()) {
-        m_infoToSave.insert(AccountModel::Username, m_info->username->text());
+        infoToSave.insert(AccountModel::Username, m_info->username->text());
     }
 
     if (m_info->email->text() != m_model->data(m_index, AccountModel::Email).toString()) {
-        m_infoToSave.insert(AccountModel::Email, m_info->email->text());
+        infoToSave.insert(AccountModel::Email, m_info->email->text());
     }
 
     if (m_info->administrator->isChecked() != m_model->data(m_index, AccountModel::Administrator).toBool()) {
-        m_infoToSave.insert(AccountModel::Administrator, m_info->administrator->isChecked());
+        infoToSave.insert(AccountModel::Administrator, m_info->administrator->isChecked());
     }
 
     if (m_info->automaticLogin->isChecked() != m_model->data(m_index, AccountModel::AutomaticLogin).toBool()) {
-        m_infoToSave.insert(AccountModel::AutomaticLogin, m_info->automaticLogin->isChecked());
+        infoToSave.insert(AccountModel::AutomaticLogin, m_info->automaticLogin->isChecked());
     }
 
+    if (m_infoToSave.contains(AccountModel::Face)) {
+        infoToSave[AccountModel::Face] = m_infoToSave[AccountModel::Face];
+    }
+
+    m_infoToSave = infoToSave;
     Q_EMIT changed(!m_infoToSave.isEmpty());
 }
 
@@ -184,6 +201,15 @@ void AccountInfo::openAvatarSlot()
 void AccountInfo::avatarCreated(KJob* job)
 {
     qDebug() << "Avatar created";
+    CreateAvatarJob *aJob = qobject_cast<CreateAvatarJob*>(job);
+    m_info->face->setIcon(QIcon(aJob->avatarPath()));
+    m_infoToSave.insert(AccountModel::Face, aJob->avatarPath());
+    Q_EMIT changed(true);
+}
+
+void AccountInfo::avatarModelChanged()
+{
+    m_model->setData(m_index, QVariant(), AccountModel::Face);
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
 }
 

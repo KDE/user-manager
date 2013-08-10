@@ -47,6 +47,7 @@ class AccountInfo : public QWidget
         void openAvatarSlot();
         void clearAvatar();
         void avatarCreated(KJob* job);
+        void avatarModelChanged();
 
     Q_SIGNALS:
         void changed(bool changed);
