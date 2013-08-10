@@ -63,7 +63,7 @@ void CreateAvatarJob::copyDone(KJob* job)
         return;
     }
 
-    QImage face = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 96, 96);
+    QImage face = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 192, 192);
     QFile::remove(m_tmpFile);
     QString faceFile = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
     faceFile.append(QLatin1String("/.face"));
