@@ -33,6 +33,11 @@ void CreateAvatarJob::setUrl(const KUrl& url)
     m_url = url;
 }
 
+QString CreateAvatarJob::avatarPath() const
+{
+    return m_tmpFile;
+}
+
 void CreateAvatarJob::start()
 {
     QMetaObject::invokeMethod(this, "doStart", Qt::QueuedConnection);

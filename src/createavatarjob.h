@@ -30,6 +30,7 @@ class CreateAvatarJob : public KJob
 
         virtual void start();
         void setUrl(const KUrl &url);
+        QString avatarPath() const;
 
     private Q_SLOTS:
         void doStart();
