@@ -19,7 +19,6 @@
 #include "createavatarjob.h"
 
 #include <QDebug>
-#include <QDesktopServices>
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
 #include <KPixmapRegionSelectorDialog>
@@ -69,9 +68,6 @@ void CreateAvatarJob::copyDone(KJob* job)
     }
 
     QImage face = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 192, 192);
-    QFile::remove(m_tmpFile);
-    QString faceFile = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
-    faceFile.append(QLatin1String("/.face"));
-    qDebug() << "Created " << faceFile << face.save(faceFile, "PNG", 10);
+    face.save(m_tmpFile, "PNG", 10);
     emitResult();
 }
