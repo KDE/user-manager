@@ -18,11 +18,20 @@
 
 #include "accountinfo.h"
 #include "ui_account.h"
+#include "createavatarjob.h"
 #include "lib/accountmodel.h"
 
 #include <QtCore/QDebug>
 #include <QtGui/QMenu>
 #include <QtGui/QToolButton>
+
+#include <KImageIO>
+#include <KFileDialog>
+#include <KImageFilePreview>
+#include <KPixmapRegionSelectorDialog>
+#include <KIO/Job>
+#include <kio/copyjob.h>
+#include <KTemporaryFile>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -149,15 +158,6 @@ void AccountInfo::hasChanged()
     Q_EMIT changed(!m_infoToSave.isEmpty());
 }
 
-#include "createavatarjob.h"
-
-#include <KFileDialog>
-#include <KImageIO>
-#include <KImageFilePreview>
-#include <KPixmapRegionSelectorDialog>
-#include <KIO/Job>
-#include <kio/copyjob.h>
-#include <KTemporaryFile>
 void AccountInfo::openAvatarSlot()
 {
 
