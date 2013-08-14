@@ -24,6 +24,8 @@
 #include "lib/accountmodel.h"
 #include "lib/modeltest.h"
 
+#include <pwquality.h>
+
 #include <QtCore/QDebug>
 #include <QtGui/QListView>
 #include <QtGui/QVBoxLayout>

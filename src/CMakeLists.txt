@@ -42,7 +42,7 @@ kde4_add_ui_files(user_manager_SRCS kcm.ui account.ui)
 
 kde4_add_plugin(user_manager ${user_manager_SRCS})
 
-target_link_libraries(user_manager ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS})
+target_link_libraries(user_manager ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} ${PWQUALITY_LIBRARY})
 
 install(TARGETS user_manager DESTINATION ${PLUGIN_INSTALL_DIR})
 
