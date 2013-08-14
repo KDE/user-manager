@@ -23,6 +23,7 @@
 
 #include <kdialog.h>
 
+class QTimer;
 class PasswordDialog : public KDialog, private Ui::PasswordDlg
 {
     Q_OBJECT
@@ -33,6 +34,10 @@ class PasswordDialog : public KDialog, private Ui::PasswordDlg
 
     private Q_SLOTS:
         void passwordChanged(const QString &text);
+        void checkPassword();
+
+    private:
+        QTimer *m_timer;
 };
 
 #endif //PASSWORD_DIALOG_H

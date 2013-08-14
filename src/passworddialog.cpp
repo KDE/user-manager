@@ -18,16 +18,26 @@
 
 #include "passworddialog.h"
 
+#include <KDebug>
+#include <QTimer>
 #include <KPushButton>
-PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags): KDialog(parent, flags)
+#include <klocalizedstring.h>
+
+PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
+    : KDialog(parent, flags)
+    , m_timer(new QTimer(this))
 {
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setMainWidget(widget);
     button(KDialog::Ok)->setEnabled(false);
-    password->setFocus();
+    passwordEdit->setFocus();
+    m_timer->setInterval(400);
+    m_timer->setSingleShot(true);
 
-    connect(password, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
+    connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
+    connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
+    connect(verifyEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
 }
 
 PasswordDialog::~PasswordDialog()
@@ -37,5 +47,26 @@ PasswordDialog::~PasswordDialog()
 
 void PasswordDialog::passwordChanged(const QString& text)
 {
+    m_timer->start();
+}
 
+void PasswordDialog::checkPassword()
+{
+    kDebug() << "Checking password";
+    strenghtLbl->clear();
+
+    if (verifyEdit->text().isEmpty()) {
+        return; //No verification, do nothing
+    }
+
+    const QString password = passwordEdit->text();
+    if (password != verifyEdit->text()) {
+        strenghtLbl->setText(i18n("Passwords are not equal"));
+        return;
+    }
+
+    //Check if it is valid
+    //Check the strengh
+
+    button(KDialog::Ok)->setEnabled(true);
 }
