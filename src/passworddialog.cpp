@@ -48,12 +48,12 @@ PasswordDialog::~PasswordDialog()
 void PasswordDialog::passwordChanged(const QString& text)
 {
     m_timer->start();
+    strenghtLbl->clear();
 }
 
 void PasswordDialog::checkPassword()
 {
     kDebug() << "Checking password";
-    strenghtLbl->clear();
 
     if (verifyEdit->text().isEmpty()) {
         return; //No verification, do nothing
