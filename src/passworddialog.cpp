@@ -18,15 +18,24 @@
 
 #include "passworddialog.h"
 
+#include <KPushButton>
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags): KDialog(parent, flags)
 {
     QWidget *widget = new QWidget(this);
     setupUi(widget);
-
     setMainWidget(widget);
+    button(KDialog::Ok)->setEnabled(false);
+    password->setFocus();
+
+    connect(password, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
 }
 
 PasswordDialog::~PasswordDialog()
+{
+
+}
+
+void PasswordDialog::passwordChanged(const QString& text)
 {
 
 }

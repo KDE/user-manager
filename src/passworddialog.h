@@ -30,6 +30,9 @@ class PasswordDialog : public KDialog, private Ui::PasswordDlg
     public:
         explicit PasswordDialog(QWidget* parent = 0, Qt::WindowFlags flags = 0);
         virtual ~PasswordDialog();
+
+    private Q_SLOTS:
+        void passwordChanged(const QString &text);
 };
 
 #endif //PASSWORD_DIALOG_H
