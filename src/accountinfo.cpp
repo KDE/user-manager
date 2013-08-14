@@ -18,6 +18,7 @@
 
 #include "accountinfo.h"
 #include "ui_account.h"
+#include "ui_password.h"
 #include "createavatarjob.h"
 #include "lib/accountmodel.h"
 
@@ -45,6 +46,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     connect(m_info->email, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->administrator, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
+    connect(m_info->changePassword, SIGNAL(clicked(bool)), SLOT(changePassword()));
 
     m_info->face->setPopupMode(QToolButton::InstantPopup);
     QMenu* menu = new QMenu(this);
@@ -178,7 +180,6 @@ void AccountInfo::hasChanged()
 
 void AccountInfo::openAvatarSlot()
 {
-
     KFileDialog dlg(QDir::homePath(), KImageIO::pattern(KImageIO::Reading), this);
 
     dlg.setOperationMode(KFileDialog::Opening);
@@ -219,4 +220,15 @@ void AccountInfo::clearAvatar()
     m_info->face->setIcon(QIcon::fromTheme("user-identity").pixmap(48, 48));
     m_infoToSave.insert(AccountModel::Face, QString());
     Q_EMIT changed(true);
+}
+
+void AccountInfo::changePassword()
+{
+    Ui::PasswordDlg *passDialog = new Ui::PasswordDlg();
+    QWidget *widget = new QWidget(this);
+    passDialog->setupUi(widget);
+
+    KDialog *dialog = new KDialog(this);
+    dialog->setMainWidget(widget);
+    dialog->show();
 }

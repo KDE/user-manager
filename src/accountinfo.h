@@ -48,6 +48,7 @@ class AccountInfo : public QWidget
         void clearAvatar();
         void avatarCreated(KJob* job);
         void avatarModelChanged();
+        void changePassword();
 
     Q_SIGNALS:
         void changed(bool changed);
