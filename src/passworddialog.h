@@ -32,11 +32,14 @@ class PasswordDialog : public KDialog, private Ui::PasswordDlg
         explicit PasswordDialog(QWidget* parent = 0, Qt::WindowFlags flags = 0);
         virtual ~PasswordDialog();
 
+        void setUsername(const QByteArray &username);
+
     private Q_SLOTS:
         void passwordChanged(const QString &text);
         void checkPassword();
 
     private:
+        QByteArray m_username;
         QTimer *m_timer;
 };
 

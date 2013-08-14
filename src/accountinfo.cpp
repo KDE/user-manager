@@ -225,5 +225,6 @@ void AccountInfo::clearAvatar()
 void AccountInfo::changePassword()
 {
     PasswordDialog *dialog = new PasswordDialog(this);
+    dialog->setUsername(m_model->data(m_index, AccountModel::Username).toByteArray());
     dialog->show();
 }

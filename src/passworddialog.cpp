@@ -18,6 +18,8 @@
 
 #include "passworddialog.h"
 
+#include <pwquality.h>
+
 #include <KDebug>
 #include <QTimer>
 #include <KPushButton>
@@ -51,6 +53,11 @@ void PasswordDialog::passwordChanged(const QString& text)
     strenghtLbl->clear();
 }
 
+void PasswordDialog::setUsername(const QByteArray& username)
+{
+    m_username = username;
+}
+
 void PasswordDialog::checkPassword()
 {
     kDebug() << "Checking password";
@@ -65,8 +72,16 @@ void PasswordDialog::checkPassword()
         return;
     }
 
-    //Check if it is valid
-    //Check the strengh
+    void *auxerror;
+    pwquality_settings_t* settings = pwquality_default_settings ();
+    pwquality_set_int_value (settings, PWQ_SETTING_MAX_SEQUENCE, 4);
+    if (pwquality_read_config (settings, NULL, &auxerror) < 0) {
+        kWarning() << "failed to read pwquality configuration: %s\n" << (char*)auxerror;
+    }
+
+    int quality = pwquality_check (settings, password.toAscii(), NULL, m_username, &auxerror);
+
+    if (quality < 0) return;
 
     button(KDialog::Ok)->setEnabled(true);
 }
