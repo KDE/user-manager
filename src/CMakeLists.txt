@@ -5,6 +5,7 @@ set(user_manager_SRCS
    usermanager.cpp
    accountinfo.cpp
    createavatarjob.cpp
+   passworddialog.cpp
 )
 
 set_source_files_properties(lib/org.freedesktop.Accounts.xml

@@ -18,8 +18,8 @@
 
 #include "accountinfo.h"
 #include "ui_account.h"
-#include "ui_password.h"
 #include "createavatarjob.h"
+#include "passworddialog.h"
 #include "lib/accountmodel.h"
 
 #include <QtCore/QDebug>
@@ -224,11 +224,6 @@ void AccountInfo::clearAvatar()
 
 void AccountInfo::changePassword()
 {
-    Ui::PasswordDlg *passDialog = new Ui::PasswordDlg();
-    QWidget *widget = new QWidget(this);
-    passDialog->setupUi(widget);
-
-    KDialog *dialog = new KDialog(this);
-    dialog->setMainWidget(widget);
+    PasswordDialog *dialog = new PasswordDialog(this);
     dialog->show();
 }
