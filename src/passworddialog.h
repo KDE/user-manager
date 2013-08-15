@@ -41,6 +41,7 @@ class PasswordDialog : public KDialog, private Ui::PasswordDlg
         void checkPassword();
 
     private:
+        QString errorString(int error);
         QPalette m_negative;
         QPalette m_neutral;
         QPalette m_positive;

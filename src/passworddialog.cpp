@@ -102,7 +102,7 @@ void PasswordDialog::checkPassword()
     QPalette palette;
     if (quality < 0) {
         palette  = m_negative;
-        strenght = i18n("Please, choose another password");
+        strenght = errorString(quality);
     } else if (quality < 25) {
         palette = m_neutral;
         strenght = i18n("The password is Weak");
@@ -120,4 +120,68 @@ void PasswordDialog::checkPassword()
     strenghtLbl->setPalette(palette);
     strenghtLbl->setText(strenght);
     button(KDialog::Ok)->setEnabled(true);
+}
+
+QString PasswordDialog::errorString(int error)
+{
+    const QByteArray comment("Error returned when the password is invalid");
+    switch(error) {
+        case PWQ_ERROR_MIN_LENGTH:
+        {
+            int length;
+            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_MIN_LENGTH, &length);
+            return i18ncp(comment
+                ,"The password should be at least %1 character"
+                ,"The password should be at least %1 characters", length);
+        }
+        case PWQ_ERROR_MIN_UPPERS:
+        {
+            int amount;
+            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_UP_CREDIT, &amount);
+            return i18ncp(comment
+                ,"The password should contain at least %1 uppercase letter"
+                ,"The password should contain at least %1 uppercase letters", amount);
+        }
+        case PWQ_ERROR_MIN_LOWERS:
+        {
+            int amount;
+            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_LOW_CREDIT, &amount);
+            return i18ncp(comment
+                ,"The password should contain at least %1 lowercase letter"
+                ,"The password should contain at least %1 lowercase letters", amount);
+        }
+        case PWQ_ERROR_USER_CHECK:
+            return i18nc(comment, "Your username should not be part of your password");
+        case PWQ_ERROR_GECOS_CHECK:
+            return i18nc(comment, "Your name should not be part of your password");
+        case PWQ_ERROR_MIN_DIGITS:
+        {
+            int amount;
+            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_DIG_CREDIT, &amount);
+            return i18ncp(comment
+                ,"The password should contain at least %1 number"
+                ,"The password should contain at least %1 numbers", amount);
+        }
+        case PWQ_ERROR_MIN_OTHERS:
+        {
+            int amount;
+            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_OTH_CREDIT, &amount);
+            return i18ncp(comment
+                ,"The password should contain at least %1 special character (like punctuation)"
+                ,"The password should contain at least %1 special characters (like punctuation)", amount);
+        }
+        case PWQ_ERROR_MIN_CLASSES:
+            return i18nc(comment, "The password should contain a mixture of letters, numbers and punctuation");
+        case PWQ_ERROR_MAX_CONSECUTIVE:
+            return i18nc(comment, "The password should not contain too many repeated characters");
+        case PWQ_ERROR_MAX_CLASS_REPEAT:
+            return i18nc(comment, "The password should be more varied in letters, numbers and punctuation");
+        case PWQ_ERROR_MAX_SEQUENCE:
+            return i18nc(comment, "The password should not contain sequences like 1234 or abcd");
+        case PWQ_ERROR_CRACKLIB_CHECK:
+            return i18nc(comment, "This password can't be used, it is too common");
+    };
+
+    return i18nc("Returned when a more specific error message has not been found"
+            , "Please, choose another password");
 }
