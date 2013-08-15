@@ -97,15 +97,17 @@ void PasswordDialog::checkPassword()
     int quality = pwquality_check (m_pwSettings, password.toAscii(), NULL, m_username, NULL);
 
     kDebug() << "Quality: " << quality;
-    if (quality < 0) return;
 
     QString strenght;
     QPalette palette;
-    if (quality < 25) {
+    if (quality < 0) {
+        palette  = m_negative;
+        strenght = i18n("Please, choose another password");
+    } else if (quality < 25) {
         palette = m_neutral;
         strenght = i18n("The password is Weak");
     } else if (quality < 50) {
-        palette = m_neutral;
+        palette = m_positive;
         strenght = i18n("The password is Good");
     } else if (quality < 75) {
         palette = m_positive;
