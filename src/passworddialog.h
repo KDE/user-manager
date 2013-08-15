@@ -21,6 +21,8 @@
 
 #include "ui_password.h"
 
+#include <pwquality.h>
+
 #include <kdialog.h>
 
 class QTimer;
@@ -39,6 +41,7 @@ class PasswordDialog : public KDialog, private Ui::PasswordDlg
         void checkPassword();
 
     private:
+        pwquality_settings_t *m_pwSettings;
         QByteArray m_username;
         QTimer *m_timer;
 };

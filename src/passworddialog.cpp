@@ -18,8 +18,6 @@
 
 #include "passworddialog.h"
 
-#include <pwquality.h>
-
 #include <KDebug>
 #include <QTimer>
 #include <KPushButton>
@@ -28,6 +26,7 @@
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     : KDialog(parent, flags)
     , m_timer(new QTimer(this))
+    , m_pwSettings(0)
 {
     QWidget *widget = new QWidget(this);
     setupUi(widget);
@@ -73,15 +72,31 @@ void PasswordDialog::checkPassword()
     }
 
     void *auxerror;
-    pwquality_settings_t* settings = pwquality_default_settings ();
-    pwquality_set_int_value (settings, PWQ_SETTING_MAX_SEQUENCE, 4);
-    if (pwquality_read_config (settings, NULL, &auxerror) < 0) {
-        kWarning() << "failed to read pwquality configuration: %s\n" << (char*)auxerror;
+
+    if (!m_pwSettings) {
+        m_pwSettings = pwquality_default_settings ();
+        pwquality_set_int_value (m_pwSettings, PWQ_SETTING_MAX_SEQUENCE, 4);
+        if (pwquality_read_config (m_pwSettings, NULL, &auxerror) < 0) {
+            kWarning() << "failed to read pwquality configuration: %s\n" << (char*)auxerror;
+        }
     }
 
-    int quality = pwquality_check (settings, password.toAscii(), NULL, m_username, &auxerror);
+    int quality = pwquality_check (m_pwSettings, password.toAscii(), NULL, m_username, &auxerror);
 
     if (quality < 0) return;
 
+    kDebug() << quality;
+    QString strenght;
+    if (quality < 25) {
+        strenght = i18n("Poor");
+    } else if (quality < 50) {
+        strenght = i18n("Fair");
+    } else if (quality < 75) {
+        strenght = i18n("Good");
+    } else if (quality < 101) {
+        strenght = i18n("Excellent");
+    }
+
+    strenghtLbl->setText(strenght);
     button(KDialog::Ok)->setEnabled(true);
 }
