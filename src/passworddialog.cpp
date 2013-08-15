@@ -30,6 +30,8 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     , m_timer(new QTimer(this))
     , m_pwSettings(0)
 {
+    setWindowTitle(i18nc("Title for change password dialog", "New Password"));
+
     QWidget *widget = new QWidget(this);
     setupUi(widget);
     setMainWidget(widget);
