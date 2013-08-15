@@ -62,6 +62,7 @@ void PasswordDialog::checkPassword()
     kDebug() << "Checking password";
 
     if (verifyEdit->text().isEmpty()) {
+        kDebug() << "Verify password is empty";
         return; //No verification, do nothing
     }
 
@@ -76,14 +77,15 @@ void PasswordDialog::checkPassword()
         pwquality_set_int_value (m_pwSettings, PWQ_SETTING_MAX_SEQUENCE, 4);
         if (pwquality_read_config (m_pwSettings, NULL, NULL) < 0) {
             kWarning() << "failed to read pwquality configuration\n";
+            return;
         }
     }
 
     int quality = pwquality_check (m_pwSettings, password.toAscii(), NULL, m_username, NULL);
 
+    kDebug() << "Quality: " << quality;
     if (quality < 0) return;
 
-    kDebug() << quality;
     QString strenght;
     if (quality < 25) {
         strenght = i18n("Poor");
