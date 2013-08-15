@@ -43,7 +43,7 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
 
 PasswordDialog::~PasswordDialog()
 {
-
+    pwquality_free_settings(m_pwSettings);
 }
 
 void PasswordDialog::passwordChanged(const QString& text)
@@ -71,17 +71,15 @@ void PasswordDialog::checkPassword()
         return;
     }
 
-    void *auxerror;
-
     if (!m_pwSettings) {
         m_pwSettings = pwquality_default_settings ();
         pwquality_set_int_value (m_pwSettings, PWQ_SETTING_MAX_SEQUENCE, 4);
-        if (pwquality_read_config (m_pwSettings, NULL, &auxerror) < 0) {
-            kWarning() << "failed to read pwquality configuration: %s\n" << (char*)auxerror;
+        if (pwquality_read_config (m_pwSettings, NULL, NULL) < 0) {
+            kWarning() << "failed to read pwquality configuration\n";
         }
     }
 
-    int quality = pwquality_check (m_pwSettings, password.toAscii(), NULL, m_username, &auxerror);
+    int quality = pwquality_check (m_pwSettings, password.toAscii(), NULL, m_username, NULL);
 
     if (quality < 0) return;
 
