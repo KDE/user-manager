@@ -23,6 +23,7 @@
 #include <KPushButton>
 #include <klocalizedstring.h>
 #include <KGlobalSettings>
+#include <KColorScheme>
 
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     : KDialog(parent, flags)
@@ -39,6 +40,13 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
 
     int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight();
     setMinimumWidth(size * 50);
+
+    m_negative = strenghtLbl->palette();
+    m_neutral = strenghtLbl->palette();
+    m_positive = strenghtLbl->palette();
+    KColorScheme::adjustForeground(m_negative, KColorScheme::NegativeText, strenghtLbl->foregroundRole());
+    KColorScheme::adjustForeground(m_neutral, KColorScheme::NeutralText, strenghtLbl->foregroundRole());
+    KColorScheme::adjustForeground(m_positive, KColorScheme::PositiveText, strenghtLbl->foregroundRole());
 
     connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
     connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
@@ -72,6 +80,7 @@ void PasswordDialog::checkPassword()
 
     const QString password = passwordEdit->text();
     if (password != verifyEdit->text()) {
+        strenghtLbl->setPalette(m_negative);
         strenghtLbl->setText(i18n("Passwords are not equal"));
         return;
     }
@@ -91,16 +100,22 @@ void PasswordDialog::checkPassword()
     if (quality < 0) return;
 
     QString strenght;
+    QPalette palette;
     if (quality < 25) {
-        strenght = i18n("Poor");
+        palette = m_neutral;
+        strenght = i18n("The password is Weak");
     } else if (quality < 50) {
-        strenght = i18n("Fair");
+        palette = m_neutral;
+        strenght = i18n("The password is Good");
     } else if (quality < 75) {
-        strenght = i18n("Good");
+        palette = m_positive;
+        strenght = i18n("The password is Very Good");
     } else if (quality < 101) {
-        strenght = i18n("Excellent");
+        palette = m_positive;
+        strenght = i18n("the password is Excellent");
     }
 
+    strenghtLbl->setPalette(palette);
     strenghtLbl->setText(strenght);
     button(KDialog::Ok)->setEnabled(true);
 }
