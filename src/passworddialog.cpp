@@ -96,7 +96,7 @@ void PasswordDialog::checkPassword()
         }
     }
 
-    int quality = pwquality_check (m_pwSettings, password.toAscii(), NULL, m_username, NULL);
+    int quality = pwquality_check (m_pwSettings, password.toUtf8(), NULL, m_username, NULL);
 
     kDebug() << "Quality: " << quality;
 
