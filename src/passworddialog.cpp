@@ -22,6 +22,7 @@
 #include <QTimer>
 #include <KPushButton>
 #include <klocalizedstring.h>
+#include <KGlobalSettings>
 
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     : KDialog(parent, flags)
@@ -35,6 +36,9 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     passwordEdit->setFocus();
     m_timer->setInterval(400);
     m_timer->setSingleShot(true);
+
+    int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight();
+    setMinimumWidth(size * 50);
 
     connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
     connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
