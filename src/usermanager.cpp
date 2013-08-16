@@ -83,6 +83,7 @@ void UserManager::save()
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
+    Q_UNUSED(previous);
     m_widget->setModelIndex(selected);
     bool enabled = false;
 
@@ -102,6 +103,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
 
 void UserManager::dataChanged(const QModelIndex& topLeft, const QModelIndex& topRight)
 {
+    Q_UNUSED(topRight);
     if (m_selectionModel->currentIndex() != topLeft) {
         return;
     }
