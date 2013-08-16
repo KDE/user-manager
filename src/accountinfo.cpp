@@ -164,10 +164,12 @@ void AccountInfo::hasChanged()
 {
     m_info->nameValidation->setPixmap(m_positive);
     m_info->usernameValidation->setPixmap(m_positive);
+
     QMap<AccountModel::Role, QVariant> infoToSave;
-    if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
-        if (validateName(m_info->realName->text())) {
-            infoToSave.insert(AccountModel::RealName, m_info->realName->text());
+    const QString name = cleanName(m_info->realName->text());
+    if (name != m_model->data(m_index, AccountModel::RealName).toString()) {
+        if (validateName(name)) {
+            infoToSave.insert(AccountModel::RealName, name);
         }
     }
 
@@ -202,6 +204,19 @@ void AccountInfo::hasChanged()
 
     m_infoToSave = infoToSave;
     Q_EMIT changed(!m_infoToSave.isEmpty());
+}
+
+QString AccountInfo::cleanName(QString name) const
+{
+    if (name.isEmpty()) {
+        return name;
+    }
+
+    name = name.trimmed();
+    int pos = m_info->realName->cursorPosition();
+    m_info->realName->setText(name);
+    m_info->realName->setCursorPosition(pos);
+    return name;
 }
 
 bool AccountInfo::validateName(const QString& name) const

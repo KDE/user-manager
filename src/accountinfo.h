@@ -55,6 +55,7 @@ class AccountInfo : public QWidget
         void changed(bool changed);
 
     private:
+        QString cleanName(QString name) const;
         bool validateName(const QString &name) const;
         QString cleanUsername(QString username);
         bool validateUsername(QString username) const;
