@@ -78,11 +78,12 @@ AccountInfo::~AccountInfo()
 
 void AccountInfo::setModelIndex(const QModelIndex& index)
 {
-    if (m_index.isValid() && m_index != index) {
-        m_infoToSave.clear();
+    if (!index.isValid() || m_index == index) {
+        return;
     }
 
     m_index = index;
+    m_infoToSave.clear();
     loadFromModel();
 }
 
@@ -93,26 +94,13 @@ QModelIndex AccountInfo::modelIndex() const
 
 void AccountInfo::loadFromModel()
 {
-    if (!m_infoToSave.contains(AccountModel::Username)) {
-        m_info->username->setText(m_model->data(m_index, AccountModel::Username).toString());
-    }
-
+    m_info->username->setText(m_model->data(m_index, AccountModel::Username).toString());
     m_info->face->setIconSize(QSize(32,32));
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
-
-    if (!m_infoToSave.contains(AccountModel::RealName)) {
-        m_info->realName->setText(m_model->data(m_index, AccountModel::RealName).toString());
-    }
-    if (!m_infoToSave.contains(AccountModel::Email)) {
-        m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
-    }
-    if (!m_infoToSave.contains(AccountModel::Administrator)) {
-        m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
-    }
-    if (!m_infoToSave.contains(AccountModel::AutomaticLogin)) {
-        m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
-    }
-
+    m_info->realName->setText(m_model->data(m_index, AccountModel::RealName).toString());
+    m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
+    m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
+    m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
     m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
 }
 
