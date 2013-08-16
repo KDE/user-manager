@@ -182,7 +182,9 @@ void AccountInfo::hasChanged()
 
     const QString email = cleanEmail(m_info->email->text());
     if (email != m_model->data(m_index, AccountModel::Email).toString()) {
-        infoToSave.insert(AccountModel::Email, email);
+        if (validateEmail(email)) {
+            infoToSave.insert(AccountModel::Email, email);
+        }
     }
 
     if (m_info->administrator->isChecked() != m_model->data(m_index, AccountModel::Administrator).toBool()) {
@@ -311,6 +313,17 @@ QString AccountInfo::cleanEmail(QString email)
     m_info->email->setCursorPosition(pos);
 
     return email;
+}
+
+bool AccountInfo::validateEmail(const QString& email) const
+{
+    if (email.isEmpty()) {
+        return false;
+    }
+
+    QString strPatt = "b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}b";
+    QRegExp rx(strPatt);
+    return rx.exactMatch(email);
 }
 
 void AccountInfo::dataChanged(const QModelIndex& index)
