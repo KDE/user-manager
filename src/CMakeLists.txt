@@ -24,20 +24,13 @@ qt4_add_dbus_interface(user_manager_SRCS
     user_interface
 )
 
+set(login1_manager_xml lib/org.freedesktop.login1.Manager.xml)
+set_source_files_properties(${login1_manager_xml} PROPERTIES INCLUDE "lib/usersessions.h")
 qt4_add_dbus_interface(user_manager_SRCS
-    lib/org.freedesktop.ConsoleKit.xml
-    console_interface
+    ${login1_manager_xml}
+    login1_interface
 )
 
-qt4_add_dbus_interface(user_manager_SRCS
-    lib/org.freedesktop.ConsoleKit.Session.xml
-    session_interface
-)
-
-qt4_add_dbus_interface(user_manager_SRCS
-    lib/org.freedesktop.ConsoleKit.Seat.xml
-    seat_interface
-)
 
 kde4_add_ui_files(user_manager_SRCS kcm.ui account.ui password.ui)
 

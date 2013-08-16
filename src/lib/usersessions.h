@@ -21,9 +21,21 @@
 
 #include <QObject>
 #include <QDBusObjectPath>
+#include <QDBusArgument>
+
+struct UserInfo
+{
+    uint userId;
+    QString userName;
+    QDBusObjectPath path;
+};
+Q_DECLARE_METATYPE(UserInfo)
+
+typedef QList<UserInfo> UserInfoList;
+Q_DECLARE_METATYPE(UserInfoList)
 
 class QDBusPendingCallWatcher;
-class OrgFreedesktopConsoleKitManagerInterface;
+class OrgFreedesktopLogin1ManagerInterface;
 class UserSession : public QObject
 {
     Q_OBJECT
@@ -32,22 +44,15 @@ class UserSession : public QObject
         virtual ~UserSession();
 
     public Q_SLOTS:
-        void gotSessions(QDBusPendingCallWatcher* call);
-        void gotSeats(QDBusPendingCallWatcher* call);
-        void gotNewSeat(const QDBusObjectPath &path);
-
-        void addLoggedUser(const QDBusObjectPath &path);
-        void removeLoggedUser(const QDBusObjectPath &path);
+        void UserNew(uint id, const QDBusObjectPath &path);
+        void UserRemoved(uint id, const QDBusObjectPath &path);
+        void listUsersSlot(QDBusPendingCallWatcher *watcher);
 
     Q_SIGNALS:
-        void userLogged(uint uid, bool logged);
+        void userLogged(uint id, bool logged);
 
     private:
-        void addLoggedUsers(QList<QDBusObjectPath> list);
-        void addSeatWatch(QList<QDBusObjectPath> list);
-
-        QHash<QDBusObjectPath, uint> m_loggedUsers;
-        OrgFreedesktopConsoleKitManagerInterface* m_console;
+        OrgFreedesktopLogin1ManagerInterface* m_manager;
 };
 
 #endif //USER_SESSION_H
