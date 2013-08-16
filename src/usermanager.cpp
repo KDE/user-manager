@@ -136,7 +136,7 @@ void UserManager::removeUser()
         return;
     }
 
-    bool deleteFiles  = result == KMessageBox::Yes ? true : false;
+    bool deleteFiles  = result == KMessageBox::Yes ? false : true;
     m_model->removeAccountKeepingFiles(index.row(), deleteFiles);
 
     Q_EMIT changed(false);
