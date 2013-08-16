@@ -401,3 +401,40 @@ QString AccountModel::cryptPassword(const QString& password) const
 
     return crypt(password.toUtf8(), salt);
 }
+
+QDebug operator<<(QDebug debug, AccountModel::Role role)
+{
+    switch(role) {
+        case AccountModel::FriendlyName:
+            debug << "AccountModel::FriendlyName";
+            break;
+        case AccountModel::Face:
+            debug << "AccountModel::Face";
+            break;
+        case AccountModel::RealName:
+            debug << "AccountModel::RealName";
+            break;
+        case AccountModel::Username:
+            debug << "AccountModel::Username";
+            break;
+        case AccountModel::Password:
+            debug << "AccountModel::Password";
+            break;
+        case AccountModel::Email:
+            debug << "AccountModel::Email";
+            break;
+        case AccountModel::Administrator:
+            debug << "AccountModel::Administrator";
+            break;
+        case AccountModel::AutomaticLogin:
+            debug << "AccountModel::AutomaticLogin";
+            break;
+        case AccountModel::Logged:
+            debug << "AccountModel::Logged";
+            break;
+        case AccountModel::Created:
+            debug << "AccountModel::Creaetd";
+            break;
+    }
+    return debug;
+}

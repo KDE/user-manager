@@ -20,6 +20,7 @@
 #ifndef ACCOUNTMODEL_H
 #define ACCOUNTMODEL_H
 
+#include <QDebug>
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
 #include <QDBusObjectPath>
@@ -79,4 +80,5 @@ class AccountModel : public QAbstractListModel
         QHash<QString, bool> m_loggedAccounts;
 };
 
+QDebug operator<<(QDebug debug, AccountModel::Role role);
 #endif // ACCOUNTMODEL_H
