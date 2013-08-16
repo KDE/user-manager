@@ -55,6 +55,10 @@ class AccountInfo : public QWidget
         void changed(bool changed);
 
     private:
+        bool validateUsername(const QString &username) const;
+
+        QPixmap m_positive;
+        QPixmap m_negative;
         Ui::AccountInfo * m_info;
         QModelIndex m_index;
         AccountModel* m_model;

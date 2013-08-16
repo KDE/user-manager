@@ -22,6 +22,9 @@
 #include "passworddialog.h"
 #include "lib/accountmodel.h"
 
+#include <pwd.h>
+#include <utmp.h>
+
 #include <QtGui/QMenu>
 #include <QtGui/QToolButton>
 #include <QtGui/QDesktopServices>
@@ -35,6 +38,8 @@
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
 #include <KGlobalSettings>
+
+#define MAX_USER_LEN  (UT_NAMESIZE - 1)
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -70,6 +75,9 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->username->setMinimumWidth(size * 29);
     m_info->realName->setMinimumWidth(size * 29);
     m_info->email->setMinimumWidth(size * 29);
+
+    int pixmapSize = m_info->username->sizeHint().height();
+    m_negative = QIcon::fromTheme("dialog-cancel").pixmap(pixmapSize, pixmapSize);
 }
 
 AccountInfo::~AccountInfo()
@@ -154,14 +162,16 @@ bool AccountInfo::save()
 
 void AccountInfo::hasChanged()
 {
-
+    m_info->usernameValidation->setPixmap(m_positive);
     QMap<AccountModel::Role, QVariant> infoToSave;
     if (m_info->realName->text() != m_model->data(m_index, AccountModel::RealName).toString()) {
         infoToSave.insert(AccountModel::RealName, m_info->realName->text());
     }
 
     if (m_info->username->text() != m_model->data(m_index, AccountModel::Username).toString()) {
-        infoToSave.insert(AccountModel::Username, m_info->username->text());
+        if (validateUsername(m_info->username->text())) {
+            infoToSave.insert(AccountModel::Username, m_info->username->text());
+        }
     }
 
     if (m_info->email->text() != m_model->data(m_index, AccountModel::Email).toString()) {
@@ -188,6 +198,56 @@ void AccountInfo::hasChanged()
 
     m_infoToSave = infoToSave;
     Q_EMIT changed(!m_infoToSave.isEmpty());
+}
+
+bool AccountInfo::validateUsername(const QString& username) const
+{
+    QByteArray userchar = username.toUtf8();
+    if (getpwnam(userchar) != NULL) {
+        m_info->usernameValidation->setPixmap(m_negative);
+        m_info->usernameValidation->setToolTip(i18n("The username is already used"));
+        return false;
+    }
+
+    QString errorTooltip;
+
+    char first = userchar.at(0);
+    bool valid = (first >= 'a' && first <= 'z');
+
+    if (!valid) {
+        errorTooltip.append(i18n("The username must start with a letter"));
+        errorTooltip.append("\n");
+    }
+
+    Q_FOREACH(const char c, userchar) {
+        valid = (
+            (c >= 'a' && c <= 'z') ||
+            (c >= 'A' && c <= 'Z') ||
+            (c >= '0' && c <= '9') ||
+            (c == '_') || (c == '.') ||
+            (c == '-')
+        );
+        if (!valid) {
+            break;
+        }
+    }
+
+    if (!valid) {
+        errorTooltip.append(i18n("The username can contain only letters, numbers, score, underscore and dot"));
+        errorTooltip.append("\n");
+    }
+
+    if (username.count() > MAX_USER_LEN) {
+        errorTooltip.append(i18n("The username is too long"));
+        valid = false;
+    }
+
+    if (!errorTooltip.isEmpty()) {
+        m_info->usernameValidation->setPixmap(m_negative);
+        m_info->usernameValidation->setToolTip(errorTooltip);
+        return false;
+    }
+    return true;
 }
 
 void AccountInfo::dataChanged(const QModelIndex& index)
