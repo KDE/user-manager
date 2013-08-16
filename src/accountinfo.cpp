@@ -126,8 +126,10 @@ bool AccountInfo::save()
     if (!m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
         return false;
     }
-    if (!m_model->setData(m_index, m_infoToSave[AccountModel::Password], AccountModel::Password)) {
-        return false;
+    if (m_infoToSave.contains(AccountModel::Password)) {
+        if (!m_model->setData(m_index, m_infoToSave[AccountModel::Password], AccountModel::Password)) {
+            return false;
+        }
     }
     if (m_infoToSave.contains(AccountModel::Face)) {
         const QString path = m_infoToSave[AccountModel::Face].toString();
