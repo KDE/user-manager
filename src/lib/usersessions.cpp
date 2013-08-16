@@ -27,7 +27,7 @@
 QDBusArgument &operator<<(QDBusArgument &argument, const UserInfo &userInfo)
 {
     argument.beginStructure();
-    argument << userInfo.userId << userInfo.userName << userInfo.path;
+    argument << userInfo.id << userInfo.name << userInfo.path;
     argument.endStructure();
     return argument;
 }
@@ -35,7 +35,7 @@ QDBusArgument &operator<<(QDBusArgument &argument, const UserInfo &userInfo)
 const QDBusArgument &operator>>(const QDBusArgument &argument, UserInfo &userInfo)
 {
     argument.beginStructure();
-    argument >> userInfo.userId >> userInfo.userName >> userInfo.path;
+    argument >> userInfo.id >> userInfo.name >> userInfo.path;
     argument.endStructure();
     return argument;
 }
@@ -68,7 +68,7 @@ void UserSession::listUsersSlot(QDBusPendingCallWatcher *watcher)
     } else {
         UserInfoList userList = reply.value();
         Q_FOREACH(const UserInfo &userInfo, userList) {
-            UserNew(userInfo.userId);
+            UserNew(userInfo.id);
         }
     }
 

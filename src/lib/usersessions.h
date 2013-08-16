@@ -25,8 +25,8 @@
 
 struct UserInfo
 {
-    uint userId;
-    QString userName;
+    uint id;
+    QString name;
     QDBusObjectPath path;
 };
 Q_DECLARE_METATYPE(UserInfo)
