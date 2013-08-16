@@ -71,6 +71,11 @@ void PasswordDialog::setUsername(const QByteArray& username)
     m_username = username;
 }
 
+QString PasswordDialog::password() const
+{
+    return passwordEdit->text();
+}
+
 void PasswordDialog::checkPassword()
 {
     kDebug() << "Checking password";

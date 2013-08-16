@@ -37,6 +37,7 @@ class AccountModel : public QAbstractListModel
             Face = Qt::DecorationRole,
             RealName = Qt::UserRole,
             Username,
+            Password,
             Email,
             Administrator,
             AutomaticLogin,
@@ -67,6 +68,7 @@ class AccountModel : public QAbstractListModel
         void addAccountToCache(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos = -1);
         void removeAccount(const QString &path);
         bool checkForErrors(QDBusPendingReply <void> reply) const;
+        QString cryptPassword(const QString &password) const;
 
         UserSession* m_sessions;
         QStringList m_userPath;

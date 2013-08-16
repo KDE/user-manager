@@ -162,6 +162,13 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
 
             emit dataChanged(index, index);
             return true;
+        case AccountModel::Password:
+            if (checkForErrors(acc->SetPassword(cryptPassword(value.toString()), QString()))) {
+                return false;
+            }
+
+            emit dataChanged(index, index);
+            return true;
         case AccountModel::Email:
             if (checkForErrors(acc->SetEmail(value.toString()))) {
                 return false;
@@ -361,4 +368,18 @@ const QString AccountModel::accountPathForUid(uint uid) const
     }
 
     return QString();
+}
+
+QString AccountModel::cryptPassword(const QString& password) const
+{
+    QString cryptedPassword;
+    QByteArray alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVXYZ"
+                       "abcdefghijklmnopqrstuvxyz./";
+    QByteArray salt("$6$");//sha512
+    int len = alpha.count();
+    for(int i = 0; i < 16; i++){
+        salt.append(alpha.at((qrand() % len)));
+    }
+
+    return crypt(password.toUtf8(), salt);
 }

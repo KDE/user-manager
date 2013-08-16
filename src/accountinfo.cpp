@@ -130,6 +130,9 @@ bool AccountInfo::save()
     if (!m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
         return false;
     }
+    if (!m_model->setData(m_index, m_infoToSave[AccountModel::Password], AccountModel::Password)) {
+        return false;
+    }
     if (m_infoToSave.contains(AccountModel::Face)) {
         const QString path = m_infoToSave[AccountModel::Face].toString();
         QString faceFile = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
@@ -224,8 +227,13 @@ void AccountInfo::clearAvatar()
 
 void AccountInfo::changePassword()
 {
-    PasswordDialog *dialog = new PasswordDialog(this);
+    QScopedPointer<PasswordDialog> dialog(new PasswordDialog(this));
     dialog->setUsername(m_model->data(m_index, AccountModel::Username).toByteArray());
     dialog->setModal(true);
-    dialog->show();
+    if (!dialog->exec()) {
+        return;
+    }
+
+    m_infoToSave[AccountModel::Password] = dialog->password();
+    Q_EMIT changed(true);
 }
