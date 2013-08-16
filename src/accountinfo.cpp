@@ -112,24 +112,25 @@ bool AccountInfo::save()
     }
 
     kDebug() << "Saving on Index: " << m_index.row();
+    QList<AccountModel::Role> failed;
     if (!m_model->setData(m_index, m_info->username->text(), AccountModel::Username)) {
-        return false;
+        failed.append(AccountModel::Username);
     }
     if (!m_model->setData(m_index, m_info->realName->text(), AccountModel::RealName)) {
-        return false;
+        failed.append(AccountModel::RealName);
     }
     if (!m_model->setData(m_index, m_info->email->text(), AccountModel::Email)) {
-        return false;
+        failed.append(AccountModel::Email);
     }
     if (!m_model->setData(m_index, m_info->administrator->isChecked(), AccountModel::Administrator)) {
-        return false;
+        failed.append(AccountModel::Administrator);
     }
     if (!m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
-        return false;
+        failed.append(AccountModel::AutomaticLogin);
     }
     if (m_infoToSave.contains(AccountModel::Password)) {
         if (!m_model->setData(m_index, m_infoToSave[AccountModel::Password], AccountModel::Password)) {
-            return false;
+            failed.append(AccountModel::Password);
         }
     }
     if (m_infoToSave.contains(AccountModel::Face)) {
@@ -144,6 +145,9 @@ bool AccountInfo::save()
         moveJob->start();
     }
 
+    if (!failed.isEmpty()) {
+        kDebug() << "Failed Roles: " << failed;
+    }
     m_infoToSave.clear();
     return true;
 }
