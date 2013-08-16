@@ -88,7 +88,7 @@ void PasswordDialog::checkPassword()
     const QString password = passwordEdit->text();
     if (password != verifyEdit->text()) {
         strenghtLbl->setPalette(m_negative);
-        strenghtLbl->setText(i18n("Passwords are not equal"));
+        strenghtLbl->setText(i18n("Passwords do not match"));
         return;
     }
 
@@ -112,16 +112,16 @@ void PasswordDialog::checkPassword()
         strenght = errorString(quality);
     } else if (quality < 25) {
         palette = m_neutral;
-        strenght = i18n("The password is Weak");
+        strenght = i18n("This password is weak");
     } else if (quality < 50) {
         palette = m_positive;
-        strenght = i18n("The password is Good");
+        strenght = i18n("This password is good");
     } else if (quality < 75) {
         palette = m_positive;
-        strenght = i18n("The password is Very Good");
+        strenght = i18n("This password is very good");
     } else if (quality < 101) {
         palette = m_positive;
-        strenght = i18n("the password is Excellent");
+        strenght = i18n("This password is excellent");
     }
 
     strenghtLbl->setPalette(palette);
@@ -178,7 +178,7 @@ QString PasswordDialog::errorString(int error)
                 ,"The password should contain at least %1 special characters (like punctuation)", amount);
         }
         case PWQ_ERROR_MIN_CLASSES:
-            return i18nc(comment, "The password should contain a mixture of letters, numbers and punctuation");
+            return i18nc(comment, "The password should contain a mixture of letters, numbers, spaces and punctuation");
         case PWQ_ERROR_MAX_CONSECUTIVE:
             return i18nc(comment, "The password should not contain too many repeated characters");
         case PWQ_ERROR_MAX_CLASS_REPEAT:
@@ -186,9 +186,9 @@ QString PasswordDialog::errorString(int error)
         case PWQ_ERROR_MAX_SEQUENCE:
             return i18nc(comment, "The password should not contain sequences like 1234 or abcd");
         case PWQ_ERROR_CRACKLIB_CHECK:
-            return i18nc(comment, "This password can't be used, it is too common");
+            return i18nc(comment, "This password can't be used, it is too simple");
     };
 
     return i18nc("Returned when a more specific error message has not been found"
-            , "Please, choose another password");
+            , "Please choose another password");
 }

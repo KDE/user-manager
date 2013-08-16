@@ -249,7 +249,7 @@ bool AccountInfo::validateUsername(QString username) const
     QByteArray userchar = username.toUtf8();
     if (getpwnam(userchar) != NULL) {
         m_info->usernameValidation->setPixmap(m_negative);
-        m_info->usernameValidation->setToolTip(i18n("The username is already used"));
+        m_info->usernameValidation->setToolTip(i18n("This username is already used"));
         return false;
     }
 
@@ -320,7 +320,7 @@ bool AccountInfo::validateEmail(const QString& email) const
     rx.setPatternSyntax(QRegExp::RegExp);
     if (!rx.exactMatch(email)) {
         m_info->emailValidation->setPixmap(m_negative);
-        m_info->emailValidation->setToolTip(i18n("The email is incorrect"));
+        m_info->emailValidation->setToolTip(i18n("This e-mail address is incorrect"));
     }
 
     return true;

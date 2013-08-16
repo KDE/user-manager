@@ -48,21 +48,21 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Real Name</string>
+         <string>Real Name:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Email Address</string>
+         <string>Email Address:</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Administrator</string>
+         <string>Administrator:</string>
         </property>
        </widget>
       </item>
@@ -76,7 +76,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Automatic Login</string>
+         <string>Automatic Login:</string>
         </property>
        </widget>
       </item>
