@@ -50,9 +50,9 @@ UserSession::UserSession(QObject* parent): QObject(parent)
     connect(m_manager, SIGNAL(UserNew(uint,QDBusObjectPath)), SLOT(UserNew(uint)));
     connect(m_manager, SIGNAL(UserRemoved(uint,QDBusObjectPath)), SLOT(UserRemoved(uint)));
 
-   QDBusPendingReply <UserInfoList> reply = m_manager->ListUsers();
-   QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-   connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(listUsersSlot(QDBusPendingCallWatcher*)));
+    QDBusPendingReply <UserInfoList> reply = m_manager->ListUsers();
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(listUsersSlot(QDBusPendingCallWatcher*)));
 }
 
 UserSession::~UserSession()
