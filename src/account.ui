@@ -59,22 +59,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="email">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>john.doe@example.com</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -113,6 +97,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="inputMask">
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
@@ -156,6 +143,35 @@
          </item>
          <item>
           <widget class="QLabel" name="nameValidation">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QWidget" name="widget_5" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLineEdit" name="email">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>john.doe@example.com</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="emailValidation">
            <property name="text">
             <string/>
            </property>
@@ -226,7 +242,6 @@
  </widget>
  <tabstops>
   <tabstop>face</tabstop>
-  <tabstop>email</tabstop>
   <tabstop>administrator</tabstop>
   <tabstop>automaticLogin</tabstop>
   <tabstop>changePassword</tabstop>

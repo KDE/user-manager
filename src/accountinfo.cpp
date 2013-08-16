@@ -164,6 +164,7 @@ void AccountInfo::hasChanged()
 {
     m_info->nameValidation->setPixmap(m_positive);
     m_info->usernameValidation->setPixmap(m_positive);
+    m_info->emailValidation->setPixmap(m_positive);
 
     QMap<AccountModel::Role, QVariant> infoToSave;
     const QString name = cleanName(m_info->realName->text());
