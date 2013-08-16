@@ -322,9 +322,16 @@ bool AccountInfo::validateEmail(const QString& email) const
         return false;
     }
 
-    QString strPatt = "b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}b";
+    QString strPatt = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b";
     QRegExp rx(strPatt);
-    return rx.exactMatch(email);
+    rx.setCaseSensitivity(Qt::CaseInsensitive);
+    rx.setPatternSyntax(QRegExp::RegExp);
+    if (!rx.exactMatch(email)) {
+        m_info->emailValidation->setPixmap(m_negative);
+        m_info->emailValidation->setToolTip(i18n("The email is incorrect"));
+    }
+
+    return true;
 }
 
 void AccountInfo::dataChanged(const QModelIndex& index)
