@@ -42,7 +42,7 @@ AccountModel::AccountModel(QObject* parent)
     reply.waitForFinished();
 
     if (reply.isError()) {
-        qDebug() << reply.error().message();
+        kDebug() << reply.error().message();
         return;
     }
 
@@ -246,8 +246,8 @@ bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
     reply.waitForFinished();
 
     if (reply.isError()) {
-        qDebug() << reply.error().name();
-        qDebug() << reply.error().message();
+        kDebug() << reply.error().name();
+        kDebug() << reply.error().message();
         return false;
     }
 
@@ -302,8 +302,8 @@ bool AccountModel::checkForErrors(QDBusPendingReply<void> reply) const
 {
     reply.waitForFinished();
     if (reply.isError()) {
-        qDebug() << reply.error().name();
-        qDebug() << reply.error().message();
+        kDebug() << reply.error().name();
+        kDebug() << reply.error().message();
         return true;
     }
 
@@ -350,7 +350,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
 void AccountModel::UserDeleted(const QDBusObjectPath& path)
 {
     if (!m_userPath.contains(path.path())) {
-        qDebug() << "User Deleted but not found: " << path.path();
+        kDebug() << "User Deleted but not found: " << path.path();
         return;
     }
 

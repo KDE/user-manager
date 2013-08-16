@@ -22,11 +22,11 @@
 #include "passworddialog.h"
 #include "lib/accountmodel.h"
 
-#include <QtCore/QDebug>
 #include <QtGui/QMenu>
 #include <QtGui/QToolButton>
 #include <QtGui/QDesktopServices>
 
+#include <KDebug>
 #include <KImageIO>
 #include <KFileDialog>
 #include <KImageFilePreview>
@@ -110,7 +110,7 @@ bool AccountInfo::save()
         return false;
     }
 
-    qDebug() << "Saving on Index: " << m_index.row();
+    kDebug() << "Saving on Index: " << m_index.row();
     if (!m_model->setData(m_index, m_info->username->text(), AccountModel::Username)) {
         return false;
     }
@@ -201,7 +201,7 @@ void AccountInfo::openAvatarSlot()
 
 void AccountInfo::avatarCreated(KJob* job)
 {
-    qDebug() << "Avatar created";
+    kDebug() << "Avatar created";
     CreateAvatarJob *aJob = qobject_cast<CreateAvatarJob*>(job);
     m_info->face->setIcon(QIcon(aJob->avatarPath()));
     m_infoToSave.insert(AccountModel::Face, aJob->avatarPath());
