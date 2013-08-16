@@ -44,8 +44,8 @@ class UserSession : public QObject
         virtual ~UserSession();
 
     public Q_SLOTS:
-        void UserNew(uint id, const QDBusObjectPath &path);
-        void UserRemoved(uint id, const QDBusObjectPath &path);
+        void UserNew(uint id);
+        void UserRemoved(uint id);
         void listUsersSlot(QDBusPendingCallWatcher *watcher);
 
     Q_SIGNALS:

@@ -47,8 +47,8 @@ UserSession::UserSession(QObject* parent): QObject(parent)
     qDBusRegisterMetaType<UserInfoList>();
 
     m_manager = new Manager("org.freedesktop.login1", "/org/freedesktop/login1", QDBusConnection::systemBus());
-    connect(m_manager, SIGNAL(UserNew(uint,QDBusObjectPath)), SLOT(UserNew(uint,QDBusObjectPath)));
-    connect(m_manager, SIGNAL(UserRemoved(uint,QDBusObjectPath)), SLOT(UserRemoved(uint,QDBusObjectPath)));
+    connect(m_manager, SIGNAL(UserNew(uint,QDBusObjectPath)), SLOT(UserNew(uint)));
+    connect(m_manager, SIGNAL(UserRemoved(uint,QDBusObjectPath)), SLOT(UserRemoved(uint)));
 
    QDBusPendingReply <UserInfoList> reply = m_manager->ListUsers();
    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
@@ -68,20 +68,20 @@ void UserSession::listUsersSlot(QDBusPendingCallWatcher *watcher)
     } else {
         UserInfoList userList = reply.value();
         Q_FOREACH(const UserInfo &userInfo, userList) {
-            UserNew(userInfo.userId, userInfo.path);
+            UserNew(userInfo.userId);
         }
     }
 
     watcher->deleteLater();
 }
 
-void UserSession::UserNew(uint id, const QDBusObjectPath &path)
+void UserSession::UserNew(uint id)
 {
     kDebug() << id;
     Q_EMIT userLogged(id, true);
 }
 
-void UserSession::UserRemoved(uint id, const QDBusObjectPath &path)
+void UserSession::UserRemoved(uint id)
 {
     kDebug() << id;
     Q_EMIT userLogged(id, false);
