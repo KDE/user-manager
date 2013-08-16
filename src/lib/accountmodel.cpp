@@ -25,6 +25,7 @@
 
 #include <QtGui/QIcon>
 
+#include <KDebug>
 #include <KLocalizedString>
 
 #include <sys/types.h>
@@ -120,6 +121,8 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
                 return m_loggedAccounts[path];
             }
             return QVariant();
+        case AccountModel::NewAccount:
+            return false;
     }
 
     return QVariant();
@@ -194,6 +197,10 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             m_loggedAccounts[path] = value.toBool();
             emit dataChanged(index, index);
             return true;
+        case AccountModel::NewAccount:
+            qFatal("AccountModel NewAccount should never be set");
+            return false;
+
     }
 
     return QAbstractItemModel::setData(index, value, role);
@@ -220,6 +227,8 @@ QVariant AccountModel::newUserData(int role) const
             return i18n("New User");
         case Qt::DecorationRole || AccountModel::Face:
             return QIcon::fromTheme("list-add-user").pixmap(48, 48);
+        case AccountModel::NewAccount:
+            return true;
     }
     return QVariant();
 }

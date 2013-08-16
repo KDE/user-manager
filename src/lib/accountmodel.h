@@ -41,7 +41,8 @@ class AccountModel : public QAbstractListModel
             Email,
             Administrator,
             AutomaticLogin,
-            Logged
+            Logged,
+            NewAccount
         };
 
         AccountModel(QObject* parent);
