@@ -180,6 +180,10 @@ void AccountInfo::hasChanged()
         infoToSave[AccountModel::Face] = m_infoToSave[AccountModel::Face];
     }
 
+    if (m_infoToSave.contains(AccountModel::Password)) {
+        infoToSave[AccountModel::Password] = m_infoToSave[AccountModel::Password];
+    }
+
     m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
 
     m_infoToSave = infoToSave;
