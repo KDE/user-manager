@@ -71,10 +71,10 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
 
     m_info->face->setMenu(menu);
 
-    int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight();
-    m_info->username->setMinimumWidth(size * 29);
-    m_info->realName->setMinimumWidth(size * 29);
-    m_info->email->setMinimumWidth(size * 29);
+    int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight() * 29;
+    m_info->username->setMinimumWidth(size);
+    m_info->realName->setMinimumWidth(size);
+    m_info->email->setMinimumWidth(size);
 
     int pixmapSize = m_info->username->sizeHint().height();
     m_negative = QIcon::fromTheme("dialog-cancel").pixmap(pixmapSize, pixmapSize);
@@ -212,14 +212,6 @@ void AccountInfo::hasChanged()
 
 QString AccountInfo::cleanName(QString name) const
 {
-    if (name.isEmpty()) {
-        return name;
-    }
-
-    name = name.trimmed();
-    int pos = m_info->realName->cursorPosition();
-    m_info->realName->setText(name);
-    m_info->realName->setCursorPosition(pos);
     return name;
 }
 
