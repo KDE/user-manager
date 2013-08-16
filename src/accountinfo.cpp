@@ -34,6 +34,7 @@
 #include <KIO/Job>
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
+#include <KGlobalSettings>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -63,6 +64,11 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     menu->addAction(editClear);
 
     m_info->face->setMenu(menu);
+
+    int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight();
+    m_info->username->setMinimumWidth(size * 29);
+    m_info->realName->setMinimumWidth(size * 29);
+    m_info->email->setMinimumWidth(size * 29);
 }
 
 AccountInfo::~AccountInfo()
