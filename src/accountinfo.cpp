@@ -222,9 +222,10 @@ QString AccountInfo::cleanUsername(QString username)
 
     if (username[0].isUpper()) {
         username[0] = username[0].toLower();
-        m_info->username->setText(username);
     }
 
+    username.remove(' ');
+    m_info->username->setText(username);
     return username;
 }
 
