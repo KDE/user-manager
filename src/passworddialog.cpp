@@ -27,8 +27,8 @@
 
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     : KDialog(parent, flags)
-    , m_timer(new QTimer(this))
     , m_pwSettings(0)
+    , m_timer(new QTimer(this))
 {
     setWindowTitle(i18nc("Title for change password dialog", "New Password"));
 
@@ -51,8 +51,8 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     KColorScheme::adjustForeground(m_positive, KColorScheme::PositiveText, strenghtLbl->foregroundRole());
 
     connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
-    connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
-    connect(verifyEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged(QString)));
+    connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
+    connect(verifyEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
 }
 
 PasswordDialog::~PasswordDialog()
@@ -60,7 +60,7 @@ PasswordDialog::~PasswordDialog()
     pwquality_free_settings(m_pwSettings);
 }
 
-void PasswordDialog::passwordChanged(const QString& text)
+void PasswordDialog::passwordChanged()
 {
     m_timer->start();
     strenghtLbl->clear();
