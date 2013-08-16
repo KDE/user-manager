@@ -112,6 +112,8 @@ void AccountInfo::loadFromModel()
     if (!m_infoToSave.contains(AccountModel::AutomaticLogin)) {
         m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
     }
+
+    m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
 }
 
 bool AccountInfo::save()

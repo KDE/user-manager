@@ -121,8 +121,8 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
                 return m_loggedAccounts[path];
             }
             return QVariant();
-        case AccountModel::NewAccount:
-            return false;
+        case AccountModel::Created:
+            return true;
     }
 
     return QVariant();
@@ -197,7 +197,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             m_loggedAccounts[path] = value.toBool();
             emit dataChanged(index, index);
             return true;
-        case AccountModel::NewAccount:
+        case AccountModel::Created:
             qFatal("AccountModel NewAccount should never be set");
             return false;
 
@@ -227,8 +227,8 @@ QVariant AccountModel::newUserData(int role) const
             return i18n("New User");
         case Qt::DecorationRole || AccountModel::Face:
             return QIcon::fromTheme("list-add-user").pixmap(48, 48);
-        case AccountModel::NewAccount:
-            return true;
+        case AccountModel::Created:
+            return false;
     }
     return QVariant();
 }
