@@ -171,9 +171,10 @@ void AccountInfo::hasChanged()
         }
     }
 
-    if (m_info->username->text() != m_model->data(m_index, AccountModel::Username).toString()) {
-        if (validateUsername(m_info->username->text())) {
-            infoToSave.insert(AccountModel::Username, m_info->username->text());
+    const QString username = cleanUsername(m_info->username->text());
+    if (username != m_model->data(m_index, AccountModel::Username).toString()) {
+        if (validateUsername(username)) {
+            infoToSave.insert(AccountModel::Username, username);
         }
     }
 
@@ -213,8 +214,26 @@ bool AccountInfo::validateName(const QString& name) const
     return true;
 }
 
-bool AccountInfo::validateUsername(const QString& username) const
+QString AccountInfo::cleanUsername(QString username)
 {
+    if (username.isEmpty()) {
+        return username;
+    }
+
+    if (username[0].isUpper()) {
+        username[0] = username[0].toLower();
+        m_info->username->setText(username);
+    }
+
+    return username;
+}
+
+bool AccountInfo::validateUsername(QString username) const
+{
+    if (username.isEmpty()) {
+        return false;
+    }
+
     QByteArray userchar = username.toUtf8();
     if (getpwnam(userchar) != NULL) {
         m_info->usernameValidation->setPixmap(m_negative);
