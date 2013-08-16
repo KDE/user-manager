@@ -242,6 +242,9 @@
  </widget>
  <tabstops>
   <tabstop>face</tabstop>
+  <tabstop>username</tabstop>
+  <tabstop>realName</tabstop>
+  <tabstop>email</tabstop>
   <tabstop>administrator</tabstop>
   <tabstop>automaticLogin</tabstop>
   <tabstop>changePassword</tabstop>
