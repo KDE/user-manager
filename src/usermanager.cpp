@@ -92,11 +92,6 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
         enabled = true;
     }
 
-    QVariant logged = m_model->data(selected, AccountModel::Logged);
-    if (logged.isNull() || logged.toBool()) {
-        enabled = false;
-    }
-
     m_ui->removeBtn->setEnabled(enabled);
     m_selectionModel->setCurrentIndex(selected, QItemSelectionModel::SelectCurrent);
 }
