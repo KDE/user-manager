@@ -49,6 +49,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_info->changePassword, SIGNAL(clicked(bool)), SLOT(changePassword()));
 
+    connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex)));
     m_info->face->setPopupMode(QToolButton::InstantPopup);
     QMenu* menu = new QMenu(this);
 
@@ -177,6 +178,15 @@ void AccountInfo::hasChanged()
 
     m_infoToSave = infoToSave;
     Q_EMIT changed(!m_infoToSave.isEmpty());
+}
+
+void AccountInfo::dataChanged(const QModelIndex& index)
+{
+    if (m_index != index) {
+        return;
+    }
+
+    hasChanged();
 }
 
 void AccountInfo::openAvatarSlot()
