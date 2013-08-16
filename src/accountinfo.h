@@ -59,6 +59,7 @@ class AccountInfo : public QWidget
         bool validateName(const QString &name) const;
         QString cleanUsername(QString username);
         bool validateUsername(QString username) const;
+        QString cleanEmail(QString email);
 
         QPixmap m_positive;
         QPixmap m_negative;

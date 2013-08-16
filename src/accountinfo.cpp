@@ -180,8 +180,9 @@ void AccountInfo::hasChanged()
         }
     }
 
-    if (m_info->email->text() != m_model->data(m_index, AccountModel::Email).toString()) {
-        infoToSave.insert(AccountModel::Email, m_info->email->text());
+    const QString email = cleanEmail(m_info->email->text());
+    if (email != m_model->data(m_index, AccountModel::Email).toString()) {
+        infoToSave.insert(AccountModel::Email, email);
     }
 
     if (m_info->administrator->isChecked() != m_model->data(m_index, AccountModel::Administrator).toBool()) {
@@ -296,6 +297,20 @@ bool AccountInfo::validateUsername(QString username) const
         return false;
     }
     return true;
+}
+
+QString AccountInfo::cleanEmail(QString email)
+{
+    if (email.isEmpty()) {
+        return email;
+    }
+
+    email = email.toLower().remove(' ');
+    int pos = m_info->email->cursorPosition();
+    m_info->email->setText(email);
+    m_info->email->setCursorPosition(pos);
+
+    return email;
 }
 
 void AccountInfo::dataChanged(const QModelIndex& index)
