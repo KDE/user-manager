@@ -121,18 +121,17 @@ void UserManager::removeUser()
     QModelIndex index = m_selectionModel->currentIndex();
 
     KGuiItem keep;
-    keep.setText(i18n("Delete files"));
+    keep.setText(i18n("Keep files"));
     KGuiItem deletefiles;
-    deletefiles.setText(i18n("Keep files"));
+    deletefiles.setText(i18n("Delete files"));
 
-    QString warning;
-    if (m_model->data(index, AccountModel::Logged).toBool()) {
-        warning = i18n("Removing a logged user may cause inconsistencies");
-    } else {
-        warning = i18n("Are you should you want to ");
+    QString warning = i18n("What do you want to do after removing the user ?");
+    if (!m_model->data(index, AccountModel::Logged).toBool()) {
+        warning.append("\n\n");
+        warning.append(i18n("This user is using the system right now, removing it will cause problems"));
     }
 
-    int result = KMessageBox::questionYesNoCancel(this, warning, i18n("AAA"), keep, deletefiles);
+    int result = KMessageBox::questionYesNoCancel(this, warning, i18n("Delete User"), keep, deletefiles);
     if (result == KMessageBox::Cancel) {
         return;
     }
