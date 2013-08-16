@@ -323,10 +323,19 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
     }
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
-    int row = rowCount() - 1;
+    //We are adding one row in the bottom but we are updating the information
+    //of the just added user, which will be the penultimate row since
+    //"New User" is always the row in the bottom.
+    //TODO: Move "New User" to a Proxy Model
+    int row = rowCount();
     beginInsertRows(QModelIndex(), row, row);
-    addAccountToCache(path.path(), acc, row);
+    addAccountToCache(path.path(), acc, row - 1);
     endInsertRows();
+
+    //Notify that the penultimate row has been modified, so new data (from the
+    //freshly added account is updated
+    QModelIndex changedIndex = index(row - 1, 0);
+    emit dataChanged(changedIndex, changedIndex);
 }
 
 void AccountModel::UserDeleted(const QDBusObjectPath& path)
