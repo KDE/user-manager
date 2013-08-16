@@ -176,6 +176,8 @@ void AccountInfo::hasChanged()
         infoToSave[AccountModel::Face] = m_infoToSave[AccountModel::Face];
     }
 
+    m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
+
     m_infoToSave = infoToSave;
     Q_EMIT changed(!m_infoToSave.isEmpty());
 }
