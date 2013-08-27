@@ -110,6 +110,29 @@ void AccountInfo::loadFromModel()
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
     m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
+
+    if (m_model->data(m_index, AccountModel::Created).toBool() && m_info->label_3->isVisible()) {
+        m_info->formLayout->removeWidget(m_info->label_3);
+        m_info->formLayout->removeWidget(m_info->label_4);
+        m_info->label_3->setVisible(false);
+        m_info->label_4->setVisible(false);
+
+        m_info->formLayout->removeWidget(m_info->passwordEdit);
+        m_info->formLayout->removeWidget(m_info->verifyEdit);
+        m_info->passwordEdit->setVisible(false);
+        m_info->verifyEdit->setVisible(false);
+    } else if(!m_model->data(m_index, AccountModel::Created).toBool() && !m_info->label_3->isVisible()) {
+        int row;
+        QFormLayout::ItemRole role;
+        m_info->formLayout->getWidgetPosition(m_info->label_2, &row, &role);
+        m_info->formLayout->insertRow(row, m_info->label_3, m_info->passwordEdit);
+        m_info->formLayout->insertRow(row + 1, m_info->label_4, m_info->verifyEdit);
+        m_info->label_3->setVisible(true);
+        m_info->label_4->setVisible(true);
+
+        m_info->passwordEdit->setVisible(true);
+        m_info->verifyEdit->setVisible(true);
+    }
     m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
 }
 
