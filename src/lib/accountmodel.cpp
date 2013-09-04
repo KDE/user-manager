@@ -433,7 +433,7 @@ QDebug operator<<(QDebug debug, AccountModel::Role role)
             debug << "AccountModel::Logged";
             break;
         case AccountModel::Created:
-            debug << "AccountModel::Creaetd";
+            debug << "AccountModel::Created";
             break;
     }
     return debug;
