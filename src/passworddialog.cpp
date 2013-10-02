@@ -131,13 +131,12 @@ void PasswordDialog::checkPassword()
 
 QString PasswordDialog::errorString(int error)
 {
-    const QByteArray comment("Error returned when the password is invalid");
     switch(error) {
         case PWQ_ERROR_MIN_LENGTH:
         {
             int length;
             pwquality_get_int_value(m_pwSettings, PWQ_SETTING_MIN_LENGTH, &length);
-            return i18ncp(comment
+            return i18ncp("Error returned when the password is invalid"
                 ,"The password should be at least %1 character"
                 ,"The password should be at least %1 characters", length);
         }
@@ -145,7 +144,7 @@ QString PasswordDialog::errorString(int error)
         {
             int amount;
             pwquality_get_int_value(m_pwSettings, PWQ_SETTING_UP_CREDIT, &amount);
-            return i18ncp(comment
+            return i18ncp("Error returned when the password is invalid"
                 ,"The password should contain at least %1 uppercase letter"
                 ,"The password should contain at least %1 uppercase letters", amount);
         }
@@ -153,19 +152,19 @@ QString PasswordDialog::errorString(int error)
         {
             int amount;
             pwquality_get_int_value(m_pwSettings, PWQ_SETTING_LOW_CREDIT, &amount);
-            return i18ncp(comment
+            return i18ncp("Error returned when the password is invalid"
                 ,"The password should contain at least %1 lowercase letter"
                 ,"The password should contain at least %1 lowercase letters", amount);
         }
         case PWQ_ERROR_USER_CHECK:
-            return i18nc(comment, "Your username should not be part of your password");
+            return i18nc("Error returned when the password is invalid", "Your username should not be part of your password");
         case PWQ_ERROR_GECOS_CHECK:
-            return i18nc(comment, "Your name should not be part of your password");
+            return i18nc("Error returned when the password is invalid", "Your name should not be part of your password");
         case PWQ_ERROR_MIN_DIGITS:
         {
             int amount;
             pwquality_get_int_value(m_pwSettings, PWQ_SETTING_DIG_CREDIT, &amount);
-            return i18ncp(comment
+            return i18ncp("Error returned when the password is invalid"
                 ,"The password should contain at least %1 number"
                 ,"The password should contain at least %1 numbers", amount);
         }
@@ -173,20 +172,20 @@ QString PasswordDialog::errorString(int error)
         {
             int amount;
             pwquality_get_int_value(m_pwSettings, PWQ_SETTING_OTH_CREDIT, &amount);
-            return i18ncp(comment
+            return i18ncp("Error returned when the password is invalid"
                 ,"The password should contain at least %1 special character (like punctuation)"
                 ,"The password should contain at least %1 special characters (like punctuation)", amount);
         }
         case PWQ_ERROR_MIN_CLASSES:
-            return i18nc(comment, "The password should contain a mixture of letters, numbers, spaces and punctuation");
+            return i18nc("Error returned when the password is invalid", "The password should contain a mixture of letters, numbers, spaces and punctuation");
         case PWQ_ERROR_MAX_CONSECUTIVE:
-            return i18nc(comment, "The password should not contain too many repeated characters");
+            return i18nc("Error returned when the password is invalid", "The password should not contain too many repeated characters");
         case PWQ_ERROR_MAX_CLASS_REPEAT:
-            return i18nc(comment, "The password should be more varied in letters, numbers and punctuation");
+            return i18nc("Error returned when the password is invalid", "The password should be more varied in letters, numbers and punctuation");
         case PWQ_ERROR_MAX_SEQUENCE:
-            return i18nc(comment, "The password should not contain sequences like 1234 or abcd");
+            return i18nc("Error returned when the password is invalid", "The password should not contain sequences like 1234 or abcd");
         case PWQ_ERROR_CRACKLIB_CHECK:
-            return i18nc(comment, "This password can't be used, it is too simple");
+            return i18nc("Error returned when the password is invalid", "This password can't be used, it is too simple");
     };
 
     return i18nc("Returned when a more specific error message has not been found"
