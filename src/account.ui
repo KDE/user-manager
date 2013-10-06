@@ -161,72 +161,59 @@
         </layout>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Password:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Administrator:</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="4" column="1">
        <widget class="QCheckBox" name="administrator">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>Automatic Login:</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="5" column="1">
        <widget class="QCheckBox" name="automaticLogin">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="passwordEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="changePassword">
         <property name="text">
-         <string>Change Password</string>
+         <string>MyPassword</string>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string/>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
      </layout>
     </widget>
@@ -246,7 +233,6 @@
    </item>
   </layout>
   <zorder>widget_2</zorder>
-  <zorder>widget</zorder>
   <zorder>verticalSpacer</zorder>
  </widget>
  <tabstops>
@@ -256,7 +242,6 @@
   <tabstop>email</tabstop>
   <tabstop>administrator</tabstop>
   <tabstop>automaticLogin</tabstop>
-  <tabstop>changePassword</tabstop>
  </tabstops>
  <resources/>
  <connections/>

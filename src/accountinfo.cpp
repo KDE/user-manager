@@ -52,7 +52,6 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     connect(m_info->email, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->administrator, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
-    connect(m_info->changePassword, SIGNAL(clicked(bool)), SLOT(changePassword()));
 
     connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex)));
     m_info->face->setPopupMode(QToolButton::InstantPopup);
@@ -110,7 +109,6 @@ void AccountInfo::loadFromModel()
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
     m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
-    m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
 }
 
 bool AccountInfo::save()
@@ -204,7 +202,6 @@ void AccountInfo::hasChanged()
         infoToSave[AccountModel::Password] = m_infoToSave[AccountModel::Password];
     }
 
-    m_info->changePassword->setEnabled(m_model->data(m_index, AccountModel::Created).toBool());
 
     m_infoToSave = infoToSave;
     Q_EMIT changed(!m_infoToSave.isEmpty());
