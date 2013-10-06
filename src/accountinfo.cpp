@@ -48,10 +48,11 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
  , m_passwordEdit(new PasswordEdit(this))
  , m_model(model)
 {
+    m_info->setupUi(this);
     //If I remove this from the .ui file the layouting gets screwed...
+    m_info->formLayout->removeWidget(m_info->passwordEdit);
     delete m_info->passwordEdit;
 
-    m_info->setupUi(this);
     connect(m_info->username, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->realName, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->email, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
