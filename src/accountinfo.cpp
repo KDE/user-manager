@@ -83,6 +83,9 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->realName->setMinimumWidth(size);
     m_info->email->setMinimumWidth(size);
 
+    QWidget::setTabOrder(m_info->email, m_passwordEdit);
+    QWidget::setTabOrder(m_passwordEdit, m_info->administrator);
+
     m_passwordEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_passwordEdit->setMinimumWidth(size);
     m_passwordEdit->setEchoMode(QLineEdit::Password);
