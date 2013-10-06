@@ -126,6 +126,7 @@ void AccountInfo::loadFromModel()
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
     m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
+    m_passwordEdit->clear();
 }
 
 bool AccountInfo::save()
@@ -403,5 +404,6 @@ void AccountInfo::changePassword()
     }
 
     m_infoToSave[AccountModel::Password] = dialog->password();
+    m_passwordEdit->setText(dialog->password());
     Q_EMIT changed(true);
 }
