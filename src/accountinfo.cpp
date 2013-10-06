@@ -332,7 +332,7 @@ bool AccountInfo::validateEmail(const QString& email) const
         return false;
     }
 
-    QString strPatt = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b";
+    QString strPatt = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}\\b";
     QRegExp rx(strPatt);
     rx.setCaseSensitivity(Qt::CaseInsensitive);
     rx.setPatternSyntax(QRegExp::RegExp);
