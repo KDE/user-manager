@@ -59,6 +59,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     connect(m_info->administrator, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_passwordEdit, SIGNAL(focused()), SLOT(changePassword()));
+    connect(m_passwordEdit, SIGNAL(textEdited(QString)), SLOT(changePassword()));
 
     connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex)));
     m_info->face->setPopupMode(QToolButton::InstantPopup);
