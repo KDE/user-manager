@@ -26,5 +26,7 @@ PasswordEdit::PasswordEdit(QWidget* parent) : QLineEdit(parent)
 void PasswordEdit::focusInEvent(QFocusEvent* e)
 {
     QLineEdit::focusInEvent(e);
-    Q_EMIT focused();
+    if (e->reason() != Qt::ActiveWindowFocusReason) {
+        Q_EMIT focused();
+    }
 }
