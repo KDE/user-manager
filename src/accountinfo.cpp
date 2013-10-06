@@ -21,6 +21,7 @@
 #include "createavatarjob.h"
 #include "passworddialog.h"
 #include "lib/accountmodel.h"
+#include "passwordedit.h"
 
 #include <pwd.h>
 #include <utmp.h>
@@ -44,14 +45,19 @@
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
  , m_info(new Ui::AccountInfo())
+ , m_passwordEdit(new PasswordEdit(this))
  , m_model(model)
 {
+    //If I remove this from the .ui file the layouting gets screwed...
+    delete m_info->passwordEdit;
+
     m_info->setupUi(this);
     connect(m_info->username, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->realName, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->email, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
     connect(m_info->administrator, SIGNAL(clicked(bool)), SLOT(hasChanged()));
     connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
+    connect(m_passwordEdit, SIGNAL(focused()), SLOT(changePassword()));
 
     connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex)));
     m_info->face->setPopupMode(QToolButton::InstantPopup);
@@ -74,6 +80,13 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->username->setMinimumWidth(size);
     m_info->realName->setMinimumWidth(size);
     m_info->email->setMinimumWidth(size);
+    m_passwordEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    m_passwordEdit->setMinimumWidth(size);
+
+    int row;
+    QFormLayout::ItemRole role;
+    m_info->formLayout->getWidgetPosition(m_info->label_2, &row, &role);
+    m_info->formLayout->insertRow(row, m_info->label_3, m_passwordEdit);
 
     int pixmapSize = m_info->username->sizeHint().height();
     m_negative = QIcon::fromTheme("dialog-cancel").pixmap(pixmapSize, pixmapSize);

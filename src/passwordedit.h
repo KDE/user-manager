@@ -16,60 +16,19 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
-#ifndef ACCOUNT_INFO_WIDGET
-#define ACCOUNT_INFO_WIDGET
+#include <QLineEdit>
+#include <QFocusEvent>
 
-#include <QtCore/QModelIndex>
-
-#include <QtGui/QWidget>
-#include "lib/accountmodel.h"
-
-class KJob;
-namespace Ui {
-    class AccountInfo;
-}
-class PasswordEdit;
-class AccountModel;
-class AccountInfo : public QWidget
+class PasswordEdit : public QLineEdit
 {
     Q_OBJECT
+
     public:
-        explicit AccountInfo(AccountModel* model, QWidget* parent = 0, Qt::WindowFlags f = 0);
-        virtual ~AccountInfo();
-
-        void setModelIndex(const QModelIndex &index);
-        QModelIndex modelIndex() const;
-
-        void loadFromModel();
-        bool save();
-
-    public Q_SLOTS:
-        void hasChanged();
-        void openAvatarSlot();
-        void clearAvatar();
-        void avatarCreated(KJob* job);
-        void avatarModelChanged();
-        void changePassword();
-        void dataChanged(const QModelIndex &index);
+        explicit PasswordEdit(QWidget* parent = 0);
 
     Q_SIGNALS:
-        void changed(bool changed);
+        void focused();
 
-    private:
-        QString cleanName(QString name) const;
-        bool validateName(const QString &name) const;
-        QString cleanUsername(QString username);
-        bool validateUsername(QString username) const;
-        QString cleanEmail(QString email);
-        bool validateEmail(const QString &email) const;
-
-        QPixmap m_positive;
-        QPixmap m_negative;
-        PasswordEdit *m_passwordEdit;
-        Ui::AccountInfo * m_info;
-        QModelIndex m_index;
-        AccountModel* m_model;
-        QMap<AccountModel::Role, QVariant> m_infoToSave;
+    protected:
+        virtual void focusInEvent(QFocusEvent* e);
 };
-
-#endif //ACCOUNT_INFO_WIDGET
