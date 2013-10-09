@@ -167,7 +167,7 @@ bool AccountInfo::save()
 
         QFile::remove(faceFile);
         KIO::CopyJob* moveJob = KIO::move(KUrl(path), KUrl(faceFile), KIO::HideProgressInfo);
-        connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged()));
+        connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
         moveJob->setUiDelegate(0);
         moveJob->start();
     }
@@ -384,9 +384,10 @@ void AccountInfo::avatarCreated(KJob* job)
     Q_EMIT changed(true);
 }
 
-void AccountInfo::avatarModelChanged()
+void AccountInfo::avatarModelChanged(KJob* job)
 {
-    m_model->setData(m_index, QVariant(), AccountModel::Face);
+    KIO::CopyJob* cJob = qobject_cast<KIO::CopyJob*>(job);
+    m_model->setData(m_index, QVariant(cJob->destUrl().path()), AccountModel::Face);
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
 }
 

@@ -147,6 +147,9 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
     switch(role) {
         //The modification of the face file should be done outside
         case AccountModel::Face:
+            if (checkForErrors(acc->SetIconFile(value.toString()))) {
+                return false;
+            }
             emit dataChanged(index, index);
             return true;
         case AccountModel::RealName:
