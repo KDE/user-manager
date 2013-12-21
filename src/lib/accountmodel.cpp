@@ -27,6 +27,7 @@
 
 #include <KDebug>
 #include <KLocalizedString>
+#include <kiconloader.h>
 
 #include <sys/types.h>
 #include <unistd.h>
@@ -101,10 +102,11 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
         case Qt::DecorationRole || AccountModel::FriendlyName:
         {
             QFile file(acc->iconFile());
+            int size = IconSize(KIconLoader::Dialog);
             if (!file.exists()) {
-                return QIcon::fromTheme("user-identity").pixmap(48, 48);
+                return QIcon::fromTheme("user-identity").pixmap(size, size);
             }
-            return QPixmap(file.fileName()).scaled(48, 48);
+            return QPixmap(file.fileName()).scaled(size, size);
         }
         case AccountModel::RealName:
             return acc->realName();
@@ -229,7 +231,7 @@ QVariant AccountModel::newUserData(int role) const
         case Qt::DisplayRole || AccountModel::FriendlyName:
             return i18n("New User");
         case Qt::DecorationRole || AccountModel::Face:
-            return QIcon::fromTheme("list-add-user").pixmap(48, 48);
+            return QIcon::fromTheme("list-add-user").pixmap(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
         case AccountModel::Created:
             return false;
     }
