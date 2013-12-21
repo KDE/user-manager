@@ -65,10 +65,10 @@ class AccountInfo : public QWidget
 
         QPixmap m_positive;
         QPixmap m_negative;
-        PasswordEdit *m_passwordEdit;
         Ui::AccountInfo * m_info;
-        QModelIndex m_index;
         AccountModel* m_model;
+        PasswordEdit *m_passwordEdit;
+        QModelIndex m_index;
         QMap<AccountModel::Role, QVariant> m_infoToSave;
 };
 

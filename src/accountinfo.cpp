@@ -45,8 +45,8 @@
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
  , m_info(new Ui::AccountInfo())
- , m_passwordEdit(new PasswordEdit(this))
  , m_model(model)
+ , m_passwordEdit(new PasswordEdit(this))
 {
     m_info->setupUi(this);
     //If I remove this from the .ui file the layouting gets screwed...
