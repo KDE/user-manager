@@ -76,6 +76,10 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     menu->addAction(openAvatar);
     menu->addAction(editClear);
 
+    int iconSizeX = IconSize(KIconLoader::Dialog);
+    QSize iconSize(iconSizeX, iconSizeX);
+    m_info->face->setIconSize(iconSize);
+    m_info->face->setMinimumSize(iconSize);
     m_info->face->setMenu(menu);
 
     int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight() * 29;
@@ -123,7 +127,6 @@ QModelIndex AccountInfo::modelIndex() const
 void AccountInfo::loadFromModel()
 {
     m_info->username->setText(m_model->data(m_index, AccountModel::Username).toString());
-    m_info->face->setIconSize(QSize(32,32));
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
     m_info->realName->setText(m_model->data(m_index, AccountModel::RealName).toString());
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
@@ -393,6 +396,7 @@ void AccountInfo::avatarModelChanged(KJob* job)
 
 void AccountInfo::clearAvatar()
 {
+    QSize icon(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
     m_info->face->setIcon(QIcon::fromTheme("user-identity").pixmap(48, 48));
     m_infoToSave.insert(AccountModel::Face, QString());
     Q_EMIT changed(true);
