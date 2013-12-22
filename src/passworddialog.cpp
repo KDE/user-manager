@@ -79,6 +79,7 @@ QString PasswordDialog::password() const
 void PasswordDialog::checkPassword()
 {
     kDebug() << "Checking password";
+    button(KDialog::Ok)->setEnabled(false);
 
     if (verifyEdit->text().isEmpty()) {
         kDebug() << "Verify password is empty";
