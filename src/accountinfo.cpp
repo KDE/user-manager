@@ -126,7 +126,14 @@ QModelIndex AccountInfo::modelIndex() const
 
 void AccountInfo::loadFromModel()
 {
-    m_info->username->setText(m_model->data(m_index, AccountModel::Username).toString());
+    QString username = m_model->data(m_index, AccountModel::Username).toString();
+    if (!username.isEmpty()) {
+        m_info->username->setDisabled(true);//Do not allow to change the username
+    } else {
+        m_info->username->setDisabled(false);
+    }
+    m_info->username->setText(username);
+
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
     m_info->realName->setText(m_model->data(m_index, AccountModel::RealName).toString());
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
