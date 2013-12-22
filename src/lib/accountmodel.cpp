@@ -73,7 +73,7 @@ int AccountModel::rowCount(const QModelIndex& parent) const
         return 0;
     }
 
-    return m_users.count();
+    return m_userPath.count();
 }
 
 QVariant AccountModel::data(const QModelIndex& index, int role) const
