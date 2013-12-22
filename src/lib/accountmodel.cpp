@@ -288,7 +288,11 @@ void AccountModel::addAccount(const QString& path)
 void AccountModel::addAccountToCache(const QString& path, Account* acc, int pos)
 {
     if (pos > -1) {
-        m_userPath.insert(pos, path);
+        if (m_userPath.count() > 0) {
+            m_userPath.replace(pos, path);
+        } else {
+            m_userPath.insert(pos, path);
+        }
     } else {
         m_userPath.append(path);
     }
@@ -339,19 +343,16 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
     }
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
-    //We are adding one row in the bottom but we are updating the information
-    //of the just added user, which will be the penultimate row since
-    //"New User" is always the row in the bottom.
-    //TODO: Move "New User" to a Proxy Model
+    //First, we modify "new-user" to become the new created user
     int row = rowCount();
-    beginInsertRows(QModelIndex(), row, row);
     addAccountToCache(path.path(), acc, row - 1);
-    endInsertRows();
-
-    //Notify that the penultimate row has been modified, so new data (from the
-    //freshly added account is updated
     QModelIndex changedIndex = index(row - 1, 0);
     emit dataChanged(changedIndex, changedIndex);
+
+    //Then we add new-user again.
+    beginInsertRows(QModelIndex(), row, row);
+    addAccountToCache("new-user", 0);
+    endInsertRows();
 }
 
 void AccountModel::UserDeleted(const QDBusObjectPath& path)
