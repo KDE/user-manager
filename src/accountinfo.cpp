@@ -353,6 +353,11 @@ void AccountInfo::dataChanged(const QModelIndex& index)
         return;
     }
 
+    //If we have no username, we assume this was user-new
+    if (m_info->username->text().isEmpty()) {
+        loadFromModel();
+        return;
+    }
     hasChanged();
 }
 
