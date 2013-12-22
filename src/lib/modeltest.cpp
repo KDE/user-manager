@@ -472,8 +472,6 @@ void ModelTest::checkChildren(const QModelIndex &parent, int currentDepth)
          *        qDebug() << c.next << model->data(model->index(end + 1, 0, c.parent));
          }
          */
-        qDebug() << "A: ";
-        qDebug() << c.next << " " << model->data(model->index(end + 1, 0, c.parent));
         Q_ASSERT(c.next == model->data(model->index(end + 1, 0, c.parent)));
     }
 
