@@ -213,6 +213,8 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
 
 bool AccountModel::removeRows(int row, int count, const QModelIndex& parent)
 {
+    Q_UNUSED(count);
+    Q_UNUSED(parent);
     return removeAccountKeepingFiles(row, true);
 }
 
