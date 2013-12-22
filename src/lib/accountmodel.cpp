@@ -271,7 +271,7 @@ bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
 void AccountModel::addAccount(const QString& path)
 {
     Account *acc = new Account("org.freedesktop.Accounts", path, QDBusConnection::systemBus(), this);
-    int uid = acc->uid();
+    qulonglong uid = acc->uid();
     if (!acc->isValid() || acc->lastError().isValid() || acc->systemAccount()) {
         return;
     }
