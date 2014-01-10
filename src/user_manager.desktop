@@ -36,6 +36,7 @@ Name[x-test]=xxUser Managerxx
 
 Comment=Add, remove or edit system users
 Comment[bs]=Dodaj, ukloni ili izmijeni sistemske korisnike
+Comment[cs]=Přidávejte, odebírejte a upravujte uživatele systému
 Comment[de]=Systembenutzer hinzufügen, entfernen oder bearbeiten
 Comment[es]=Añadir, eliminar y editar usuarios del sistema
 Comment[fi]=Järjestelmän käyttäjien lisääminen, poistaminen ja muokkaaminen
@@ -58,6 +59,7 @@ Comment[x-test]=xxAdd, remove or edit system usersxx
 
 X-KDE-Keywords=users,system,administration
 X-KDE-Keywords[bs]=korisnici,sistem,administracija
+X-KDE-Keywords[cs]=uživatelé,systém,správa
 X-KDE-Keywords[de]=Benutzer,System,Verwaltung
 X-KDE-Keywords[es]=usuarios,sistema,administración
 X-KDE-Keywords[fi]=käyttäjät,järjestelmä,ylläpito,hallinnointi
