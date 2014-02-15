@@ -59,7 +59,7 @@ class AccountModel : public QAbstractListModel
         bool newUserSetData(const QVariant& value, int role);
 
     public Q_SLOTS:
-        void UserAdded(const QDBusObjectPath &path);
+        void UserAdded(const QDBusObjectPath &dbusPah);
         void UserDeleted(const QDBusObjectPath &path);
         void Changed();
         void userLogged(uint uid, bool logged);

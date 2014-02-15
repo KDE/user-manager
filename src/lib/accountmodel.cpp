@@ -335,9 +335,10 @@ QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int 
     return i18n("Users");
 }
 
-void AccountModel::UserAdded(const QDBusObjectPath& path)
+void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
 {
-    Account* acc = new Account("org.freedesktop.Accounts", path.path(), QDBusConnection::systemBus(), this);
+    QString path = dbusPath.path();
+    Account* acc = new Account("org.freedesktop.Accounts", path, QDBusConnection::systemBus(), this);
     if (acc->systemAccount()) {
         return;
     }
@@ -345,7 +346,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& path)
 
     //First, we modify "new-user" to become the new created user
     int row = rowCount();
-    addAccountToCache(path.path(), acc, row - 1);
+    addAccountToCache(path, acc, row - 1);
     QModelIndex changedIndex = index(row - 1, 0);
     emit dataChanged(changedIndex, changedIndex);
 
