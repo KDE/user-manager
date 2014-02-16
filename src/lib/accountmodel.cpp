@@ -354,6 +354,11 @@ QVariant AccountModel::headerData(int section, Qt::Orientation orientation, int 
 void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
 {
     QString path = dbusPath.path();
+    if (m_userPath.contains(path)) {
+        kDebug() << "We already have:" << path;
+        return;
+    }
+
     Account* acc = new Account("org.freedesktop.Accounts", path, QDBusConnection::systemBus(), this);
     if (acc->systemAccount()) {
         return;
