@@ -185,6 +185,8 @@ bool AccountInfo::save()
     if (!failed.isEmpty()) {
         kDebug() << "Failed Roles: " << failed;
     }
+
+    m_info->username->setEnabled(false);
     m_infoToSave.clear();
     return true;
 }
