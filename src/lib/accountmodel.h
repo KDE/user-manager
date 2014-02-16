@@ -56,7 +56,7 @@ class AccountModel : public QAbstractListModel
         bool removeAccountKeepingFiles(int row, bool keepFile = false);
 
         QVariant newUserData(int role) const;
-        bool newUserSetData(const QVariant& value, int role);
+        bool newUserSetData(const QModelIndex& index, const QVariant& value, int roleInt);
 
     public Q_SLOTS:
         void UserAdded(const QDBusObjectPath &dbusPah);

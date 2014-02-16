@@ -143,7 +143,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
     QString path = m_userPath.at(index.row());
     Account* acc = m_users.value(path);
     if (!acc) {
-        return newUserSetData(value, role);
+        return newUserSetData(index, value, role);
     }
 
     switch(role) {
@@ -240,28 +240,44 @@ QVariant AccountModel::newUserData(int role) const
     return QVariant();
 }
 
-bool AccountModel::newUserSetData(const QVariant& value, int roleInt)
+bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& value, int roleInt)
 {
     AccountModel::Role role = (AccountModel::Role) roleInt;
     m_newUserData[role] = value;
-    if (m_newUserData.count() < 5) {
+    QList<AccountModel::Role> roles = m_newUserData.keys();
+    if (!roles.contains(Username) || !roles.contains(RealName) || !roles.contains(Administrator)) {
         return true;
     }
 
-    int userType = value.toBool() ? 1 : 0;
+
+    int userType = m_newUserData[Administrator].toBool() ? 1 : 0;
     QDBusPendingReply <QDBusObjectPath > reply = m_dbus->CreateUser(m_newUserData[Username].toString(), m_newUserData[RealName].toString(), userType);
     reply.waitForFinished();
 
     if (reply.isError()) {
         kDebug() << reply.error().name();
         kDebug() << reply.error().message();
+        m_newUserData.clear();
         return false;
     }
 
-    Account *acc = new Account("org.freedesktop.Accounts", reply.value().path(), QDBusConnection::systemBus(), this);
-    acc->SetAutomaticLogin(m_newUserData[AutomaticLogin].toBool());
-    acc->SetEmail(m_newUserData[Email].toString());
-    acc->deleteLater();
+    m_newUserData.remove(Username);
+    m_newUserData.remove(RealName);
+    m_newUserData.remove(Administrator);
+
+    //If we don't have anything else to set just return
+    if (m_newUserData.isEmpty()) {
+        return true;
+    }
+
+    UserAdded(reply.value());
+
+    QHash<AccountModel::Role, QVariant>::const_iterator i = m_newUserData.constBegin();
+    while (i != m_newUserData.constEnd()) {
+        qDebug() << "Setting extra:" << i.key() << "with value:" << i.value();
+        setData(index, i.value(), i.key());
+        ++i;
+    }
 
     m_newUserData.clear();
 
