@@ -12,6 +12,7 @@ X-KDE-System-Settings-Parent-Category=system-administration
 
 Name=User Manager
 Name[bs]=Menadžer korisnika
+Name[ca]=Gestor d'usuaris
 Name[cs]=Správce uživatelů
 Name[de]=Benutzerverwaltung
 Name[el]=Διαχειριστής χρηστών
@@ -38,6 +39,7 @@ Name[x-test]=xxUser Managerxx
 
 Comment=Add, remove or edit system users
 Comment[bs]=Dodaj, ukloni ili izmijeni sistemske korisnike
+Comment[ca]=Afegeix, elimina o edita els usuaris del sistema
 Comment[cs]=Přidávejte, odebírejte a upravujte uživatele systému
 Comment[de]=Systembenutzer hinzufügen, entfernen oder bearbeiten
 Comment[el]=Προσθήκη, αφαίρεση ή επεξεργασία των χρηστών του συστήματος
@@ -63,6 +65,7 @@ Comment[x-test]=xxAdd, remove or edit system usersxx
 
 X-KDE-Keywords=users,system,administration
 X-KDE-Keywords[bs]=korisnici,sistem,administracija
+X-KDE-Keywords[ca]=usuaris,sistema,administració
 X-KDE-Keywords[cs]=uživatelé,systém,správa
 X-KDE-Keywords[de]=Benutzer,System,Verwaltung
 X-KDE-Keywords[el]=χρήστες,σύστημα,διαχείριση
