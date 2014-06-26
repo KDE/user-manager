@@ -27,18 +27,19 @@
 #include <pwquality.h>
 
 #include <QtCore/QDebug>
-#include <QtGui/QListView>
-#include <QtGui/QVBoxLayout>
+#include <QListView>
+#include <QVBoxLayout>
 
 #include <kpluginfactory.h>
 #include <KLocalizedString>
 #include <KMessageBox>
+#include <KIconLoader>
 
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
 
 UserManager::UserManager(QWidget* parent, const QVariantList& args) 
- : KCModule(UserManagerFactory::componentData(), parent)
+ : KCModule(parent, args)
  , m_saveNeeded(false)
  , m_model(new AccountModel(this))
  , m_widget(new AccountInfo(m_model, this))

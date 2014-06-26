@@ -26,9 +26,9 @@
 #include <pwd.h>
 #include <utmp.h>
 
-#include <QtGui/QMenu>
-#include <QtGui/QToolButton>
-#include <QtGui/QDesktopServices>
+#include <QMenu>
+#include <QToolButton>
+#include <QDesktopServices>
 
 #include <KDebug>
 #include <KImageIO>
@@ -39,6 +39,7 @@
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
 #include <KGlobalSettings>
+#include <KIconLoader>
 
 #define MAX_USER_LEN  (UT_NAMESIZE - 1)
 
@@ -375,7 +376,8 @@ void AccountInfo::openAvatarSlot()
     KFileDialog dlg(QDir::homePath(), KImageIO::pattern(KImageIO::Reading), this);
 
     dlg.setOperationMode(KFileDialog::Opening);
-    dlg.setCaption(i18nc("@title:window", "Choose Image"));
+#warning KFileDialog::setCaption is missing
+    //dlg.setCaption(i18nc("@title:window", "Choose Image"));
     dlg.setMode(KFile::File);
 
     KImageFilePreview *imagePreviewer = new KImageFilePreview(&dlg);

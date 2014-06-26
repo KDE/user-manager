@@ -21,7 +21,7 @@
 
 #include <QtCore/QModelIndex>
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include "lib/accountmodel.h"
 
 class KJob;

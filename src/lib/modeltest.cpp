@@ -23,7 +23,7 @@
 
 #include "modeltest.h"
 
-#include <QtGui/QtGui>
+#include <QtGui>
 
 /*!
  *    Connect to all of the models signals.  Whenever anything happens recheck everything.
