@@ -86,7 +86,7 @@ X-KDE-Keywords[sk]=používatelia,systém,správa
 X-KDE-Keywords[sl]=uporabniki,sistem,skrbništvo
 X-KDE-Keywords[sv]=användare,system,administration
 X-KDE-Keywords[tr]=kullanıcılar,sistem,yönetim
-X-KDE-Keywords[uk]=users,system,administration,користувачі,система,адміністрування
+X-KDE-Keywords[uk]=users;system;administration;користувачі;система;адміністрування
 X-KDE-Keywords[x-test]=xxusers,system,administrationxx
 
 Categories=Qt;KDE;X-KDE-settings-user_manager;
