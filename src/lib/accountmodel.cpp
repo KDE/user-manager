@@ -23,7 +23,7 @@
 #include "accounts_interface.h"
 #include "user_interface.h"
 
-#include <QtGui/QIcon>
+#include <QIcon>
 
 #include <KDebug>
 #include <KLocalizedString>

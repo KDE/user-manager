@@ -18,6 +18,7 @@
 
 #include "createavatarjob.h"
 
+#include <QImage>
 #include <KDebug>
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
@@ -67,7 +68,8 @@ void CreateAvatarJob::copyDone(KJob* job)
         return;
     }
 
-    QImage face = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 192, 192);
+#warning KPixmapRegionSelectorDialog is no longer available
+    QImage face; // = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 192, 192);
     face.save(m_tmpFile, "PNG", 10);
     emitResult();
 }
