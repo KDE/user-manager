@@ -37,6 +37,7 @@ Name[tr]=Kullanıcı Yöneticisi
 Name[ug]=ئىشلەتكۈچى باشقۇرۇش پروگراممىسى
 Name[uk]=Керування користувачами
 Name[x-test]=xxUser Managerxx
+Name[zh_CN]=用户管理程序
 
 Comment=Add, remove or edit system users
 Comment[bs]=Dodaj, ukloni ili izmijeni sistemske korisnike
@@ -64,6 +65,7 @@ Comment[sv]=Lägg till, ta bort eller redigera systemanvändare
 Comment[tr]=Sistem kullanıcıları ekle, kaldır veya düzenle
 Comment[uk]=Додавання, вилучення або зміна записів користувачів системи
 Comment[x-test]=xxAdd, remove or edit system usersxx
+Comment[zh_CN]=添加，删除，修改系统用户
 
 X-KDE-Keywords=users,system,administration
 X-KDE-Keywords[bs]=korisnici,sistem,administracija
@@ -91,5 +93,6 @@ X-KDE-Keywords[sv]=användare,system,administration
 X-KDE-Keywords[tr]=kullanıcılar,sistem,yönetim
 X-KDE-Keywords[uk]=users,system,administration,користувачі,система,адміністрування
 X-KDE-Keywords[x-test]=xxusers,system,administrationxx
+X-KDE-Keywords[zh_CN]=users,system,administration,用户,系统,管理
 
 Categories=Qt;KDE;X-KDE-settings-user_manager;
