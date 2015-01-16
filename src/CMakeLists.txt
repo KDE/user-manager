@@ -33,7 +33,7 @@ qt5_add_dbus_interface(user_manager_SRCS
 )
 
 
-qt5_wrap_ui(user_manager_SRCS kcm.ui account.ui password.ui)
+ki18n_wrap_ui(user_manager_SRCS kcm.ui account.ui password.ui)
 
 add_library(user_manager MODULE ${user_manager_SRCS})
 
