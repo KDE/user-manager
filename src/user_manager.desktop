@@ -104,7 +104,7 @@ X-KDE-Keywords[sr@latin]=users,system,administration,korisnici,sistem,administra
 X-KDE-Keywords[sv]=användare,system,administration
 X-KDE-Keywords[tr]=kullanıcılar,sistem,yönetim
 X-KDE-Keywords[uk]=users,system,administration,користувачі,система,адміністрування
-X-KDE-Keywords[x-test]=xxusers,system,administrationxx
+X-KDE-Keywords[x-test]=xxusersxx,xxsystemxx,xxadministrationxx
 X-KDE-Keywords[zh_CN]=users,system,administration,用户,系统,管理
 
 Categories=Qt;KDE;X-KDE-settings-user_manager;
