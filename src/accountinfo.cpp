@@ -30,7 +30,7 @@
 #include <QToolButton>
 #include <QDesktopServices>
 
-#include <KDebug>
+#include "user_manager_debug.h"
 #include <KImageIO>
 #include <KFileDialog>
 #include <KImageFilePreview>
@@ -149,7 +149,7 @@ bool AccountInfo::save()
         return false;
     }
 
-    kDebug() << "Saving on Index: " << m_index.row();
+    qCDebug(USER_MANAGER_LOG) << "Saving on Index: " << m_index.row();
     QList<AccountModel::Role> failed;
     if (!m_model->setData(m_index, m_info->username->text(), AccountModel::Username)) {
         failed.append(AccountModel::Username);
@@ -184,7 +184,7 @@ bool AccountInfo::save()
     }
 
     if (!failed.isEmpty()) {
-        kDebug() << "Failed Roles: " << failed;
+        qCDebug(USER_MANAGER_LOG) << "Failed Roles: " << failed;
     }
 
     m_info->username->setEnabled(false);
@@ -396,7 +396,7 @@ void AccountInfo::openAvatarSlot()
 
 void AccountInfo::avatarCreated(KJob* job)
 {
-    kDebug() << "Avatar created";
+    qCDebug(USER_MANAGER_LOG) << "Avatar created";
     CreateAvatarJob *aJob = qobject_cast<CreateAvatarJob*>(job);
     m_info->face->setIcon(QIcon(aJob->avatarPath()));
     m_infoToSave.insert(AccountModel::Face, aJob->avatarPath());

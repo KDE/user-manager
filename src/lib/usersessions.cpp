@@ -22,7 +22,7 @@
 #include <QDBusPendingReply>
 #include <QDBusObjectPath>
 
-#include <KDebug>
+#include "user_manager_debug.h"
 
 QDBusArgument &operator<<(QDBusArgument &argument, const UserInfo &userInfo)
 {
@@ -64,7 +64,7 @@ void UserSession::listUsersSlot(QDBusPendingCallWatcher *watcher)
 {
     QDBusPendingReply<UserInfoList> reply = *watcher;
     if (reply.isError()) {
-        kWarning() << reply.error().name() << reply.error().message();
+        qCWarning(USER_MANAGER_LOG) << reply.error().name() << reply.error().message();
     } else {
         UserInfoList userList = reply.value();
         Q_FOREACH(const UserInfo &userInfo, userList) {
@@ -77,12 +77,12 @@ void UserSession::listUsersSlot(QDBusPendingCallWatcher *watcher)
 
 void UserSession::UserNew(uint id)
 {
-    kDebug() << id;
+    qCDebug(USER_MANAGER_LOG) << id;
     Q_EMIT userLogged(id, true);
 }
 
 void UserSession::UserRemoved(uint id)
 {
-    kDebug() << id;
+    qCDebug(USER_MANAGER_LOG) << id;
     Q_EMIT userLogged(id, false);
 }

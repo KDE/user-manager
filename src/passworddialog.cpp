@@ -18,7 +18,7 @@
 
 #include "passworddialog.h"
 
-#include <KDebug>
+#include "user_manager_debug.h"
 #include <QTimer>
 #include <KPushButton>
 #include <klocalizedstring.h>
@@ -78,11 +78,11 @@ QString PasswordDialog::password() const
 
 void PasswordDialog::checkPassword()
 {
-    kDebug() << "Checking password";
+    qCDebug(USER_MANAGER_LOG) << "Checking password";
     button(KDialog::Ok)->setEnabled(false);
 
     if (verifyEdit->text().isEmpty()) {
-        kDebug() << "Verify password is empty";
+        qCDebug(USER_MANAGER_LOG) << "Verify password is empty";
         return; //No verification, do nothing
     }
 
@@ -97,14 +97,14 @@ void PasswordDialog::checkPassword()
         m_pwSettings = pwquality_default_settings ();
         pwquality_set_int_value (m_pwSettings, PWQ_SETTING_MAX_SEQUENCE, 4);
         if (pwquality_read_config (m_pwSettings, NULL, NULL) < 0) {
-            kWarning() << "failed to read pwquality configuration\n";
+            qCWarning(USER_MANAGER_LOG) << "failed to read pwquality configuration\n";
             return;
         }
     }
 
     int quality = pwquality_check (m_pwSettings, password.toUtf8(), NULL, m_username, NULL);
 
-    kDebug() << "Quality: " << quality;
+    qCDebug(USER_MANAGER_LOG) << "Quality: " << quality;
 
     QString strenght;
     QPalette palette;
