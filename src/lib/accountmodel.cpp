@@ -25,7 +25,7 @@
 
 #include <QIcon>
 
-#include <KDebug>
+#include "user_manager_debug.h"
 #include <KLocalizedString>
 #include <kiconloader.h>
 
@@ -43,7 +43,7 @@ AccountModel::AccountModel(QObject* parent)
     reply.waitForFinished();
 
     if (reply.isError()) {
-        kDebug() << reply.error().message();
+        qCDebug(USER_MANAGER_LOG) << reply.error().message();
         return;
     }
 
@@ -255,8 +255,8 @@ bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& valu
     reply.waitForFinished();
 
     if (reply.isError()) {
-        kDebug() << reply.error().name();
-        kDebug() << reply.error().message();
+        qCDebug(USER_MANAGER_LOG) << reply.error().name();
+        qCDebug(USER_MANAGER_LOG) << reply.error().message();
         m_newUserData.clear();
         return false;
     }
@@ -274,7 +274,7 @@ bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& valu
 
     QHash<AccountModel::Role, QVariant>::const_iterator i = m_newUserData.constBegin();
     while (i != m_newUserData.constEnd()) {
-        qDebug() << "Setting extra:" << i.key() << "with value:" << i.value();
+        qCDebug(USER_MANAGER_LOG) << "Setting extra:" << i.key() << "with value:" << i.value();
         setData(index, i.value(), i.key());
         ++i;
     }
@@ -329,8 +329,8 @@ bool AccountModel::checkForErrors(QDBusPendingReply<void> reply) const
 {
     reply.waitForFinished();
     if (reply.isError()) {
-        kDebug() << reply.error().name();
-        kDebug() << reply.error().message();
+        qCDebug(USER_MANAGER_LOG) << reply.error().name();
+        qCDebug(USER_MANAGER_LOG) << reply.error().message();
         return true;
     }
 
@@ -355,7 +355,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
 {
     QString path = dbusPath.path();
     if (m_userPath.contains(path)) {
-        kDebug() << "We already have:" << path;
+        qCDebug(USER_MANAGER_LOG) << "We already have:" << path;
         return;
     }
 
@@ -380,7 +380,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
 void AccountModel::UserDeleted(const QDBusObjectPath& path)
 {
     if (!m_userPath.contains(path.path())) {
-        kDebug() << "User Deleted but not found: " << path.path();
+        qCDebug(USER_MANAGER_LOG) << "User Deleted but not found: " << path.path();
         return;
     }
 

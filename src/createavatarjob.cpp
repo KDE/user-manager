@@ -19,7 +19,7 @@
 #include "createavatarjob.h"
 
 #include <QImage>
-#include <KDebug>
+#include "user_manager_debug.h"
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
 #include <KPixmapRegionSelectorDialog>
@@ -45,14 +45,14 @@ void CreateAvatarJob::start()
 
 void CreateAvatarJob::doStart()
 {
-    kDebug() << "Starting: " << m_url;
+    qCDebug(USER_MANAGER_LOG) << "Starting: " << m_url;
 
     KTemporaryFile file;
     file.open();
     m_tmpFile = file.fileName();
     file.remove();
 
-    kDebug() << "From: " << m_url << "to: " << m_tmpFile;
+    qCDebug(USER_MANAGER_LOG) << "From: " << m_url << "to: " << m_tmpFile;
     KIO::CopyJob* job = KIO::copy(m_url, KUrl(m_tmpFile), KIO::HideProgressInfo);
     connect(job, SIGNAL(finished(KJob*)), SLOT(copyDone(KJob*)));
     job->setUiDelegate(0);
@@ -62,7 +62,7 @@ void CreateAvatarJob::doStart()
 void CreateAvatarJob::copyDone(KJob* job)
 {
     if (job->error()) {
-        kDebug() << "Error:" << job->errorString();
+        qCDebug(USER_MANAGER_LOG) << "Error:" << job->errorString();
         setError(job->error());
         emitResult();
         return;

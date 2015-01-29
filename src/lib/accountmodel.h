@@ -20,7 +20,7 @@
 #ifndef ACCOUNTMODEL_H
 #define ACCOUNTMODEL_H
 
-#include <QDebug>
+#include "user_manager_debug.h"
 #include <QtCore/QStringList>
 #include <QtCore/QAbstractListModel>
 #include <QDBusObjectPath>
