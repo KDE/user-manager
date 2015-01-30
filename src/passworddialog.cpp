@@ -24,6 +24,7 @@
 #include <klocalizedstring.h>
 #include <KGlobalSettings>
 #include <KColorScheme>
+#include <QFontDatabase>
 
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     : KDialog(parent, flags)
@@ -40,7 +41,7 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     m_timer->setInterval(400);
     m_timer->setSingleShot(true);
 
-    int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight();
+    int size = QFontMetrics(QFontDatabase::systemFont(QFontDatabase::FixedFont)).xHeight();
     setMinimumWidth(size * 50);
 
     m_negative = strenghtLbl->palette();
