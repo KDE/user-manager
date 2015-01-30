@@ -40,6 +40,7 @@
 #include <KTemporaryFile>
 #include <KGlobalSettings>
 #include <KIconLoader>
+#include <QFontDatabase>
 
 #define MAX_USER_LEN  (UT_NAMESIZE - 1)
 
@@ -83,7 +84,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->face->setMinimumSize(iconSize);
     m_info->face->setMenu(menu);
 
-    int size = QFontMetrics(KGlobalSettings::fixedFont()).xHeight() * 29;
+    int size = QFontMetrics(QFontDatabase::systemFont(QFontDatabase::FixedFont)).xHeight() * 29;
     m_info->username->setMinimumWidth(size);
     m_info->realName->setMinimumWidth(size);
     m_info->email->setMinimumWidth(size);
