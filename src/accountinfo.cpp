@@ -24,7 +24,6 @@
 #include "passwordedit.h"
 
 #include <pwd.h>
-#include <utmp.h>
 
 #include <QMenu>
 #include <QToolButton>
@@ -41,8 +40,6 @@
 #include <KGlobalSettings>
 #include <KIconLoader>
 #include <QFontDatabase>
-
-#define MAX_USER_LEN  (UT_NAMESIZE - 1)
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -313,7 +310,16 @@ bool AccountInfo::validateUsername(QString username) const
         errorTooltip.append("\n");
     }
 
-    if (username.count() > MAX_USER_LEN) {
+    static const long MAX_USER_NAME_LENGTH = []() {
+        long result = sysconf(_SC_LOGIN_NAME_MAX);
+        if (result < 0) {
+            qWarning("Could not query LOGIN_NAME_MAX, defaulting to 32");
+            result = 32;
+        }
+        return result;
+    }();
+
+    if (username.size() > MAX_USER_NAME_LENGTH) {
         errorTooltip.append(i18n("The username is too long"));
         valid = false;
     }
