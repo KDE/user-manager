@@ -11,6 +11,7 @@ X-KDE-ParentApp=kcontrol
 X-KDE-System-Settings-Parent-Category=accountdetails
 
 Name=User Manager
+Name[ast]=Xestor d'usuariu
 Name[bs]=Menadžer korisnika
 Name[ca]=Gestor d'usuaris
 Name[cs]=Správce uživatelů
@@ -48,7 +49,6 @@ Name[zh_CN]=用户管理程序
 Name[zh_TW]=使用者管理程式
 
 Comment=Add, remove or edit system users
-Comment[ast]=Amiesta, desanicia o edita usuarios del sistema
 Comment[bs]=Dodaj, ukloni ili izmijeni sistemske korisnike
 Comment[ca]=Afegeix, elimina o edita els usuaris del sistema
 Comment[cs]=Přidávejte, odebírejte a upravujte uživatele systému
@@ -85,6 +85,7 @@ Comment[zh_CN]=添加，删除，修改系统用户
 Comment[zh_TW]=新增、移除或編輯系統使用者
 
 X-KDE-Keywords=users,system,administration
+X-KDE-Keywords[ast]=usuarios,systema,alministración
 X-KDE-Keywords[bs]=korisnici,sistem,administracija
 X-KDE-Keywords[ca]=usuaris,sistema,administració
 X-KDE-Keywords[cs]=uživatelé,systém,správa
