@@ -17,6 +17,9 @@ include(KDECompilerSettings)
 
 include_directories(${PWQUALITY_INCLUDE_DIR})
 
+# Set KI18n translation domain
+add_definitions(-DTRANSLATION_DOMAIN=\"user_manager\")
+
 add_subdirectory(src)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
