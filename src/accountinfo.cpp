@@ -179,6 +179,11 @@ bool AccountInfo::save()
         connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
         moveJob->setUiDelegate(0);
         moveJob->start();
+
+        QString faceFile2 = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+        faceFile2.append(QLatin1String("/.face.icon"));
+        QFile::remove(faceFile2);
+        QFile::link(faceFile, faceFile2);
     }
 
     if (!failed.isEmpty()) {

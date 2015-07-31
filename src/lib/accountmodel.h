@@ -25,6 +25,7 @@
 #include <QtCore/QAbstractListModel>
 #include <QDBusObjectPath>
 #include <QDBusPendingReply>
+#include <KEMailSettings>
 
 class UserSession;
 class OrgFreedesktopAccountsInterface;
@@ -78,6 +79,7 @@ class AccountModel : public QAbstractListModel
         QHash<AccountModel::Role, QVariant> m_newUserData;
         QHash<QString, OrgFreedesktopAccountsUserInterface*> m_users;
         QHash<QString, bool> m_loggedAccounts;
+        KEMailSettings* m_kEmailSettings;
 };
 
 QDebug operator<<(QDebug debug, AccountModel::Role role);
