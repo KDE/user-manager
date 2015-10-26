@@ -4,13 +4,17 @@
 #  PWQUALITY_INCLUDE_DIRS - The pwquality include directories
 #  PWQUALITY_LIBRARIES - The libraries needed to use pwquality
 
-find_package(PkgConfig)
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(PKG_PWQUALITY pwquality)
 
 find_path(PWQUALITY_INCLUDE_DIR pwquality.h
-          HINTS ${PWQUALITY_INCLUDEDIR} ${PWQUALITY_INCLUDE_DIRS} ${CMAKE_INSTALL_PREFIX}/include)
+          PATHS
+          ${PKG_PWQUALITY_INCLUDE_DIRS})
 
-find_library(PWQUALITY_LIBRARY NAMES libpwquality.so
-HINTS ${PWQUALITY_LIBDIR} ${PWQUALITY_LIBRARY_DIRS} ${CMAKE_INSTALL_PREFIX}/lib64)
+find_library(PWQUALITY_LIBRARY NAMES pwquality
+             PATHS
+             ${PKG_PWQUALITY_LIBRARY_DIRS})
 
 set(PWQUALITY_LIBRARIES ${PWQUALITY_LIBRARY} )
 set(PWQUALITY_INCLUDE_DIRS ${PWQUALITY_INCLUDE_DIR} )

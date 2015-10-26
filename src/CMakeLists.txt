@@ -41,8 +41,11 @@ add_library(user_manager MODULE ${user_manager_SRCS})
 target_link_libraries(user_manager
     KF5::KDELibs4Support
     ${PWQUALITY_LIBRARY}
-    crypt
 )
+
+if (NOT APPLE)
+target_link_libraries(user_manager crypt)
+endif()
 
 install(TARGETS user_manager DESTINATION ${PLUGIN_INSTALL_DIR})
 
