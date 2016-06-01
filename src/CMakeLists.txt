@@ -7,6 +7,7 @@ set(user_manager_SRCS
    createavatarjob.cpp
    passworddialog.cpp
    passwordedit.cpp
+   avatargallery.cpp
    user_manager_debug.cpp
 )
 
@@ -33,8 +34,7 @@ qt5_add_dbus_interface(user_manager_SRCS
     login1_interface
 )
 
-
-ki18n_wrap_ui(user_manager_SRCS kcm.ui account.ui password.ui)
+ki18n_wrap_ui(user_manager_SRCS kcm.ui account.ui password.ui avatargallery.ui)
 
 add_library(user_manager MODULE ${user_manager_SRCS})
 
@@ -50,3 +50,6 @@ endif()
 install(TARGETS user_manager DESTINATION ${PLUGIN_INSTALL_DIR})
 
 install(FILES user_manager.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+
+FILE(GLOB userpics pics/*.png)
+install(FILES ${userpics} DESTINATION ${DATA_INSTALL_DIR}/user-manager/avatars)

@@ -22,6 +22,7 @@
 #include "passworddialog.h"
 #include "lib/accountmodel.h"
 #include "passwordedit.h"
+#include "avatargallery.h"
 
 #include <pwd.h>
 
@@ -64,6 +65,10 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->face->setPopupMode(QToolButton::InstantPopup);
     QMenu* menu = new QMenu(this);
 
+    QAction *gallery = new QAction(i18n("Choose from Gallery..."), this);
+    gallery->setIcon(QIcon::fromTheme(QLatin1String("shape-choose"))); // TODO proper icon
+    connect(gallery, &QAction::triggered, this, &AccountInfo::openGallery);
+
     QAction *openAvatar = new QAction(i18n("Load from file..."), this);
     openAvatar->setIcon(QIcon::fromTheme(QLatin1String("document-open-folder")));
     connect(openAvatar, SIGNAL(triggered(bool)), SLOT(openAvatarSlot()));
@@ -72,6 +77,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     editClear->setIcon(QIcon::fromTheme(QLatin1String("edit-clear")));
     connect(editClear, SIGNAL(triggered(bool)), SLOT(clearAvatar()));
 
+    menu->addAction(gallery);
     menu->addAction(openAvatar);
     menu->addAction(editClear);
 
@@ -381,6 +387,19 @@ void AccountInfo::dataChanged(const QModelIndex& index)
         return;
     }
     hasChanged();
+}
+
+void AccountInfo::openGallery()
+{
+    QScopedPointer<AvatarGallery> gallery(new AvatarGallery());
+    if (gallery->exec() != QDialog::Accepted) {
+        return;
+    }
+
+    CreateAvatarJob *job = new CreateAvatarJob(this);
+    connect(job, &KJob::finished, this, &AccountInfo::avatarCreated);
+    job->setUrl(gallery->url());
+    job->start();
 }
 
 void AccountInfo::openAvatarSlot()
