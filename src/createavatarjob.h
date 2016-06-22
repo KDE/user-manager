@@ -20,7 +20,7 @@
 #define CREATE_AVATAR_JOB_H
 
 #include <kjob.h>
-#include <KUrl>
+#include <QUrl>
 
 class CreateAvatarJob : public KJob
 {
@@ -29,7 +29,7 @@ class CreateAvatarJob : public KJob
         explicit CreateAvatarJob(QObject* parent = 0);
 
         virtual void start();
-        void setUrl(const KUrl &url);
+        void setUrl(const QUrl &url);
         QString avatarPath() const;
 
     private Q_SLOTS:
@@ -37,7 +37,7 @@ class CreateAvatarJob : public KJob
         void copyDone(KJob* job);
 
     private:
-        KUrl m_url;
+        QUrl m_url;
         QString m_tmpFile;
 };
 

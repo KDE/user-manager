@@ -34,7 +34,6 @@
 #include <KImageIO>
 #include <KFileDialog>
 #include <KImageFilePreview>
-#include <KPixmapRegionSelectorDialog>
 #include <KIO/Job>
 #include <kio/copyjob.h>
 #include <KTemporaryFile>
@@ -181,7 +180,7 @@ bool AccountInfo::save()
         faceFile.append(QLatin1String("/.face"));
 
         QFile::remove(faceFile);
-        KIO::CopyJob* moveJob = KIO::move(KUrl(path), KUrl(faceFile), KIO::HideProgressInfo);
+        KIO::CopyJob* moveJob = KIO::move(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
         connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
         moveJob->setUiDelegate(0);
         moveJob->start();
@@ -404,11 +403,10 @@ void AccountInfo::openGallery()
 
 void AccountInfo::openAvatarSlot()
 {
-    KFileDialog dlg(QDir::homePath(), KImageIO::pattern(KImageIO::Reading), this);
+    KFileDialog dlg(QUrl::fromLocalFile(QDir::homePath()), KImageIO::pattern(KImageIO::Reading), this);
 
     dlg.setOperationMode(KFileDialog::Opening);
-#warning KFileDialog::setCaption is missing
-    //dlg.setCaption(i18nc("@title:window", "Choose Image"));
+    dlg.setWindowTitle(i18nc("@title:window", "Choose Image"));
     dlg.setMode(KFile::File);
 
     KImageFilePreview *imagePreviewer = new KImageFilePreview(&dlg);
@@ -418,7 +416,7 @@ void AccountInfo::openAvatarSlot()
         return;
     }
 
-    KUrl url(dlg.selectedFile());
+    QUrl url = QUrl::fromLocalFile(dlg.selectedFile());
     CreateAvatarJob *job = new CreateAvatarJob(this);
     connect(job, SIGNAL(finished(KJob*)), SLOT(avatarCreated(KJob*)));
     job->setUrl(url);

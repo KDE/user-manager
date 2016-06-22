@@ -28,7 +28,7 @@ CreateAvatarJob::CreateAvatarJob(QObject* parent) : KJob(parent)
 {
 }
 
-void CreateAvatarJob::setUrl(const KUrl& url)
+void CreateAvatarJob::setUrl(const QUrl& url)
 {
     m_url = url;
 }
@@ -53,7 +53,7 @@ void CreateAvatarJob::doStart()
     file.remove();
 
     qCDebug(USER_MANAGER_LOG) << "From: " << m_url << "to: " << m_tmpFile;
-    KIO::CopyJob* job = KIO::copy(m_url, KUrl(m_tmpFile), KIO::HideProgressInfo);
+    KIO::CopyJob* job = KIO::copy(m_url, QUrl::fromLocalFile(m_tmpFile), KIO::HideProgressInfo);
     connect(job, SIGNAL(finished(KJob*)), SLOT(copyDone(KJob*)));
     job->setUiDelegate(0);
     job->start();
