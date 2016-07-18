@@ -102,7 +102,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
                 return acc->realName();
             }
             return acc->userName();
-        case Qt::DecorationRole || AccountModel::FriendlyName:
+        case Qt::DecorationRole || AccountModel::Face:
         {
             QFile file(acc->iconFile());
             int size = IconSize(KIconLoader::Dialog);
