@@ -55,7 +55,7 @@ AccountModel::AccountModel(QObject* parent)
     //Adding fake "new user" directly into cache
     addAccountToCache("new-user", 0);
 
-    m_kEmailSettings = new KEMailSettings();
+    m_kEmailSettings = new KEMailSettings(this);
     m_kEmailSettings->setProfile(m_kEmailSettings->defaultProfileName());
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
