@@ -55,8 +55,7 @@ AccountModel::AccountModel(QObject* parent)
     //Adding fake "new user" directly into cache
     addAccountToCache("new-user", 0);
 
-    m_kEmailSettings = new KEMailSettings(this);
-    m_kEmailSettings->setProfile(m_kEmailSettings->defaultProfileName());
+    m_kEmailSettings.setProfile(m_kEmailSettings.defaultProfileName());
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
@@ -161,7 +160,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             if (checkForErrors(acc->SetRealName(value.toString()))) {
                 return false;
             }
-            m_kEmailSettings->setSetting(KEMailSettings::RealName, value.toString());
+            m_kEmailSettings.setSetting(KEMailSettings::RealName, value.toString());
 
             m_dbus->UncacheUser(acc->userName()).waitForFinished();
             m_dbus->CacheUser(acc->userName());
@@ -185,7 +184,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             if (checkForErrors(acc->SetEmail(value.toString()))) {
                 return false;
             }
-            m_kEmailSettings->setSetting(KEMailSettings::EmailAddress, value.toString());
+            m_kEmailSettings.setSetting(KEMailSettings::EmailAddress, value.toString());
 
             emit dataChanged(index, index);
             return true;
