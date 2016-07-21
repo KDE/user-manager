@@ -55,8 +55,7 @@ AccountModel::AccountModel(QObject* parent)
     //Adding fake "new user" directly into cache
     addAccountToCache("new-user", 0);
 
-    m_kEmailSettings = new KEMailSettings();
-    m_kEmailSettings->setProfile(m_kEmailSettings->defaultProfileName());
+    m_kEmailSettings.setProfile(m_kEmailSettings.defaultProfileName());
 
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
@@ -102,7 +101,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
                 return acc->realName();
             }
             return acc->userName();
-        case Qt::DecorationRole || AccountModel::FriendlyName:
+        case Qt::DecorationRole || AccountModel::Face:
         {
             QFile file(acc->iconFile());
             int size = IconSize(KIconLoader::Dialog);
@@ -161,7 +160,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             if (checkForErrors(acc->SetRealName(value.toString()))) {
                 return false;
             }
-            m_kEmailSettings->setSetting(KEMailSettings::RealName, value.toString());
+            m_kEmailSettings.setSetting(KEMailSettings::RealName, value.toString());
 
             m_dbus->UncacheUser(acc->userName()).waitForFinished();
             m_dbus->CacheUser(acc->userName());
@@ -185,7 +184,7 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             if (checkForErrors(acc->SetEmail(value.toString()))) {
                 return false;
             }
-            m_kEmailSettings->setSetting(KEMailSettings::EmailAddress, value.toString());
+            m_kEmailSettings.setSetting(KEMailSettings::EmailAddress, value.toString());
 
             emit dataChanged(index, index);
             return true;
