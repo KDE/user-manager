@@ -53,12 +53,16 @@ AvatarGallery::AvatarGallery(QWidget *parent) : QDialog(parent)
     }
 
     const QString &systemFacesPath = locations.last() + QLatin1Char('/');
-    QDir facesDir(systemFacesPath);
-    const QStringList &avatarList = facesDir.entryList(QDir::Files);
-    for (auto it = avatarList.constBegin(), end = avatarList.constEnd(); it != end; ++it) {
-        const QString iconPath = (systemFacesPath + *it);
-        auto *item = new QListWidgetItem(QIcon(iconPath), it->section('.', 0, 0), ui.m_FacesWidget);
-        item->setData(Qt::UserRole, iconPath);
+    QDir avatarsDir(systemFacesPath);
+
+    foreach(const QString &avatarStyle, avatarsDir.entryList(QDir::Dirs | QDir::NoDotDot)) {
+        QDir facesDir = (avatarsDir.filePath(avatarStyle));
+        const QStringList &avatarList = facesDir.entryList(QDir::Files);
+        for (auto it = avatarList.constBegin(), end = avatarList.constEnd(); it != end; ++it) {
+            const QString iconPath = (facesDir.absoluteFilePath(*it));
+            auto *item = new QListWidgetItem(QIcon(iconPath), it->section('.', 0, 0), ui.m_FacesWidget);
+            item->setData(Qt::UserRole, iconPath);
+        }
     }
 
     resize(420, 400); // FIXME
