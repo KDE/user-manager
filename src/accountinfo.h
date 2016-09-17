@@ -22,6 +22,7 @@
 #include <QtCore/QModelIndex>
 
 #include <QWidget>
+#include <QStringList>
 #include "lib/accountmodel.h"
 
 class KJob;
@@ -63,6 +64,7 @@ class AccountInfo : public QWidget
         bool validateUsername(QString username) const;
         QString cleanEmail(QString email);
         bool validateEmail(const QString &email) const;
+        QStringList imageFormats() const;
 
         QPixmap m_positive;
         QPixmap m_negative;

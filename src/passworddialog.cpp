@@ -19,24 +19,32 @@
 #include "passworddialog.h"
 
 #include "user_manager_debug.h"
+
 #include <QTimer>
-#include <KPushButton>
-#include <klocalizedstring.h>
-#include <KGlobalSettings>
-#include <KColorScheme>
+#include <QDialogButtonBox>
+#include <QPushButton>
 #include <QFontDatabase>
 
+#include <klocalizedstring.h>
+#include <KColorScheme>
+
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
-    : KDialog(parent, flags)
+    : QDialog(parent, flags)
     , m_pwSettings(0)
     , m_timer(new QTimer(this))
 {
     setWindowTitle(i18nc("Title for change password dialog", "New Password"));
 
-    QWidget *widget = new QWidget(this);
+    QWidget *widget = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout(this);
     setupUi(widget);
-    setMainWidget(widget);
-    button(KDialog::Ok)->setEnabled(false);
+    layout->addWidget(widget);
+    buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
+    buttons->button(QDialogButtonBox::Ok)->setShortcut(Qt::CTRL | Qt::Key_Return);
+    layout->addWidget(buttons);
+    setLayout(layout);
+
     passwordEdit->setFocus();
     m_timer->setInterval(400);
     m_timer->setSingleShot(true);
@@ -54,6 +62,8 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
     connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
     connect(verifyEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
+    connect(buttons->button(QDialogButtonBox::Ok), SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(buttons->button(QDialogButtonBox::Cancel), SIGNAL(clicked(bool)), this, SLOT(reject()));
 }
 
 PasswordDialog::~PasswordDialog()
@@ -80,7 +90,7 @@ QString PasswordDialog::password() const
 void PasswordDialog::checkPassword()
 {
     qCDebug(USER_MANAGER_LOG) << "Checking password";
-    button(KDialog::Ok)->setEnabled(false);
+    buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     if (verifyEdit->text().isEmpty()) {
         qCDebug(USER_MANAGER_LOG) << "Verify password is empty";
@@ -128,7 +138,7 @@ void PasswordDialog::checkPassword()
 
     strenghtLbl->setPalette(palette);
     strenghtLbl->setText(strenght);
-    button(KDialog::Ok)->setEnabled(true);
+    buttons->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 QString PasswordDialog::errorString(int error)

@@ -25,21 +25,19 @@
 #include "avatargallery.h"
 
 #include <pwd.h>
+#include <unistd.h>
 
 #include <QMenu>
 #include <QToolButton>
-#include <QDesktopServices>
+#include <QStandardPaths>
+#include <QImageReader>
+#include <QFontDatabase>
+#include <QFileDialog>
 
 #include "user_manager_debug.h"
-#include <KImageIO>
-#include <KFileDialog>
-#include <KImageFilePreview>
-#include <KIO/Job>
-#include <kio/copyjob.h>
-#include <KTemporaryFile>
-#include <KGlobalSettings>
+#include <KJob>
+#include <KIO/CopyJob>
 #include <KIconLoader>
-#include <QFontDatabase>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -176,16 +174,17 @@ bool AccountInfo::save()
     }
     if (m_infoToSave.contains(AccountModel::Face)) {
         const QString path = m_infoToSave[AccountModel::Face].toString();
-        QString faceFile = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+        QString faceFile = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
         faceFile.append(QLatin1String("/.face"));
 
         QFile::remove(faceFile);
         KIO::CopyJob* moveJob = KIO::move(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
         connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
         moveJob->setUiDelegate(0);
+        moveJob->setUiDelegateExtension(0);
         moveJob->start();
 
-        QString faceFile2 = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+        QString faceFile2 = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
         faceFile2.append(QLatin1String("/.face.icon"));
         QFile::remove(faceFile2);
         QFile::link(faceFile, faceFile2);
@@ -401,22 +400,29 @@ void AccountInfo::openGallery()
     job->start();
 }
 
+QStringList AccountInfo::imageFormats() const
+{
+    QStringList result;
+    for(const QByteArray b: QImageReader::supportedMimeTypes()) {
+        if (! b.isEmpty())
+            result.append(QString(b));
+    }
+    return result;
+}
+
 void AccountInfo::openAvatarSlot()
 {
-    KFileDialog dlg(QUrl::fromLocalFile(QDir::homePath()), KImageIO::pattern(KImageIO::Reading), this);
+    QFileDialog dlg(this, i18nc("@title:window", "Choose Image"), QDir::homePath());
 
-    dlg.setOperationMode(KFileDialog::Opening);
-    dlg.setWindowTitle(i18nc("@title:window", "Choose Image"));
-    dlg.setMode(KFile::File);
-
-    KImageFilePreview *imagePreviewer = new KImageFilePreview(&dlg);
-    dlg.setPreviewWidget(imagePreviewer);
+    dlg.setMimeTypeFilters(imageFormats());
+    dlg.setAcceptMode(QFileDialog::AcceptOpen);
+    dlg.setFileMode(QFileDialog::ExistingFile);
 
     if (dlg.exec() != QDialog::Accepted) {
         return;
     }
 
-    QUrl url = QUrl::fromLocalFile(dlg.selectedFile());
+    QUrl url = QUrl::fromLocalFile(dlg.selectedFiles().first());
     CreateAvatarJob *job = new CreateAvatarJob(this);
     connect(job, SIGNAL(finished(KJob*)), SLOT(avatarCreated(KJob*)));
     job->setUrl(url);

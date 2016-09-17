@@ -23,10 +23,12 @@
 
 #include <pwquality.h>
 
-#include <kdialog.h>
+#include <QDialog>
+class QDialogButtonBox;
+
 
 class QTimer;
-class PasswordDialog : public KDialog, private Ui::PasswordDlg
+class PasswordDialog : public QDialog, private Ui::PasswordDlg
 {
     Q_OBJECT
 
@@ -45,6 +47,7 @@ class PasswordDialog : public KDialog, private Ui::PasswordDlg
         QPalette m_negative;
         QPalette m_neutral;
         QPalette m_positive;
+        QDialogButtonBox *buttons;
 
         pwquality_settings_t *m_pwSettings;
         QByteArray m_username;

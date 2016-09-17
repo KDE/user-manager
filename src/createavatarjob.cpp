@@ -17,11 +17,14 @@
  *************************************************************************************/
 
 #include "createavatarjob.h"
+#include "user_manager_debug.h"
 
 #include <QImage>
-#include "user_manager_debug.h"
-#include <kio/copyjob.h>
-#include <KTemporaryFile>
+#include <QPixmap>
+#include <QTemporaryFile>
+#include <QtGlobal>
+
+#include <KIO/CopyJob>
 #include <KPixmapRegionSelectorDialog>
 
 CreateAvatarJob::CreateAvatarJob(QObject* parent) : KJob(parent)
@@ -47,7 +50,7 @@ void CreateAvatarJob::doStart()
 {
     qCDebug(USER_MANAGER_LOG) << "Starting: " << m_url;
 
-    KTemporaryFile file;
+    QTemporaryFile file;
     file.open();
     m_tmpFile = file.fileName();
     file.remove();

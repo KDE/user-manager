@@ -39,7 +39,17 @@ ki18n_wrap_ui(user_manager_SRCS kcm.ui account.ui password.ui avatargallery.ui)
 add_library(user_manager MODULE ${user_manager_SRCS})
 
 target_link_libraries(user_manager
-    KF5::KDELibs4Support
+    Qt5::Core
+    Qt5::Widgets
+    Qt5::DBus
+    KF5::WidgetsAddons
+    KF5::CoreAddons
+    KF5::I18n
+    KF5::ConfigCore
+    KF5::ConfigWidgets
+    KF5::KCMUtils
+    KF5::KIOCore
+    KF5::IconThemes
     ${PWQUALITY_LIBRARY}
 )
 
