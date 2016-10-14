@@ -30,6 +30,16 @@
 class UserSession;
 class OrgFreedesktopAccountsInterface;
 class OrgFreedesktopAccountsUserInterface;
+
+class AutomaticLoginSettings {
+public:
+    AutomaticLoginSettings();
+    QString autoLoginUser() const;
+    bool setAutoLoginUser(const QString &username);
+private:
+    QString m_autoLoginUser;
+};
+
 class AccountModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -72,7 +82,6 @@ class AccountModel : public QAbstractListModel
         void removeAccount(const QString &path);
         bool checkForErrors(QDBusPendingReply <void> reply) const;
         QString cryptPassword(const QString &password) const;
-
         UserSession* m_sessions;
         QStringList m_userPath;
         OrgFreedesktopAccountsInterface* m_dbus;
@@ -80,6 +89,7 @@ class AccountModel : public QAbstractListModel
         QHash<QString, OrgFreedesktopAccountsUserInterface*> m_users;
         QHash<QString, bool> m_loggedAccounts;
         KEMailSettings m_kEmailSettings;
+        AutomaticLoginSettings m_autoLoginSettings;
 };
 
 QDebug operator<<(QDebug debug, AccountModel::Role role);

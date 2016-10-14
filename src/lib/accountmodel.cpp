@@ -29,8 +29,49 @@
 #include <KLocalizedString>
 #include <kiconloader.h>
 
+#include <KAuth/KAuthActionReply>
+#include <KAuth/KAuthExecuteJob>
+
 #include <sys/types.h>
 #include <unistd.h>
+
+#include <KConfig>
+#include <KConfigGroup>
+
+#define SDDM_CONFIG_FILE    "/etc/sddm.conf"
+
+AutomaticLoginSettings::AutomaticLoginSettings()
+{
+    KConfig config(QStringLiteral(SDDM_CONFIG_FILE));
+    m_autoLoginUser = config.group("Autologin").readEntry("User", QString());
+}
+
+QString AutomaticLoginSettings::autoLoginUser() const
+{
+    return m_autoLoginUser;
+}
+
+bool AutomaticLoginSettings::setAutoLoginUser(const QString& username)
+{
+    KAuth::Action saveAction(QString("org.kde.kcontrol.kcmsddm.save"));
+    saveAction.setHelperId("org.kde.kcontrol.kcmsddm");
+    QVariantMap args;
+
+    args["sddm.conf"] = SDDM_CONFIG_FILE;
+    args["sddm.conf/Autologin/User"] = username;
+
+    saveAction.setHelperId("org.kde.kcontrol.kcmsddm");
+    saveAction.setArguments(args);
+
+    auto job = saveAction.execute();
+    if (!job->exec()) {
+        qDebug() << "fail" << job->errorText();
+        return false;
+    }
+
+    m_autoLoginUser = username;
+    return true;
+}
 
 typedef OrgFreedesktopAccountsInterface AccountsManager;
 typedef OrgFreedesktopAccountsUserInterface Account;
@@ -118,8 +159,10 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
             return acc->email();
         case AccountModel::Administrator:
             return acc->accountType() == 1;
-        case AccountModel::AutomaticLogin:
-            return acc->automaticLogin();
+        case AccountModel::AutomaticLogin: {
+            const QString username = index.data(AccountModel::Username).toString();
+            return m_autoLoginSettings.autoLoginUser() == username;
+        }
         case AccountModel::Logged:
             if (m_loggedAccounts.contains(path)) {
                 return m_loggedAccounts[path];
@@ -196,12 +239,29 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             emit dataChanged(index, index);
             return true;
         case AccountModel::AutomaticLogin:
-            if (checkForErrors(acc->SetAutomaticLogin(value.toBool()))) {
+        {
+            const bool autoLoginSet = value.toBool();
+            const QString username = index.data(AccountModel::Username).toString();
+
+            //if the checkbox is set and the SDDM config is not already us, set it to us
+            //all rows need updating as we may have unset it from someone else.
+            if (autoLoginSet && m_autoLoginSettings.autoLoginUser() != username) {
+                if (m_autoLoginSettings.setAutoLoginUser(username)) {
+                    emit dataChanged(createIndex(0, 0), createIndex(rowCount(), 0));
+                    return true;
+                }
                 return false;
             }
-
-            emit dataChanged(index, index);
+            //if the checkbox is not set and the SDDM config is set to us, then clear it
+            else if (!autoLoginSet && m_autoLoginSettings.autoLoginUser() == username) {
+                if (m_autoLoginSettings.setAutoLoginUser(QString())) {
+                    emit dataChanged(index, index);
+                    return true;
+                }
+                return false;
+            }
             return true;
+        }
         case AccountModel::Logged:
             m_loggedAccounts[path] = value.toBool();
             emit dataChanged(index, index);
@@ -472,3 +532,5 @@ QDebug operator<<(QDebug debug, AccountModel::Role role)
     }
     return debug;
 }
+
+
