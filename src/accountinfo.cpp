@@ -431,11 +431,13 @@ void AccountInfo::openAvatarSlot()
 
 void AccountInfo::avatarCreated(KJob* job)
 {
-    qCDebug(USER_MANAGER_LOG) << "Avatar created";
-    CreateAvatarJob *aJob = qobject_cast<CreateAvatarJob*>(job);
-    m_info->face->setIcon(QIcon(aJob->avatarPath()));
-    m_infoToSave.insert(AccountModel::Face, aJob->avatarPath());
-    Q_EMIT changed(true);
+    if (! job->error()) {
+        qCDebug(USER_MANAGER_LOG) << "Avatar created";
+        CreateAvatarJob *aJob = qobject_cast<CreateAvatarJob*>(job);
+        m_info->face->setIcon(QIcon(aJob->avatarPath()));
+        m_infoToSave.insert(AccountModel::Face, aJob->avatarPath());
+        Q_EMIT changed(true);
+    }
 }
 
 void AccountInfo::avatarModelChanged(KJob* job)

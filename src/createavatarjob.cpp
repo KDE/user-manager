@@ -71,8 +71,25 @@ void CreateAvatarJob::copyDone(KJob* job)
         return;
     }
 
-#warning KPixmapRegionSelectorDialog is no longer available
-    QImage face; // = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 192, 192);
-    face.save(m_tmpFile, "PNG", 10);
+    QImage face = KPixmapRegionSelectorDialog::getSelectedImage(QPixmap(m_tmpFile), 192, 192);
+    if (face.isNull()) {
+        qCDebug(USER_MANAGER_LOG) << "Icon region selection aborted";
+        setError(UserDefinedError);
+        emitResult();
+        return;
+    }
+
+    /* Accountmanager doesn't allow icon which are bigger than 1MB */
+    face = face.scaledToWidth(qMin(600, face.width()));
+
+    /* Delete file, otherwise face.save() will fail */
+    QFile::remove(m_tmpFile);
+    if (! face.save(m_tmpFile, "PNG", 10)) {
+        qCDebug(USER_MANAGER_LOG) << "Saving icon failed";
+        setError(UserDefinedError);
+        emitResult();
+        return;
+    }
+
     emitResult();
 }
