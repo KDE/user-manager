@@ -162,8 +162,6 @@ bool AccountModel::setData(const QModelIndex& index, const QVariant& value, int 
             }
             m_kEmailSettings.setSetting(KEMailSettings::RealName, value.toString());
 
-            m_dbus->UncacheUser(acc->userName()).waitForFinished();
-            m_dbus->CacheUser(acc->userName());
             emit dataChanged(index, index);
             return true;
         case AccountModel::Username:
