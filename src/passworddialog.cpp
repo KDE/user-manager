@@ -62,8 +62,8 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
     connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
     connect(verifyEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
-    connect(buttons->button(QDialogButtonBox::Ok), SIGNAL(clicked(bool)), this, SLOT(accept()));
-    connect(buttons->button(QDialogButtonBox::Cancel), SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(buttons, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 PasswordDialog::~PasswordDialog()
