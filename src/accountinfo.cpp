@@ -58,6 +58,11 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     connect(m_passwordEdit, SIGNAL(focused()), SLOT(changePassword()));
     connect(m_passwordEdit, SIGNAL(textEdited(QString)), SLOT(changePassword()));
 
+    //automaticLogin only sets a flag in AccountsService, which isn't supported by anything else
+    //so hide it until the situation is different
+    m_info->automaticLogin->setVisible(false);
+    m_info->automaticLoginLabel->setVisible(false);
+
     connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex)));
     m_info->face->setPopupMode(QToolButton::InstantPopup);
     QMenu* menu = new QMenu(this);
