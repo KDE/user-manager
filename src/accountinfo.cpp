@@ -38,6 +38,7 @@
 #include <KJob>
 #include <KIO/CopyJob>
 #include <KIconLoader>
+#include <KUser>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -174,20 +175,30 @@ bool AccountInfo::save()
     }
     if (m_infoToSave.contains(AccountModel::Face)) {
         const QString path = m_infoToSave[AccountModel::Face].toString();
-        QString faceFile = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-        faceFile.append(QLatin1String("/.face"));
 
-        QFile::remove(faceFile);
-        KIO::CopyJob* moveJob = KIO::move(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
-        connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
-        moveJob->setUiDelegate(0);
-        moveJob->setUiDelegateExtension(0);
-        moveJob->start();
+        //we want to save the face using AccountsService, but for backwards compatibility we also
+        //save the icon into ~/.face for old apps/DisplayManagers that still expect that
+        //This works when setting a face as the current user, but doesn't make sense when setting the icon
+        //of another user.
+        const QString username = m_model->data(m_index, AccountModel::Username).toString();
+        if (username != KUser().loginName()) {
+            m_model->setData(m_index, QVariant(path), AccountModel::Face);
+        } else {
+            QString faceFile = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+            faceFile.append(QLatin1String("/.face"));
+            QFile::remove(faceFile);
 
-        QString faceFile2 = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-        faceFile2.append(QLatin1String("/.face.icon"));
-        QFile::remove(faceFile2);
-        QFile::link(faceFile, faceFile2);
+            KIO::CopyJob* moveJob = KIO::move(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
+            connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
+            moveJob->setUiDelegate(0);
+            moveJob->setUiDelegateExtension(0);
+            moveJob->start();
+
+            QString faceFile2 = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+            faceFile2.append(QLatin1String("/.face.icon"));
+            QFile::remove(faceFile2);
+            QFile::link(faceFile, faceFile2);
+        }
     }
 
     if (!failed.isEmpty()) {
