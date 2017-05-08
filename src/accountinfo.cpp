@@ -188,7 +188,8 @@ bool AccountInfo::save()
         KIO::CopyJob* moveJob = KIO::move(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
         connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
         moveJob->setUiDelegate(0);
-        moveJob->start();
+        // Run it synchronously to be sure the job ends before the KCM gets deleted.
+        moveJob->exec();
 
         QString faceFile2 = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
         faceFile2.append(QLatin1String("/.face.icon"));
