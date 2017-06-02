@@ -28,7 +28,7 @@ class CreateAvatarJob : public KJob
     public:
         explicit CreateAvatarJob(QObject* parent = 0);
 
-        virtual void start();
+        void start() Q_DECL_OVERRIDE;
         void setUrl(const QUrl &url);
         QString avatarPath() const;
 

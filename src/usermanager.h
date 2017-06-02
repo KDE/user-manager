@@ -41,8 +41,8 @@ class UserManager : public KCModule
         explicit UserManager(QWidget *parent, const QVariantList& args);
         virtual ~UserManager();
 
-        virtual void load();
-        virtual void save();
+        void load() Q_DECL_OVERRIDE;
+        void save() Q_DECL_OVERRIDE;
 
     public Q_SLOTS:
         void currentChanged(const QModelIndex &selected, const QModelIndex &previous);
