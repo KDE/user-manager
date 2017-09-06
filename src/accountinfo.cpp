@@ -405,10 +405,10 @@ void AccountInfo::openGallery()
         return;
     }
 
-    CreateAvatarJob *job = new CreateAvatarJob(this);
-    connect(job, &KJob::finished, this, &AccountInfo::avatarCreated);
-    job->setUrl(gallery->url());
-    job->start();
+    QString path = gallery->url().toLocalFile();
+    m_info->face->setIcon(QIcon(path));
+    m_infoToSave.insert(AccountModel::Face, path);
+    Q_EMIT changed(true);
 }
 
 QStringList AccountInfo::imageFormats() const
