@@ -1,6 +1,6 @@
 project(user-manager)
 cmake_minimum_required(VERSION 2.8.12)
-set(PROJECT_VERSION "5.10.90")
+set(PROJECT_VERSION "5.10.95")
 
 find_package(ECM 1.3.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
