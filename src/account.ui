@@ -196,30 +196,30 @@
        </widget>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Administrator:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
        <widget class="QCheckBox" name="administrator">
         <property name="text">
          <string/>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="automaticLoginLabel">
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Automatic Login:</string>
+         <string>Enable administrator privileges for this user</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QCheckBox" name="automaticLogin">
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QCheckBox" name="automaticLogin">
+       <widget class="QLabel" name="automaticLoginLabel">
         <property name="text">
-         <string/>
+         <string>Log in automatically</string>
         </property>
        </widget>
       </item>
