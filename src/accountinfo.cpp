@@ -188,11 +188,11 @@ bool AccountInfo::save()
             faceFile.append(QLatin1String("/.face"));
             QFile::remove(faceFile);
 
-            KIO::CopyJob* moveJob = KIO::move(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
-            connect(moveJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
-            moveJob->setUiDelegate(0);
-            moveJob->setUiDelegateExtension(0);
-            moveJob->start();
+            KIO::CopyJob* copyJob = KIO::copy(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
+            connect(copyJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
+            copyJob->setUiDelegate(0);
+            copyJob->setUiDelegateExtension(0);
+            copyJob->start();
 
             QString faceFile2 = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
             faceFile2.append(QLatin1String("/.face.icon"));
@@ -456,6 +456,10 @@ void AccountInfo::avatarModelChanged(KJob* job)
     KIO::CopyJob* cJob = qobject_cast<KIO::CopyJob*>(job);
     m_model->setData(m_index, QVariant(cJob->destUrl().path()), AccountModel::Face);
     m_info->face->setIcon(QIcon(m_model->data(m_index, AccountModel::Face).value<QPixmap>()));
+    // If there is a leftover temp file, remove it
+    if (cJob->srcUrls().constFirst().path().startsWith(QLatin1String("/tmp/"))) {
+        QFile::remove(cJob->srcUrls().constFirst().path());
+    }
 }
 
 void AccountInfo::clearAvatar()
