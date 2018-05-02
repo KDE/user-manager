@@ -1,6 +1,10 @@
 project(user-manager)
 cmake_minimum_required(VERSION 2.8.12)
+<<<<<<< HEAD
 set(PROJECT_VERSION "5.12.80")
+=======
+set(PROJECT_VERSION "5.12.5")
+>>>>>>> Plasma/5.12
 
 find_package(ECM 1.3.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})

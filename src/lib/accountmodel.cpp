@@ -149,7 +149,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
             if (!file.exists()) {
                 return QIcon::fromTheme("user-identity").pixmap(size, size);
             }
-            return QPixmap(file.fileName()).scaled(size, size);
+            return QPixmap(file.fileName()).scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
         case AccountModel::RealName:
             return acc->realName();
