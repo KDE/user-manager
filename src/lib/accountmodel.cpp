@@ -93,8 +93,8 @@ AccountModel::AccountModel(QObject* parent)
         addAccount(path.path());
     }
 
-    //Adding fake "new user" directly into cache
-    addAccountToCache("new-user", 0);
+    // Adding fake "new user" directly into cache
+    addAccountToCache("new-user", nullptr);
 
     m_kEmailSettings.setProfile(m_kEmailSettings.defaultProfileName());
 
@@ -368,11 +368,7 @@ void AccountModel::addAccount(const QString& path)
 void AccountModel::addAccountToCache(const QString& path, Account* acc, int pos)
 {
     if (pos > -1) {
-        if (m_userPath.count() > 0) {
-            m_userPath.replace(pos, path);
-        } else {
-            m_userPath.insert(pos, path);
-        }
+        m_userPath.insert(pos, path);
     } else {
         m_userPath.append(path);
     }
@@ -381,6 +377,16 @@ void AccountModel::addAccountToCache(const QString& path, Account* acc, int pos)
     m_loggedAccounts[path] = false;
 }
 
+void AccountModel::replaceAccount(const QString &path, OrgFreedesktopAccountsUserInterface *acc, int pos)
+{
+    if (pos >= m_userPath.size() || pos < 0) {
+        return;
+    }
+    m_userPath.replace(pos, path);
+
+    m_users.insert(path, acc);
+    m_loggedAccounts[path] = false;
+}
 
 void AccountModel::removeAccount(const QString& path)
 {
@@ -429,13 +435,13 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
     }
     connect(acc, SIGNAL(Changed()), SLOT(Changed()));
 
-    //First, we modify "new-user" to become the new created user
+    // First, we modify "new-user" to become the new created user
     int row = rowCount();
-    addAccountToCache(path, acc, row - 1);
+    replaceAccount(path, acc, row - 1);
     QModelIndex changedIndex = index(row - 1, 0);
     emit dataChanged(changedIndex, changedIndex);
 
-    //Then we add new-user again.
+    // Then we add new-user again.
     beginInsertRows(QModelIndex(), row, row);
     addAccountToCache("new-user", 0);
     endInsertRows();
