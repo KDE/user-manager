@@ -30,7 +30,7 @@
 
 PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     : QDialog(parent, flags)
-    , m_pwSettings(0)
+    , m_pwSettings(nullptr)
     , m_timer(new QTimer(this))
 {
     setWindowTitle(i18nc("Title for change password dialog", "New Password"));
@@ -107,13 +107,13 @@ void PasswordDialog::checkPassword()
     if (!m_pwSettings) {
         m_pwSettings = pwquality_default_settings ();
         pwquality_set_int_value (m_pwSettings, PWQ_SETTING_MAX_SEQUENCE, 4);
-        if (pwquality_read_config (m_pwSettings, NULL, NULL) < 0) {
+        if (pwquality_read_config (m_pwSettings, nullptr, nullptr) < 0) {
             qCWarning(USER_MANAGER_LOG) << "failed to read pwquality configuration\n";
             return;
         }
     }
 
-    int quality = pwquality_check (m_pwSettings, password.toUtf8(), NULL, m_username, NULL);
+    int quality = pwquality_check (m_pwSettings, password.toUtf8(), nullptr, m_username, nullptr);
 
     qCDebug(USER_MANAGER_LOG) << "Quality: " << quality;
 

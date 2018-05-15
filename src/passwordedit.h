@@ -24,7 +24,7 @@ class PasswordEdit : public QLineEdit
     Q_OBJECT
 
     public:
-        explicit PasswordEdit(QWidget* parent = 0);
+        explicit PasswordEdit(QWidget* parent = nullptr);
 
     Q_SIGNALS:
         void focused();

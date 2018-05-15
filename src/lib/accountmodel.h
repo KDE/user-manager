@@ -57,8 +57,8 @@ class AccountModel : public QAbstractListModel
             Created
         };
 
-        AccountModel(QObject* parent);
-        ~AccountModel();
+        explicit AccountModel(QObject* parent);
+        ~AccountModel() Q_DECL_OVERRIDE;
         int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
         QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;

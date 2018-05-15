@@ -40,7 +40,7 @@ class UserSession : public QObject
 {
     Q_OBJECT
     public:
-        explicit UserSession(QObject* parent = 0);
+        explicit UserSession(QObject* parent = nullptr);
         virtual ~UserSession();
 
     public Q_SLOTS:

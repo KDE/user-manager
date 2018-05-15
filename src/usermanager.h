@@ -39,7 +39,7 @@ class UserManager : public KCModule
     Q_OBJECT
     public:
         explicit UserManager(QWidget *parent, const QVariantList& args);
-        virtual ~UserManager();
+        ~UserManager() Q_DECL_OVERRIDE;
 
         void load() Q_DECL_OVERRIDE;
         void save() Q_DECL_OVERRIDE;

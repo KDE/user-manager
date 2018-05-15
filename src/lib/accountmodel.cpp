@@ -306,7 +306,7 @@ QVariant AccountModel::newUserData(int role) const
 
 bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& value, int roleInt)
 {
-    AccountModel::Role role = (AccountModel::Role) roleInt;
+    AccountModel::Role role = static_cast<AccountModel::Role>(roleInt);
     m_newUserData[role] = value;
     QList<AccountModel::Role> roles = m_newUserData.keys();
     if (!roles.contains(Username) || !roles.contains(RealName) || !roles.contains(Administrator)) {
@@ -437,7 +437,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
 
     //Then we add new-user again.
     beginInsertRows(QModelIndex(), row, row);
-    addAccountToCache("new-user", 0);
+    addAccountToCache("new-user", nullptr);
     endInsertRows();
 }
 

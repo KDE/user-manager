@@ -35,7 +35,7 @@ class AccountInfo : public QWidget
 {
     Q_OBJECT
     public:
-        explicit AccountInfo(AccountModel* model, QWidget* parent = 0, Qt::WindowFlags f = 0);
+        explicit AccountInfo(AccountModel* model, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
         virtual ~AccountInfo();
 
         void setModelIndex(const QModelIndex &index);

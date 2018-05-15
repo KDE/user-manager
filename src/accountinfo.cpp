@@ -190,8 +190,8 @@ bool AccountInfo::save()
 
             KIO::CopyJob* copyJob = KIO::copy(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
             connect(copyJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
-            copyJob->setUiDelegate(0);
-            copyJob->setUiDelegateExtension(0);
+            copyJob->setUiDelegate(nullptr);
+            copyJob->setUiDelegateExtension(nullptr);
             copyJob->start();
 
             QString faceFile2 = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
@@ -414,7 +414,7 @@ void AccountInfo::openGallery()
 QStringList AccountInfo::imageFormats() const
 {
     QStringList result;
-    for(const QByteArray b: QImageReader::supportedMimeTypes()) {
+    for(const QByteArray &b: QImageReader::supportedMimeTypes()) {
         if (! b.isEmpty())
             result.append(QString(b));
     }

@@ -33,7 +33,7 @@ class PasswordDialog : public QDialog, private Ui::PasswordDlg
     Q_OBJECT
 
     public:
-        explicit PasswordDialog(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+        explicit PasswordDialog(QWidget* parent = nullptr, Qt::WindowFlags flags = 0);
         virtual ~PasswordDialog();
 
         void setUsername(const QByteArray &username);

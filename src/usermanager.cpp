@@ -59,7 +59,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     m_ui->userList->setSelectionModel(m_selectionModel);
     m_ui->userList->setIconSize(QSize(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog)));
 
-    ModelTest* test = new ModelTest(m_model, 0);
+    ModelTest* test = new ModelTest(m_model, nullptr);
     Q_UNUSED(test)
 
     connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
