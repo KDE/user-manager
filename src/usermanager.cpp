@@ -36,7 +36,6 @@
 #include <KIconLoader>
 
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
-K_EXPORT_PLUGIN(UserManagerFactory("user_manager", "user_manager"))
 
 UserManager::UserManager(QWidget* parent, const QVariantList& args) 
  : KCModule(parent, args)

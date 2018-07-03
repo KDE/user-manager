@@ -30,5 +30,5 @@ class PasswordEdit : public QLineEdit
         void focused();
 
     protected:
-        void focusInEvent(QFocusEvent* e) Q_DECL_OVERRIDE;
+        void focusInEvent(QFocusEvent* e) override;
 };
