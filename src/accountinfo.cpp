@@ -103,7 +103,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->formLayout->insertRow(row, m_info->label_3, m_passwordEdit);
 
     int pixmapSize = m_info->username->sizeHint().height();
-    m_negative = QIcon::fromTheme("dialog-cancel").pixmap(pixmapSize, pixmapSize);
+    m_negative = QIcon::fromTheme(QStringLiteral("dialog-cancel")).pixmap(pixmapSize, pixmapSize);
 }
 
 AccountInfo::~AccountInfo()
@@ -284,7 +284,7 @@ QString AccountInfo::cleanUsername(QString username)
         username[0] = username[0].toLower();
     }
 
-    username.remove(' ');
+    username.remove(QLatin1Char(' '));
     m_info->username->setText(username);
     return username;
 }
@@ -296,7 +296,7 @@ bool AccountInfo::validateUsername(QString username) const
     }
 
     QByteArray userchar = username.toUtf8();
-    if (getpwnam(userchar) != NULL) {
+    if (getpwnam(userchar) != nullptr) {
         m_info->usernameValidation->setPixmap(m_negative);
         m_info->usernameValidation->setToolTip(i18n("This username is already used"));
         return false;
@@ -309,7 +309,7 @@ bool AccountInfo::validateUsername(QString username) const
 
     if (!valid) {
         errorTooltip.append(i18n("The username must start with a letter"));
-        errorTooltip.append("\n");
+        errorTooltip.append(QStringLiteral("\n"));
     }
 
     Q_FOREACH(const char c, userchar) {
@@ -327,7 +327,7 @@ bool AccountInfo::validateUsername(QString username) const
 
     if (!valid) {
         errorTooltip.append(i18n("The username can contain only letters, numbers, score, underscore and dot"));
-        errorTooltip.append("\n");
+        errorTooltip.append(QStringLiteral("\n"));
     }
 
     static const long MAX_USER_NAME_LENGTH = []() {
@@ -358,7 +358,7 @@ QString AccountInfo::cleanEmail(QString email)
         return email;
     }
 
-    email = email.toLower().remove(' ');
+    email = email.toLower().remove(QLatin1Char(' '));
     int pos = m_info->email->cursorPosition();
     m_info->email->setText(email);
     m_info->email->setCursorPosition(pos);
@@ -372,7 +372,7 @@ bool AccountInfo::validateEmail(const QString& email) const
         return false;
     }
 
-    QString strPatt = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}\\b";
+    QString strPatt = QStringLiteral("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}\\b");
     QRegExp rx(strPatt);
     rx.setCaseSensitivity(Qt::CaseInsensitive);
     rx.setPatternSyntax(QRegExp::RegExp);
@@ -416,7 +416,7 @@ QStringList AccountInfo::imageFormats() const
     QStringList result;
     for(const QByteArray &b: QImageReader::supportedMimeTypes()) {
         if (! b.isEmpty())
-            result.append(QString(b));
+            result.append(QString::fromLatin1(b));
     }
     return result;
 }
@@ -465,7 +465,7 @@ void AccountInfo::avatarModelChanged(KJob* job)
 void AccountInfo::clearAvatar()
 {
     QSize icon(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
-    m_info->face->setIcon(QIcon::fromTheme("user-identity").pixmap(48, 48));
+    m_info->face->setIcon(QIcon::fromTheme(QStringLiteral("user-identity")).pixmap(48, 48));
     m_infoToSave.insert(AccountModel::Face, QString());
     Q_EMIT changed(true);
 }

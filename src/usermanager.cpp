@@ -124,7 +124,7 @@ void UserManager::removeUser()
 
     QString warning = i18n("What do you want to do after deleting %1 ?", m_model->data(index, AccountModel::FriendlyName).toString());
     if (!m_model->data(index, AccountModel::Logged).toBool()) {
-        warning.append("\n\n");
+        warning.append(QStringLiteral("\n\n"));
         warning.append(i18n("This user is using the system right now, removing it will cause problems"));
     }
 

@@ -60,7 +60,7 @@ AvatarGallery::AvatarGallery(QWidget *parent) : QDialog(parent)
         const QStringList &avatarList = facesDir.entryList(QDir::Files);
         for (auto it = avatarList.constBegin(), end = avatarList.constEnd(); it != end; ++it) {
             const QString iconPath = (facesDir.absoluteFilePath(*it));
-            auto *item = new QListWidgetItem(QIcon(iconPath), it->section('.', 0, 0), ui.m_FacesWidget);
+            auto *item = new QListWidgetItem(QIcon(iconPath), it->section(QLatin1Char('.'), 0, 0), ui.m_FacesWidget);
             item->setData(Qt::UserRole, iconPath);
         }
     }

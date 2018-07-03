@@ -46,7 +46,7 @@ UserSession::UserSession(QObject* parent): QObject(parent)
     qDBusRegisterMetaType<UserInfo>();
     qDBusRegisterMetaType<UserInfoList>();
 
-    m_manager = new Manager("org.freedesktop.login1", "/org/freedesktop/login1", QDBusConnection::systemBus());
+    m_manager = new Manager(QStringLiteral("org.freedesktop.login1"), QStringLiteral("/org/freedesktop/login1"), QDBusConnection::systemBus());
     connect(m_manager, SIGNAL(UserNew(uint,QDBusObjectPath)), SLOT(UserNew(uint)));
     connect(m_manager, SIGNAL(UserRemoved(uint,QDBusObjectPath)), SLOT(UserRemoved(uint)));
 

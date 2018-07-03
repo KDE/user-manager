@@ -53,14 +53,14 @@ QString AutomaticLoginSettings::autoLoginUser() const
 
 bool AutomaticLoginSettings::setAutoLoginUser(const QString& username)
 {
-    KAuth::Action saveAction(QString("org.kde.kcontrol.kcmsddm.save"));
-    saveAction.setHelperId("org.kde.kcontrol.kcmsddm");
+    KAuth::Action saveAction(QStringLiteral("org.kde.kcontrol.kcmsddm.save"));
+    saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmsddm"));
     QVariantMap args;
 
-    args["sddm.conf"] = SDDM_CONFIG_FILE;
-    args["sddm.conf/Autologin/User"] = username;
+    args[QStringLiteral("sddm.conf")] = QStringLiteral(SDDM_CONFIG_FILE);
+    args[QStringLiteral("sddm.conf/Autologin/User")] = username;
 
-    saveAction.setHelperId("org.kde.kcontrol.kcmsddm");
+    saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmsddm"));
     saveAction.setArguments(args);
 
     auto job = saveAction.execute();
@@ -79,7 +79,7 @@ AccountModel::AccountModel(QObject* parent)
  : QAbstractListModel(parent)
  , m_sessions(new UserSession(this))
 {
-    m_dbus = new AccountsManager("org.freedesktop.Accounts", "/org/freedesktop/Accounts", QDBusConnection::systemBus(), this);
+    m_dbus = new AccountsManager(QStringLiteral("org.freedesktop.Accounts"), QStringLiteral("/org/freedesktop/Accounts"), QDBusConnection::systemBus(), this);
     QDBusPendingReply <QList <QDBusObjectPath > > reply = m_dbus->ListCachedUsers();
     reply.waitForFinished();
 
@@ -94,7 +94,7 @@ AccountModel::AccountModel(QObject* parent)
     }
 
     // Adding fake "new user" directly into cache
-    addAccountToCache("new-user", nullptr);
+    addAccountToCache(QStringLiteral("new-user"), nullptr);
 
     m_kEmailSettings.setProfile(m_kEmailSettings.defaultProfileName());
 
@@ -147,7 +147,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
             QFile file(acc->iconFile());
             int size = IconSize(KIconLoader::Dialog);
             if (!file.exists()) {
-                return QIcon::fromTheme("user-identity").pixmap(size, size);
+                return QIcon::fromTheme(QStringLiteral("user-identity")).pixmap(size, size);
             }
             return QPixmap(file.fileName()).scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
@@ -297,7 +297,7 @@ QVariant AccountModel::newUserData(int role) const
         case Qt::DisplayRole || AccountModel::FriendlyName:
             return i18n("New User");
         case Qt::DecorationRole || AccountModel::Face:
-            return QIcon::fromTheme("list-add-user").pixmap(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
+            return QIcon::fromTheme(QStringLiteral("list-add-user")).pixmap(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
         case AccountModel::Created:
             return false;
     }
@@ -350,7 +350,7 @@ bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& valu
 
 void AccountModel::addAccount(const QString& path)
 {
-    Account *acc = new Account("org.freedesktop.Accounts", path, QDBusConnection::systemBus(), this);
+    Account *acc = new Account(QStringLiteral("org.freedesktop.Accounts"), path, QDBusConnection::systemBus(), this);
     qulonglong uid = acc->uid();
     if (!acc->isValid() || acc->lastError().isValid() || acc->systemAccount()) {
         return;
@@ -429,7 +429,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
         return;
     }
 
-    Account* acc = new Account("org.freedesktop.Accounts", path, QDBusConnection::systemBus(), this);
+    Account* acc = new Account(QStringLiteral("org.freedesktop.Accounts"), path, QDBusConnection::systemBus(), this);
     if (acc->systemAccount()) {
         return;
     }
@@ -443,7 +443,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
 
     // Then we add new-user again.
     beginInsertRows(QModelIndex(), row, row);
-    addAccountToCache("new-user", nullptr);
+    addAccountToCache(QStringLiteral("new-user"), nullptr);
     endInsertRows();
 }
 
@@ -499,7 +499,7 @@ QString AccountModel::cryptPassword(const QString& password) const
         salt.append(alpha.at((qrand() % len)));
     }
 
-    return crypt(password.toUtf8(), salt);
+    return QString::fromUtf8(crypt(password.toUtf8().constData(), salt.constData()));
 }
 
 QDebug operator<<(QDebug debug, AccountModel::Role role)
