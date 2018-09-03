@@ -21,8 +21,8 @@
 #define ACCOUNTMODEL_H
 
 #include "user_manager_debug.h"
-#include <QtCore/QStringList>
-#include <QtCore/QAbstractListModel>
+#include <QStringList>
+#include <QAbstractListModel>
 #include <QDBusObjectPath>
 #include <QDBusPendingReply>
 #include <KEMailSettings>

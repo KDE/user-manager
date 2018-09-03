@@ -101,7 +101,7 @@ AccountModel::AccountModel(QObject* parent)
     connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
     connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
 
-    connect(m_sessions, SIGNAL(userLogged(uint, bool)), SLOT(userLogged(uint, bool)));
+    connect(m_sessions, SIGNAL(userLogged(uint,bool)), SLOT(userLogged(uint,bool)));
 }
 
 AccountModel::~AccountModel()

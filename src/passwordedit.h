@@ -16,6 +16,9 @@
  *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA   *
  *************************************************************************************/
 
+#ifndef PASSWORDEDIT_H
+#define PASSWORDEDIT_H
+
 #include <QLineEdit>
 #include <QFocusEvent>
 
@@ -32,3 +35,5 @@ class PasswordEdit : public QLineEdit
     protected:
         void focusInEvent(QFocusEvent* e) override;
 };
+
+#endif

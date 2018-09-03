@@ -19,7 +19,7 @@
 #ifndef ACCOUNT_INFO_WIDGET
 #define ACCOUNT_INFO_WIDGET
 
-#include <QtCore/QModelIndex>
+#include <QModelIndex>
 
 #include <QWidget>
 #include <QStringList>

@@ -26,7 +26,7 @@
 
 #include <pwquality.h>
 
-#include <QtCore/QDebug>
+#include <QDebug>
 #include <QListView>
 #include <QVBoxLayout>
 
