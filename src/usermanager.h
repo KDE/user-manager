@@ -26,7 +26,7 @@
 namespace Ui
 {
     class KCMUserManager;
-};
+}
 
 class QModelIndex;
 class AccountInfo;

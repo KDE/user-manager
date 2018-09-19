@@ -113,7 +113,7 @@ void PasswordDialog::checkPassword()
         }
     }
 
-    int quality = pwquality_check (m_pwSettings, password.toUtf8(), nullptr, m_username, nullptr);
+    int quality = pwquality_check (m_pwSettings, password.toUtf8().constData(), nullptr, m_username.constData(), nullptr);
 
     qCDebug(USER_MANAGER_LOG) << "Quality: " << quality;
 

@@ -295,8 +295,8 @@ bool AccountInfo::validateUsername(QString username) const
         return false;
     }
 
-    QByteArray userchar = username.toUtf8();
-    if (getpwnam(userchar) != nullptr) {
+    const QByteArray userchar = username.toUtf8();
+    if (getpwnam(userchar.constData()) != nullptr) {
         m_info->usernameValidation->setPixmap(m_negative);
         m_info->usernameValidation->setToolTip(i18n("This username is already used"));
         return false;
