@@ -16,7 +16,7 @@ find_package(PWQuality REQUIRED)
 include(FeatureSummary)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings)
+include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 
 include_directories(${PWQUALITY_INCLUDE_DIR})
 
