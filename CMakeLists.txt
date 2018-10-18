@@ -17,6 +17,7 @@ include(FeatureSummary)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
+include(ECMQtDeclareLoggingCategory)
 
 include_directories(${PWQUALITY_INCLUDE_DIR})
 
@@ -25,5 +26,7 @@ add_definitions(-DTRANSLATION_DOMAIN=\"user_manager\")
 add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
 
 add_subdirectory(src)
+
+install( FILES user-manager.categories DESTINATION ${KDE_INSTALL_CONFDIR} )
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
