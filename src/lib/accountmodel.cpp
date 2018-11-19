@@ -65,7 +65,7 @@ bool AutomaticLoginSettings::setAutoLoginUser(const QString& username)
 
     auto job = saveAction.execute();
     if (!job->exec()) {
-        qDebug() << "fail" << job->errorText();
+        qCWarning(USER_MANAGER_LOG) << "fail" << job->errorText();
         return false;
     }
 
