@@ -47,12 +47,12 @@ UserSession::UserSession(QObject* parent): QObject(parent)
     qDBusRegisterMetaType<UserInfoList>();
 
     m_manager = new Manager(QStringLiteral("org.freedesktop.login1"), QStringLiteral("/org/freedesktop/login1"), QDBusConnection::systemBus());
-    connect(m_manager, SIGNAL(UserNew(uint,QDBusObjectPath)), SLOT(UserNew(uint)));
-    connect(m_manager, SIGNAL(UserRemoved(uint,QDBusObjectPath)), SLOT(UserRemoved(uint)));
+    connect(m_manager, &OrgFreedesktopLogin1ManagerInterface::UserNew, this, &UserSession::UserNew);
+    connect(m_manager, &OrgFreedesktopLogin1ManagerInterface::UserRemoved, this, &UserSession::UserRemoved);
 
     QDBusPendingReply <UserInfoList> reply = m_manager->ListUsers();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(listUsersSlot(QDBusPendingCallWatcher*)));
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &UserSession::listUsersSlot);
 }
 
 UserSession::~UserSession()

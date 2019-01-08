@@ -51,7 +51,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     layout->addWidget(m_widget);
 
     m_selectionModel = new QItemSelectionModel(m_model);
-    connect(m_selectionModel, SIGNAL(currentChanged(QModelIndex,QModelIndex)), SLOT(currentChanged(QModelIndex,QModelIndex)));
+    connect(m_selectionModel, &QItemSelectionModel::currentChanged, this, &UserManager::currentChanged);
     m_selectionModel->setCurrentIndex(m_model->index(0), QItemSelectionModel::SelectCurrent);
 
     m_ui->userList->setModel(m_model);
@@ -61,10 +61,10 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
     ModelTest* test = new ModelTest(m_model, nullptr);
     Q_UNUSED(test)
 
-    connect(m_ui->addBtn, SIGNAL(clicked(bool)), SLOT(addNewUser()));
-    connect(m_ui->removeBtn, SIGNAL(clicked(bool)), SLOT(removeUser()));
+    connect(m_ui->addBtn, &QAbstractButton::clicked, this, &UserManager::addNewUser);
+    connect(m_ui->removeBtn, &QAbstractButton::clicked, this, &UserManager::removeUser);
     connect(m_widget, SIGNAL(changed(bool)), SIGNAL(changed(bool)));
-    connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex,QModelIndex)));
+    connect(m_model, &QAbstractItemModel::dataChanged, this, &UserManager::dataChanged);
 }
 
 UserManager::~UserManager()

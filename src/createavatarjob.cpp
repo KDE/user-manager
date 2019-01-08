@@ -57,7 +57,7 @@ void CreateAvatarJob::doStart()
 
     qCDebug(USER_MANAGER_LOG) << "From: " << m_url << "to: " << m_tmpFile;
     KIO::CopyJob* job = KIO::copy(m_url, QUrl::fromLocalFile(m_tmpFile), KIO::HideProgressInfo);
-    connect(job, SIGNAL(finished(KJob*)), SLOT(copyDone(KJob*)));
+    connect(job, &KJob::finished, this, &CreateAvatarJob::copyDone);
     job->setUiDelegate(nullptr);
     job->start();
 }

@@ -51,29 +51,29 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->formLayout->removeWidget(m_info->passwordEdit);
     delete m_info->passwordEdit;
 
-    connect(m_info->username, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
-    connect(m_info->realName, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
-    connect(m_info->email, SIGNAL(textEdited(QString)), SLOT(hasChanged()));
-    connect(m_info->administrator, SIGNAL(clicked(bool)), SLOT(hasChanged()));
-    connect(m_info->automaticLogin, SIGNAL(clicked(bool)), SLOT(hasChanged()));
-    connect(m_passwordEdit, SIGNAL(focused()), SLOT(changePassword()));
-    connect(m_passwordEdit, SIGNAL(textEdited(QString)), SLOT(changePassword()));
+    connect(m_info->username, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
+    connect(m_info->realName, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
+    connect(m_info->email, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
+    connect(m_info->administrator, &QAbstractButton::clicked, this, &AccountInfo::hasChanged);
+    connect(m_info->automaticLogin, &QAbstractButton::clicked, this, &AccountInfo::hasChanged);
+    connect(m_passwordEdit, &PasswordEdit::focused, this, &AccountInfo::changePassword);
+    connect(m_passwordEdit, &QLineEdit::textEdited, this, &AccountInfo::changePassword);
 
-    connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), SLOT(dataChanged(QModelIndex)));
+    connect(m_model, &QAbstractItemModel::dataChanged, this, &AccountInfo::dataChanged);
     m_info->face->setPopupMode(QToolButton::InstantPopup);
     QMenu* menu = new QMenu(this);
 
     QAction *gallery = new QAction(i18n("Choose from Gallery..."), this);
-    gallery->setIcon(QIcon::fromTheme(QLatin1String("shape-choose"))); // TODO proper icon
+    gallery->setIcon(QIcon::fromTheme(QStringLiteral("shape-choose"))); // TODO proper icon
     connect(gallery, &QAction::triggered, this, &AccountInfo::openGallery);
 
     QAction *openAvatar = new QAction(i18n("Load from file..."), this);
-    openAvatar->setIcon(QIcon::fromTheme(QLatin1String("document-open-folder")));
-    connect(openAvatar, SIGNAL(triggered(bool)), SLOT(openAvatarSlot()));
+    openAvatar->setIcon(QIcon::fromTheme(QStringLiteral("document-open-folder")));
+    connect(openAvatar, &QAction::triggered, this, &AccountInfo::openAvatarSlot);
 
     QAction *editClear = new QAction(i18n("Clear Avatar"), this);
-    editClear->setIcon(QIcon::fromTheme(QLatin1String("edit-clear")));
-    connect(editClear, SIGNAL(triggered(bool)), SLOT(clearAvatar()));
+    editClear->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear")));
+    connect(editClear, &QAction::triggered, this, &AccountInfo::clearAvatar);
 
     menu->addAction(gallery);
     menu->addAction(openAvatar);
@@ -189,7 +189,7 @@ bool AccountInfo::save()
             QFile::remove(faceFile);
 
             KIO::CopyJob* copyJob = KIO::copy(QUrl::fromLocalFile(path), QUrl::fromLocalFile(faceFile), KIO::HideProgressInfo);
-            connect(copyJob, SIGNAL(finished(KJob*)), SLOT(avatarModelChanged(KJob*)));
+            connect(copyJob, &KJob::finished, this, &AccountInfo::avatarModelChanged);
             copyJob->setUiDelegate(nullptr);
             copyJob->setUiDelegateExtension(nullptr);
             copyJob->start();
@@ -435,7 +435,7 @@ void AccountInfo::openAvatarSlot()
 
     QUrl url = QUrl::fromLocalFile(dlg.selectedFiles().first());
     CreateAvatarJob *job = new CreateAvatarJob(this);
-    connect(job, SIGNAL(finished(KJob*)), SLOT(avatarCreated(KJob*)));
+    connect(job, &KJob::finished, this, &AccountInfo::avatarCreated);
     job->setUrl(url);
     job->start();
 }

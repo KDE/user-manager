@@ -59,9 +59,9 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     KColorScheme::adjustForeground(m_neutral, KColorScheme::NeutralText, strenghtLbl->foregroundRole());
     KColorScheme::adjustForeground(m_positive, KColorScheme::PositiveText, strenghtLbl->foregroundRole());
 
-    connect(m_timer, SIGNAL(timeout()), SLOT(checkPassword()));
-    connect(passwordEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
-    connect(verifyEdit, SIGNAL(textEdited(QString)), SLOT(passwordChanged()));
+    connect(m_timer, &QTimer::timeout, this, &PasswordDialog::checkPassword);
+    connect(passwordEdit, &QLineEdit::textEdited, this, &PasswordDialog::passwordChanged);
+    connect(verifyEdit, &QLineEdit::textEdited, this, &PasswordDialog::passwordChanged);
     connect(buttons, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }

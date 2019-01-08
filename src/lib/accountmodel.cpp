@@ -98,10 +98,10 @@ AccountModel::AccountModel(QObject* parent)
 
     m_kEmailSettings.setProfile(m_kEmailSettings.defaultProfileName());
 
-    connect(m_dbus, SIGNAL(UserAdded(QDBusObjectPath)), SLOT(UserAdded(QDBusObjectPath)));
-    connect(m_dbus, SIGNAL(UserDeleted(QDBusObjectPath)), SLOT(UserDeleted(QDBusObjectPath)));
+    connect(m_dbus, &OrgFreedesktopAccountsInterface::UserAdded, this, &AccountModel::UserAdded);
+    connect(m_dbus, &OrgFreedesktopAccountsInterface::UserDeleted, this, &AccountModel::UserDeleted);
 
-    connect(m_sessions, SIGNAL(userLogged(uint,bool)), SLOT(userLogged(uint,bool)));
+    connect(m_sessions, &UserSession::userLogged, this, &AccountModel::userLogged);
 }
 
 AccountModel::~AccountModel()
@@ -356,7 +356,7 @@ void AccountModel::addAccount(const QString& path)
         return;
     }
 
-    connect(acc, SIGNAL(Changed()), SLOT(Changed()));
+    connect(acc, &OrgFreedesktopAccountsUserInterface::Changed, this, &AccountModel::Changed);
     if (uid == getuid()) {
         addAccountToCache(path, acc, 0);
         return;
@@ -433,7 +433,7 @@ void AccountModel::UserAdded(const QDBusObjectPath& dbusPath)
     if (acc->systemAccount()) {
         return;
     }
-    connect(acc, SIGNAL(Changed()), SLOT(Changed()));
+    connect(acc, &OrgFreedesktopAccountsUserInterface::Changed, this, &AccountModel::Changed);
 
     // First, we modify "new-user" to become the new created user
     int row = rowCount();
