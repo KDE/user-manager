@@ -289,7 +289,7 @@ QString AccountInfo::cleanUsername(QString username)
     return username;
 }
 
-bool AccountInfo::validateUsername(QString username) const
+bool AccountInfo::validateUsername(const QString &username) const
 {
     if (username.isEmpty()) {
         return false;
