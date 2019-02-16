@@ -43,7 +43,7 @@ target_link_libraries(user_manager
     Qt5::Core
     Qt5::Widgets
     Qt5::DBus
-    KF5::Auth
+    KF5::AuthCore
     KF5::WidgetsAddons
     KF5::CoreAddons
     KF5::I18n
