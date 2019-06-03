@@ -31,8 +31,6 @@ namespace Ui
 class QModelIndex;
 class AccountInfo;
 class QItemSelection;
-class QStackedLayout;
-class KMessageWidget;
 class QItemSelectionModel;
 class UserManager : public KCModule
 {
