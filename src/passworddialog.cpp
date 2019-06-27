@@ -113,7 +113,10 @@ void PasswordDialog::checkPassword()
         }
     }
 
-    int quality = pwquality_check (m_pwSettings, password.toUtf8().constData(), nullptr, m_username.constData(), nullptr);
+    // Doesn't need freeing currently. Only set to internal members of pwquality.
+    void *auxerror;
+    int quality = pwquality_check(m_pwSettings, password.toUtf8().constData(),
+                                  nullptr, m_username.constData(), &auxerror);
 
     qCDebug(USER_MANAGER_LOG) << "Quality: " << quality;
 
@@ -121,7 +124,7 @@ void PasswordDialog::checkPassword()
     QPalette palette;
     if (quality < 0) {
         palette  = m_negative;
-        strenght = errorString(quality);
+        strenght = errorString(quality, auxerror);
     } else if (quality < 25) {
         palette = m_neutral;
         strenght = i18n("This password is weak");
@@ -141,64 +144,21 @@ void PasswordDialog::checkPassword()
     buttons->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
-QString PasswordDialog::errorString(int error)
+QString PasswordDialog::errorString(int error, void *auxerror)
 {
-    switch(error) {
-        case PWQ_ERROR_MIN_LENGTH:
-        {
-            int length;
-            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_MIN_LENGTH, &length);
-            return i18ncp("Error returned when the password is invalid"
-                ,"The password should be at least %1 character"
-                ,"The password should be at least %1 characters", length);
-        }
-        case PWQ_ERROR_MIN_UPPERS:
-        {
-            int amount;
-            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_UP_CREDIT, &amount);
-            return i18ncp("Error returned when the password is invalid"
-                ,"The password should contain at least %1 uppercase letter"
-                ,"The password should contain at least %1 uppercase letters", amount);
-        }
-        case PWQ_ERROR_MIN_LOWERS:
-        {
-            int amount;
-            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_LOW_CREDIT, &amount);
-            return i18ncp("Error returned when the password is invalid"
-                ,"The password should contain at least %1 lowercase letter"
-                ,"The password should contain at least %1 lowercase letters", amount);
-        }
-        case PWQ_ERROR_USER_CHECK:
-            return i18nc("Error returned when the password is invalid", "Your username should not be part of your password");
-        case PWQ_ERROR_GECOS_CHECK:
-            return i18nc("Error returned when the password is invalid", "Your name should not be part of your password");
-        case PWQ_ERROR_MIN_DIGITS:
-        {
-            int amount;
-            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_DIG_CREDIT, &amount);
-            return i18ncp("Error returned when the password is invalid"
-                ,"The password should contain at least %1 number"
-                ,"The password should contain at least %1 numbers", amount);
-        }
-        case PWQ_ERROR_MIN_OTHERS:
-        {
-            int amount;
-            pwquality_get_int_value(m_pwSettings, PWQ_SETTING_OTH_CREDIT, &amount);
-            return i18ncp("Error returned when the password is invalid"
-                ,"The password should contain at least %1 special character (like punctuation)"
-                ,"The password should contain at least %1 special characters (like punctuation)", amount);
-        }
-        case PWQ_ERROR_MIN_CLASSES:
-            return i18nc("Error returned when the password is invalid", "The password should contain a mixture of letters, numbers, spaces and punctuation");
-        case PWQ_ERROR_MAX_CONSECUTIVE:
-            return i18nc("Error returned when the password is invalid", "The password should not contain too many repeated characters");
-        case PWQ_ERROR_MAX_CLASS_REPEAT:
-            return i18nc("Error returned when the password is invalid", "The password should be more varied in letters, numbers and punctuation");
-        case PWQ_ERROR_MAX_SEQUENCE:
-            return i18nc("Error returned when the password is invalid", "The password should not contain sequences like 1234 or abcd");
-        case PWQ_ERROR_CRACKLIB_CHECK:
-            return i18nc("Error returned when the password is invalid", "This password can't be used, it is too simple");
-    };
+    // Translations may be problematic on Debian-derived distros for packaging
+    // reasons.
+    // https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=931171
+    // Ubuntu-derived should be fine since they have central language packages,
+    // even though assignment to the gnome package is not ideal.
+    // https://bugs.launchpad.net/ubuntu/+source/libpwquality/+bug/1834480
+    char buf[PWQ_MAX_ERROR_MESSAGE_LEN]; // arbitrary size
+    const QString errorString =
+            QString::fromUtf8(pwquality_strerror(buf, PWQ_MAX_ERROR_MESSAGE_LEN,
+                                                 error, auxerror));
+    if (!errorString.isEmpty()) {
+        return errorString;
+    }
 
     return i18nc("Returned when a more specific error message has not been found"
             , "Please choose another password");

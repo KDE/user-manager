@@ -43,7 +43,7 @@ class PasswordDialog : public QDialog, private Ui::PasswordDlg
         void checkPassword();
 
     private:
-        QString errorString(int error);
+        QString errorString(int error, void *auxerror);
         QPalette m_negative;
         QPalette m_neutral;
         QPalette m_positive;
