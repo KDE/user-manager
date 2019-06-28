@@ -75,7 +75,7 @@
             <string/>
            </property>
            <property name="placeholderText">
-            <string>John</string>
+            <string>john</string>
            </property>
           </widget>
          </item>
