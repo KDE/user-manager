@@ -22,7 +22,6 @@
 #include <QImage>
 #include <QPixmap>
 #include <QTemporaryFile>
-#include <QtGlobal>
 
 #include <KIO/CopyJob>
 #include <KPixmapRegionSelectorDialog>

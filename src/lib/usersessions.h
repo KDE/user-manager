@@ -21,7 +21,6 @@
 
 #include <QObject>
 #include <QDBusObjectPath>
-#include <QDBusArgument>
 
 struct UserInfo
 {

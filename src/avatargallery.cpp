@@ -25,7 +25,6 @@
 #include <QStandardPaths>
 
 
-#include <QDebug>
 AvatarGallery::AvatarGallery(QWidget *parent) : QDialog(parent)
 {
     setWindowTitle(i18nc("@title:window", "Change your Face"));

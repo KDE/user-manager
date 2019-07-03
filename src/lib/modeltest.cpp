@@ -23,9 +23,8 @@
 
 #include "modeltest.h"
 
-#include <QtGui>
 #include <QVariant>
-
+#include <QSize>
 /*!
  *    Connect to all of the models signals.  Whenever anything happens recheck everything.
  */

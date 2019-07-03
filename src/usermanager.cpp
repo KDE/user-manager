@@ -26,8 +26,6 @@
 
 #include <pwquality.h>
 
-#include <QDebug>
-#include <QListView>
 #include <QVBoxLayout>
 
 #include <kpluginfactory.h>
