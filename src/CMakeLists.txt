@@ -6,7 +6,6 @@ set(user_manager_SRCS
    accountinfo.cpp
    createavatarjob.cpp
    passworddialog.cpp
-   passwordedit.cpp
    avatargallery.cpp
 )
 

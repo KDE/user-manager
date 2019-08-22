@@ -23,6 +23,7 @@
 
 #include <QWidget>
 #include <QStringList>
+#include <QPushButton>
 #include "lib/accountmodel.h"
 
 class KJob;
@@ -70,7 +71,7 @@ class AccountInfo : public QWidget
         QPixmap m_negative;
         Ui::AccountInfo * m_info;
         AccountModel* m_model;
-        PasswordEdit *m_passwordEdit;
+        QPushButton *m_changePasswordButton;
         QModelIndex m_index;
         QMap<AccountModel::Role, QVariant> m_infoToSave;
 };

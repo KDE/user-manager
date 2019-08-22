@@ -88,8 +88,8 @@ AccountModel::AccountModel(QObject* parent)
         return;
     }
 
-    QList<QDBusObjectPath> users = reply.value();
-    Q_FOREACH(const QDBusObjectPath& path, users) {
+    const QList<QDBusObjectPath> users = reply.value();
+    for (const QDBusObjectPath& path : users) {
         addAccount(path.path());
     }
 

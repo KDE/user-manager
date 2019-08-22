@@ -66,8 +66,8 @@ void UserSession::listUsersSlot(QDBusPendingCallWatcher *watcher)
     if (reply.isError()) {
         qCWarning(USER_MANAGER_LOG) << reply.error().name() << reply.error().message();
     } else {
-        UserInfoList userList = reply.value();
-        Q_FOREACH(const UserInfo &userInfo, userList) {
+        const UserInfoList userList = reply.value();
+        for (const UserInfo &userInfo : userList) {
             UserNew(userInfo.id);
         }
     }

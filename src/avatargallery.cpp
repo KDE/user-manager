@@ -52,9 +52,9 @@ AvatarGallery::AvatarGallery(QWidget *parent) : QDialog(parent)
     }
 
     const QString &systemFacesPath = locations.last() + QLatin1Char('/');
-    QDir avatarsDir(systemFacesPath);
+    const QDir avatarsDir(systemFacesPath);
 
-    foreach(const QString &avatarStyle, avatarsDir.entryList(QDir::Dirs | QDir::NoDotDot)) {
+    for (const QString &avatarStyle : avatarsDir.entryList(QDir::Dirs | QDir::NoDotDot)) {
         QDir facesDir = (avatarsDir.filePath(avatarStyle));
         const QStringList &avatarList = facesDir.entryList(QDir::Files);
         for (auto it = avatarList.constBegin(), end = avatarList.constEnd(); it != end; ++it) {

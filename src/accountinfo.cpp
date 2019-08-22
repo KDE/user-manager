@@ -21,7 +21,6 @@
 #include "createavatarjob.h"
 #include "passworddialog.h"
 #include "lib/accountmodel.h"
-#include "passwordedit.h"
 #include "avatargallery.h"
 
 #include <pwd.h>
@@ -39,25 +38,21 @@
 #include <KIO/CopyJob>
 #include <KIconLoader>
 #include <KUser>
+#include <KI18n/klocalizedstring.h>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
  , m_info(new Ui::AccountInfo())
  , m_model(model)
- , m_passwordEdit(new PasswordEdit(this))
 {
     m_info->setupUi(this);
-    //If I remove this from the .ui file the layouting gets screwed...
-    m_info->formLayout->removeWidget(m_info->passwordEdit);
-    delete m_info->passwordEdit;
 
     connect(m_info->username, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
     connect(m_info->realName, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
     connect(m_info->email, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
     connect(m_info->administrator, &QAbstractButton::clicked, this, &AccountInfo::hasChanged);
     connect(m_info->automaticLogin, &QAbstractButton::clicked, this, &AccountInfo::hasChanged);
-    connect(m_passwordEdit, &PasswordEdit::focused, this, &AccountInfo::changePassword);
-    connect(m_passwordEdit, &QLineEdit::textEdited, this, &AccountInfo::changePassword);
+    connect(m_info->changePasswordButton, &QPushButton::clicked, this, &AccountInfo::changePassword);
 
     connect(m_model, &QAbstractItemModel::dataChanged, this, &AccountInfo::dataChanged);
     m_info->face->setPopupMode(QToolButton::InstantPopup);
@@ -90,18 +85,6 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     m_info->realName->setMinimumWidth(size);
     m_info->email->setMinimumWidth(size);
 
-    QWidget::setTabOrder(m_info->email, m_passwordEdit);
-    QWidget::setTabOrder(m_passwordEdit, m_info->administrator);
-
-    m_passwordEdit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    m_passwordEdit->setMinimumWidth(size);
-    m_passwordEdit->setEchoMode(QLineEdit::Password);
-
-    int row;
-    QFormLayout::ItemRole role;
-    m_info->formLayout->getWidgetPosition(m_info->administrator, &row, &role);
-    m_info->formLayout->insertRow(row, m_info->label_3, m_passwordEdit);
-
     int pixmapSize = m_info->username->sizeHint().height();
     m_negative = QIcon::fromTheme(QStringLiteral("dialog-cancel")).pixmap(pixmapSize, pixmapSize);
 }
@@ -132,8 +115,10 @@ void AccountInfo::loadFromModel()
     QString username = m_model->data(m_index, AccountModel::Username).toString();
     if (!username.isEmpty()) {
         m_info->username->setDisabled(true);//Do not allow to change the username
+        m_info->changePasswordButton->setText(i18nc("@label:button", "Change Password"));
     } else {
         m_info->username->setDisabled(false);
+        m_info->changePasswordButton->setText(i18nc("@label:button", "Set Password"));
     }
     m_info->username->setText(username);
 
@@ -142,7 +127,6 @@ void AccountInfo::loadFromModel()
     m_info->email->setText(m_model->data(m_index, AccountModel::Email).toString());
     m_info->administrator->setChecked(m_model->data(m_index, AccountModel::Administrator).toBool());
     m_info->automaticLogin->setChecked(m_model->data(m_index, AccountModel::AutomaticLogin).toBool());
-    m_passwordEdit->clear();
 }
 
 bool AccountInfo::save()
@@ -312,7 +296,7 @@ bool AccountInfo::validateUsername(const QString &username) const
         errorTooltip.append(QStringLiteral("\n"));
     }
 
-    Q_FOREACH(const char c, userchar) {
+    for (const char c : userchar) {
         valid = (
             (c >= 'a' && c <= 'z') ||
             (c >= 'A' && c <= 'Z') ||
@@ -414,7 +398,8 @@ void AccountInfo::openGallery()
 QStringList AccountInfo::imageFormats() const
 {
     QStringList result;
-    for(const QByteArray &b: QImageReader::supportedMimeTypes()) {
+    const QList<QByteArray> supportedMimes = QImageReader::supportedMimeTypes();
+    for (const QByteArray &b: supportedMimes) {
         if (! b.isEmpty())
             result.append(QString::fromLatin1(b));
     }
@@ -480,6 +465,5 @@ void AccountInfo::changePassword()
     }
 
     m_infoToSave[AccountModel::Password] = dialog->password();
-    m_passwordEdit->setText(dialog->password());
     Q_EMIT changed(true);
 }
