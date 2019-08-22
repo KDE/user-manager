@@ -99,7 +99,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
 
     int row;
     QFormLayout::ItemRole role;
-    m_info->formLayout->getWidgetPosition(m_info->label_2, &row, &role);
+    m_info->formLayout->getWidgetPosition(m_info->administrator, &row, &role);
     m_info->formLayout->insertRow(row, m_info->label_3, m_passwordEdit);
 
     int pixmapSize = m_info->username->sizeHint().height();
