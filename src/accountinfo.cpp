@@ -293,7 +293,7 @@ bool AccountInfo::validateUsername(const QString &username) const
 
     if (!valid) {
         errorTooltip.append(i18n("The username must start with a letter"));
-        errorTooltip.append(QStringLiteral("\n"));
+        errorTooltip.append(QLatin1Char('\n'));
     }
 
     for (const char c : userchar) {
@@ -311,7 +311,7 @@ bool AccountInfo::validateUsername(const QString &username) const
 
     if (!valid) {
         errorTooltip.append(i18n("The username can contain only letters, numbers, score, underscore and dot"));
-        errorTooltip.append(QStringLiteral("\n"));
+        errorTooltip.append(QLatin1Char('\n'));
     }
 
     static const long MAX_USER_NAME_LENGTH = []() {
