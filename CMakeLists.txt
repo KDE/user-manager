@@ -23,7 +23,6 @@ include_directories(${PWQUALITY_INCLUDE_DIR})
 
 # Set KI18n translation domain
 add_definitions(-DTRANSLATION_DOMAIN=\"user_manager\")
-add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
 
 add_subdirectory(src)
 
