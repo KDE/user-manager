@@ -47,6 +47,10 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
 {
     m_info->setupUi(this);
 
+    // ensure avatar user icon use correct device pixel ratio
+    const qreal dpr = qApp->devicePixelRatio();
+    m_model->setDpr(dpr);
+
     connect(m_info->username, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
     connect(m_info->realName, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);
     connect(m_info->email, &QLineEdit::textEdited, this, &AccountInfo::hasChanged);

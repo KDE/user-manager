@@ -149,7 +149,9 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
             if (!file.exists()) {
                 return QIcon::fromTheme(QStringLiteral("user-identity")).pixmap(size, size);
             }
-            return QPixmap(file.fileName()).scaled(size, size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            auto pixMap = QPixmap(file.fileName()).scaled(static_cast<int>(size * m_dpr), static_cast<int>(size * m_dpr), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            pixMap.setDevicePixelRatio(m_dpr);
+            return pixMap;
         }
         case AccountModel::RealName:
             return acc->realName();
@@ -537,6 +539,10 @@ QDebug operator<<(QDebug debug, AccountModel::Role role)
             break;
     }
     return debug;
+}
+
+void AccountModel::setDpr(qreal dpr) {
+    m_dpr = dpr;
 }
 
 

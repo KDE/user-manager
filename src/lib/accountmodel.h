@@ -65,6 +65,7 @@ class AccountModel : public QAbstractListModel
         bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
         bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
         bool removeAccountKeepingFiles(int row, bool keepFile = false);
+        void setDpr(qreal dpr);
 
         QVariant newUserData(int role) const;
         bool newUserSetData(const QModelIndex& index, const QVariant& value, int roleInt);
@@ -91,6 +92,7 @@ class AccountModel : public QAbstractListModel
         QHash<QString, bool> m_loggedAccounts;
         KEMailSettings m_kEmailSettings;
         AutomaticLoginSettings m_autoLoginSettings;
+        qreal m_dpr = 1;
 };
 
 QDebug operator<<(QDebug debug, AccountModel::Role role);
