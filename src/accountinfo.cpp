@@ -141,19 +141,24 @@ bool AccountInfo::save()
 
     qCDebug(USER_MANAGER_LOG) << "Saving on Index: " << m_index.row();
     QList<AccountModel::Role> failed;
-    if (!m_model->setData(m_index, m_info->username->text(), AccountModel::Username)) {
+    if (m_infoToSave.contains(AccountModel::Username)  &&
+            !m_model->setData(m_index, m_infoToSave[AccountModel::Username], AccountModel::Username)) {
         failed.append(AccountModel::Username);
     }
-    if (!m_model->setData(m_index, m_info->realName->text(), AccountModel::RealName)) {
+    if (m_infoToSave.contains(AccountModel::RealName) &&
+            !m_model->setData(m_index, m_infoToSave[AccountModel::RealName], AccountModel::RealName)) {
         failed.append(AccountModel::RealName);
     }
-    if (!m_model->setData(m_index, m_info->email->text(), AccountModel::Email)) {
+    if (m_infoToSave.contains(AccountModel::Email) &&
+            !m_model->setData(m_index, m_infoToSave[AccountModel::Email], AccountModel::Email)) {
         failed.append(AccountModel::Email);
     }
-    if (!m_model->setData(m_index, m_info->administrator->isChecked(), AccountModel::Administrator)) {
+    if (m_infoToSave.contains(AccountModel::Administrator) &&
+            !m_model->setData(m_index, m_info->administrator->isChecked(), AccountModel::Administrator)) {
         failed.append(AccountModel::Administrator);
     }
-    if (!m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
+    if (m_infoToSave.contains(AccountModel::AutomaticLogin) &&
+            !m_model->setData(m_index, m_info->automaticLogin->isChecked(), AccountModel::AutomaticLogin)) {
         failed.append(AccountModel::AutomaticLogin);
     }
     if (m_infoToSave.contains(AccountModel::Password)) {
