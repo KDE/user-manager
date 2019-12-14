@@ -309,12 +309,16 @@ bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& valu
     AccountModel::Role role = static_cast<AccountModel::Role>(roleInt);
     m_newUserData[role] = value;
     QList<AccountModel::Role> roles = m_newUserData.keys();
-    if (!roles.contains(Username) || !roles.contains(RealName) || !roles.contains(Administrator)) {
+    if (!roles.contains(Username) || !roles.contains(RealName)) {
         return true;
     }
 
+    // defaults to non-administrator
+    int userType = 0;
+    if (m_newUserData.contains(Administrator)) {
+        userType = m_newUserData[Administrator].toBool();
+    }
 
-    int userType = m_newUserData[Administrator].toBool() ? 1 : 0;
     QDBusPendingReply <QDBusObjectPath > reply = m_dbus->CreateUser(m_newUserData[Username].toString(), m_newUserData[RealName].toString(), userType);
     reply.waitForFinished();
 
@@ -327,7 +331,6 @@ bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& valu
 
     m_newUserData.remove(Username);
     m_newUserData.remove(RealName);
-    m_newUserData.remove(Administrator);
 
     //If we don't have anything else to set just return
     if (m_newUserData.isEmpty()) {
