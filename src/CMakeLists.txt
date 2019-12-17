@@ -50,7 +50,6 @@ target_link_libraries(user_manager
     KF5::ConfigWidgets
     KF5::KCMUtils
     KF5::KIOCore
-    KF5::IconThemes
     ${PWQUALITY_LIBRARY}
 )
 

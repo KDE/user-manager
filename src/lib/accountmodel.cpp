@@ -23,11 +23,12 @@
 #include "accounts_interface.h"
 #include "user_interface.h"
 
+#include <QApplication>
 #include <QIcon>
+#include <QStyle>
 
 #include "user_manager_debug.h"
 #include <KLocalizedString>
-#include <kiconloader.h>
 
 #include <KAuth/KAuthActionReply>
 #include <KAuth/KAuthExecuteJob>
@@ -145,7 +146,7 @@ QVariant AccountModel::data(const QModelIndex& index, int role) const
         case Qt::DecorationRole || AccountModel::Face:
         {
             QFile file(acc->iconFile());
-            int size = IconSize(KIconLoader::Dialog);
+            int size = QApplication::style()->pixelMetric(QStyle::PM_LargeIconSize);
             if (!file.exists()) {
                 return QIcon::fromTheme(QStringLiteral("user-identity")).pixmap(size, size);
             }
@@ -297,7 +298,7 @@ QVariant AccountModel::newUserData(int role) const
         case Qt::DisplayRole || AccountModel::FriendlyName:
             return i18n("New User");
         case Qt::DecorationRole || AccountModel::Face:
-            return QIcon::fromTheme(QStringLiteral("list-add-user")).pixmap(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
+            return QIcon::fromTheme(QStringLiteral("list-add-user"));
         case AccountModel::Created:
             return false;
     }

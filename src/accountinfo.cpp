@@ -36,7 +36,6 @@
 #include "user_manager_debug.h"
 #include <KJob>
 #include <KIO/CopyJob>
-#include <KIconLoader>
 #include <KUser>
 #include <KI18n/klocalizedstring.h>
 
@@ -78,7 +77,7 @@ AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f
     menu->addAction(openAvatar);
     menu->addAction(editClear);
 
-    int iconSizeX = IconSize(KIconLoader::Dialog);
+    int iconSizeX = style()->pixelMetric(QStyle::PM_LargeIconSize);
     QSize iconSize(iconSizeX, iconSizeX);
     m_info->face->setIconSize(iconSize);
     m_info->face->setMinimumSize(iconSize);
@@ -458,7 +457,6 @@ void AccountInfo::avatarModelChanged(KJob* job)
 
 void AccountInfo::clearAvatar()
 {
-    QSize icon(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog));
     m_info->face->setIcon(QIcon::fromTheme(QStringLiteral("user-identity")).pixmap(48, 48));
     m_infoToSave.insert(AccountModel::Face, QString());
     Q_EMIT changed(true);

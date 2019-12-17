@@ -31,7 +31,6 @@
 #include <kpluginfactory.h>
 #include <KLocalizedString>
 #include <KMessageBox>
-#include <KIconLoader>
 
 K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 
@@ -54,7 +53,8 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     m_ui->userList->setModel(m_model);
     m_ui->userList->setSelectionModel(m_selectionModel);
-    m_ui->userList->setIconSize(QSize(IconSize(KIconLoader::Dialog), IconSize(KIconLoader::Dialog)));
+    const auto iconSize = style()->pixelMetric(QStyle::PM_LargeIconSize);
+    m_ui->userList->setIconSize(QSize(iconSize, iconSize));
 
     ModelTest* test = new ModelTest(m_model, nullptr);
     Q_UNUSED(test)

@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED  COMPONENTS Core Widgets DBus)
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED WidgetsAddons CoreAddons I18n Config ConfigWidgets KCMUtils KIO IconThemes Auth)
+find_package(KF5 ${KF5_MIN_VERSION} REQUIRED WidgetsAddons CoreAddons I18n Config ConfigWidgets KCMUtils KIO Auth)
 find_package(PWQuality REQUIRED)
 
 include(FeatureSummary)
