@@ -494,7 +494,6 @@ const QString AccountModel::accountPathForUid(uint uid) const
 
 QString AccountModel::cryptPassword(const QString& password) const
 {
-    QString cryptedPassword;
     QByteArray alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVXYZ"
                        "abcdefghijklmnopqrstuvxyz./";
     QByteArray salt("$6$");//sha512
