@@ -24,6 +24,7 @@
 #include "user_interface.h"
 
 #include <QApplication>
+#include <QRandomGenerator>
 #include <QIcon>
 #include <QStyle>
 
@@ -498,8 +499,9 @@ QString AccountModel::cryptPassword(const QString& password) const
                        "abcdefghijklmnopqrstuvxyz./";
     QByteArray salt("$6$");//sha512
     int len = alpha.count();
+    auto *generator = QRandomGenerator::global();
     for(int i = 0; i < 16; i++){
-        salt.append(alpha.at((qrand() % len)));
+        salt.append(alpha.at(generator->bounded(len)));
     }
 
     return QString::fromUtf8(crypt(password.toUtf8().constData(), salt.constData()));
