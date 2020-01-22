@@ -248,7 +248,7 @@ void AccountInfo::hasChanged()
 
 
     m_infoToSave = infoToSave;
-    Q_EMIT changed(!m_infoToSave.isEmpty());
+    emit changed(!m_infoToSave.isEmpty());
 }
 
 QString AccountInfo::cleanName(QString name) const
@@ -400,7 +400,7 @@ void AccountInfo::openGallery()
     QString path = gallery->url().toLocalFile();
     m_info->face->setIcon(QIcon(path));
     m_infoToSave.insert(AccountModel::Face, path);
-    Q_EMIT changed(true);
+    emit changed(true);
 }
 
 QStringList AccountInfo::imageFormats() const
@@ -440,7 +440,7 @@ void AccountInfo::avatarCreated(KJob* job)
         CreateAvatarJob *aJob = qobject_cast<CreateAvatarJob*>(job);
         m_info->face->setIcon(QIcon(aJob->avatarPath()));
         m_infoToSave.insert(AccountModel::Face, aJob->avatarPath());
-        Q_EMIT changed(true);
+        emit changed(true);
     }
 }
 
@@ -459,7 +459,7 @@ void AccountInfo::clearAvatar()
 {
     m_info->face->setIcon(QIcon::fromTheme(QStringLiteral("user-identity")).pixmap(48, 48));
     m_infoToSave.insert(AccountModel::Face, QString());
-    Q_EMIT changed(true);
+    emit changed(true);
 }
 
 void AccountInfo::changePassword()
@@ -472,5 +472,5 @@ void AccountInfo::changePassword()
     }
 
     m_infoToSave[AccountModel::Password] = dialog->password();
-    Q_EMIT changed(true);
+    emit changed(true);
 }

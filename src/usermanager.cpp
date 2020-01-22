@@ -41,7 +41,11 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
  , m_widget(new AccountInfo(m_model, this))
  , m_ui(new Ui::KCMUserManager)
 {
-    Q_UNUSED(args);
+    Q_UNUSED(args)
+
+    // No default button
+    setButtons( Apply | Help);
+
     QVBoxLayout *layout = new QVBoxLayout();
     m_ui->setupUi(this);
     m_ui->accountInfo->setLayout(layout);
@@ -61,7 +65,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     connect(m_ui->addBtn, &QAbstractButton::clicked, this, &UserManager::addNewUser);
     connect(m_ui->removeBtn, &QAbstractButton::clicked, this, &UserManager::removeUser);
-    connect(m_widget, SIGNAL(changed(bool)), SIGNAL(changed(bool)));
+    connect(m_widget, &AccountInfo::changed, this, &KCModule::changed);
     connect(m_model, &QAbstractItemModel::dataChanged, this, &UserManager::dataChanged);
 }
 
@@ -82,7 +86,7 @@ void UserManager::save()
 
 void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex& previous)
 {
-    Q_UNUSED(previous);
+    Q_UNUSED(previous)
     m_widget->setModelIndex(selected);
     bool enabled = false;
 
@@ -97,7 +101,7 @@ void UserManager::currentChanged(const QModelIndex& selected, const QModelIndex&
 
 void UserManager::dataChanged(const QModelIndex& topLeft, const QModelIndex& topRight)
 {
-    Q_UNUSED(topRight);
+    Q_UNUSED(topRight)
     if (m_selectionModel->currentIndex() != topLeft) {
         return;
     }
@@ -133,7 +137,7 @@ void UserManager::removeUser()
     bool deleteFiles  = result == KMessageBox::Yes ? false : true;
     m_model->removeAccountKeepingFiles(index.row(), deleteFiles);
 
-    Q_EMIT changed(false);
+    emit changed(false);
 }
 
 #include "usermanager.moc"
