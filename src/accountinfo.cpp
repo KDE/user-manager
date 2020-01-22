@@ -38,6 +38,7 @@
 #include <KIO/CopyJob>
 #include <KUser>
 #include <KI18n/klocalizedstring.h>
+#include <KMessageBox>
 
 AccountInfo::AccountInfo(AccountModel* model, QWidget* parent, Qt::WindowFlags f)
  : QWidget(parent, f)
@@ -101,6 +102,18 @@ void AccountInfo::setModelIndex(const QModelIndex& index)
 {
     if (!index.isValid() || m_index == index) {
         return;
+    }
+
+    if (!m_infoToSave.isEmpty()) {
+        const QString message = i18n("Save changes to this user?");
+        bool wantToSave = KMessageBox::questionYesNo(this,
+                                                     message,
+                                                     QString(),
+                                                     KStandardGuiItem::save(),
+                                                     KStandardGuiItem::discard()) == KMessageBox::Yes;
+        if (wantToSave) {
+            save();
+        }
     }
 
     m_index = index;
