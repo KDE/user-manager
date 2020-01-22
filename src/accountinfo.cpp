@@ -361,7 +361,7 @@ QString AccountInfo::cleanEmail(QString email)
 bool AccountInfo::validateEmail(const QString& email) const
 {
     if (email.isEmpty()) {
-        return false;
+        return true;
     }
 
     QString strPatt = QStringLiteral("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}\\b");
