@@ -65,7 +65,7 @@ UserManager::UserManager(QWidget* parent, const QVariantList& args)
 
     connect(m_ui->addBtn, &QAbstractButton::clicked, this, &UserManager::addNewUser);
     connect(m_ui->removeBtn, &QAbstractButton::clicked, this, &UserManager::removeUser);
-    connect(m_widget, &AccountInfo::changed, this, &KCModule::changed);
+    connect(m_widget, &AccountInfo::changed, this, QOverload<bool>::of(&KCModule::changed));
     connect(m_model, &QAbstractItemModel::dataChanged, this, &UserManager::dataChanged);
 }
 
