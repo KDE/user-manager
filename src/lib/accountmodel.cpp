@@ -334,12 +334,12 @@ bool AccountModel::newUserSetData(const QModelIndex &index, const QVariant& valu
     m_newUserData.remove(Username);
     m_newUserData.remove(RealName);
 
+    UserAdded(reply.value());
+
     //If we don't have anything else to set just return
     if (m_newUserData.isEmpty()) {
         return true;
     }
-
-    UserAdded(reply.value());
 
     QHash<AccountModel::Role, QVariant>::const_iterator i = m_newUserData.constBegin();
     while (i != m_newUserData.constEnd()) {
