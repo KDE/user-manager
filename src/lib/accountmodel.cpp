@@ -40,11 +40,9 @@
 #include <KConfig>
 #include <KConfigGroup>
 
-#define SDDM_CONFIG_FILE    "/etc/sddm.conf"
-
 AutomaticLoginSettings::AutomaticLoginSettings()
 {
-    KConfig config(QStringLiteral(SDDM_CONFIG_FILE));
+    KConfig config(QStringLiteral("/etc/sddm.conf.d/kde_settings.conf"));
     m_autoLoginUser = config.group("Autologin").readEntry("User", QString());
 }
 
@@ -59,8 +57,7 @@ bool AutomaticLoginSettings::setAutoLoginUser(const QString& username)
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmsddm"));
     QVariantMap args;
 
-    args[QStringLiteral("sddm.conf")] = QStringLiteral(SDDM_CONFIG_FILE);
-    args[QStringLiteral("sddm.conf/Autologin/User")] = username;
+    args[QStringLiteral("kde_settings.conf/Autologin/User")] = username;
 
     saveAction.setHelperId(QStringLiteral("org.kde.kcontrol.kcmsddm"));
     saveAction.setArguments(args);
