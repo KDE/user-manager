@@ -58,7 +58,6 @@ Name[tg]=Мудири корбарон
 Name[tr]=Kullanıcı Yöneticisi
 Name[ug]=ئىشلەتكۈچى باشقۇرۇش پروگراممىسى
 Name[uk]=Керування користувачами
-Name[x-test]=xxUser Managerxx
 Name[zh_CN]=用户管理程序
 Name[zh_TW]=使用者管理程式
 
@@ -109,7 +108,6 @@ Comment[sv]=Lägg till, ta bort eller redigera systemanvändare
 Comment[tg]=Корбарони низомро илова, тоза ё таҳрир кунед
 Comment[tr]=Sistem kullanıcıları ekle, kaldır veya düzenle
 Comment[uk]=Додавання, вилучення або зміна записів користувачів системи
-Comment[x-test]=xxAdd, remove or edit system usersxx
 Comment[zh_CN]=添加，删除，修改系统用户
 Comment[zh_TW]=新增、移除或編輯系統使用者
 
@@ -160,7 +158,6 @@ X-KDE-Keywords[sv]=användare,system,administration
 X-KDE-Keywords[tg]=корбарон,низом,мудирият
 X-KDE-Keywords[tr]=kullanıcılar,sistem,yönetim
 X-KDE-Keywords[uk]=users,system,administration,користувачі,система,адміністрування
-X-KDE-Keywords[x-test]=xxusersxx,xxsystemxx,xxadministrationxx
 X-KDE-Keywords[zh_CN]=users,system,administration,用户,系统,管理
 X-KDE-Keywords[zh_TW]=users,system,administration
 
