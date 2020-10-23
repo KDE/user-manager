@@ -1,5 +1,4 @@
 [Desktop Entry]
-Exec=kcmshell5 user_manager
 Icon=preferences-system-users
 Type=Service
 
