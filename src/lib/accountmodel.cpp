@@ -28,7 +28,6 @@
 #include <QIcon>
 #include <QStyle>
 
-#include "user_manager_debug.h"
 #include <KLocalizedString>
 
 #include <KAuth/KAuthActionReply>

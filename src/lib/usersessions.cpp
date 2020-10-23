@@ -20,7 +20,6 @@
 #include "login1_interface.h"
 
 #include <QDBusPendingReply>
-#include <QDBusObjectPath>
 
 #include "user_manager_debug.h"
 

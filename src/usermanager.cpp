@@ -21,7 +21,6 @@
 #include "ui_account.h"
 #include "accountinfo.h"
 
-#include "lib/accountmodel.h"
 #include "lib/modeltest.h"
 
 #include <pwquality.h>

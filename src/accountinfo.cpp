@@ -20,7 +20,6 @@
 #include "ui_account.h"
 #include "createavatarjob.h"
 #include "passworddialog.h"
-#include "lib/accountmodel.h"
 #include "avatargallery.h"
 
 #include <pwd.h>
