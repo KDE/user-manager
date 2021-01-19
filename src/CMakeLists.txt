@@ -34,7 +34,7 @@ qt5_add_dbus_interface(user_manager_SRCS
 
 ki18n_wrap_ui(user_manager_SRCS kcm.ui account.ui password.ui avatargallery.ui)
 
-ecm_qt_declare_logging_category(user_manager_SRCS HEADER user_manager_debug.h IDENTIFIER USER_MANAGER_LOG CATEGORY_NAME log_user_manager)
+ecm_qt_declare_logging_category(user_manager_SRCS HEADER user_manager_debug.h IDENTIFIER USER_MANAGER_LOG CATEGORY_NAME log_user_manager DESCRIPTION "user-manager" EXPORT USERMANAGER)
 
 add_library(user_manager MODULE ${user_manager_SRCS})
 

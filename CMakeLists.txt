@@ -31,7 +31,12 @@ endif()
 
 add_subdirectory(src)
 
-install(FILES user-manager.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
+
+ecm_qt_install_logging_categories(
+        EXPORT USERMANAGER
+        FILE user-manager.categories
+        DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
+        )
 
 # add clang-format target for all our real source files
 file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
