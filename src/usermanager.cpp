@@ -35,7 +35,6 @@ K_PLUGIN_FACTORY(UserManagerFactory, registerPlugin<UserManager>();)
 
 UserManager::UserManager(QWidget* parent, const QVariantList& args) 
  : KCModule(parent, args)
- , m_saveNeeded(false)
  , m_model(new AccountModel(this))
  , m_widget(new AccountInfo(m_model, this))
  , m_ui(new Ui::KCMUserManager)
@@ -128,7 +127,7 @@ void UserManager::removeUser()
         warning.append(i18n("This user is using the system right now, removing it will cause problems"));
     }
 
-    int result = KMessageBox::questionYesNoCancel(this, warning, i18n("Delete User"), keep, deletefiles);
+    const int result = KMessageBox::questionYesNoCancel(this, warning, i18n("Delete User"), keep, deletefiles);
     if (result == KMessageBox::Cancel) {
         return;
     }

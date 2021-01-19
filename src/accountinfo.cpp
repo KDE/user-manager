@@ -127,7 +127,7 @@ QModelIndex AccountInfo::modelIndex() const
 
 void AccountInfo::loadFromModel()
 {
-    QString username = m_model->data(m_index, AccountModel::Username).toString();
+    const QString username = m_model->data(m_index, AccountModel::Username).toString();
     if (!username.isEmpty()) {
         m_info->username->setDisabled(true);//Do not allow to change the username
         m_info->changePasswordButton->setText(i18nc("@label:button", "Change Password"));
@@ -263,7 +263,7 @@ void AccountInfo::hasChanged()
     emit changed(!m_infoToSave.isEmpty());
 }
 
-QString AccountInfo::cleanName(QString name) const
+QString AccountInfo::cleanName(const QString &name) const
 {
     return name;
 }
@@ -308,7 +308,7 @@ bool AccountInfo::validateUsername(const QString &username) const
 
     QString errorTooltip;
 
-    char first = userchar.at(0);
+    const char first = userchar.at(0);
     bool valid = (first >= 'a' && first <= 'z');
 
     if (!valid) {
@@ -363,7 +363,7 @@ QString AccountInfo::cleanEmail(QString email)
     }
 
     email = email.toLower().remove(QLatin1Char(' '));
-    int pos = m_info->email->cursorPosition();
+    const int pos = m_info->email->cursorPosition();
     m_info->email->setText(email);
     m_info->email->setCursorPosition(pos);
 
@@ -376,7 +376,7 @@ bool AccountInfo::validateEmail(const QString& email) const
         return true;
     }
 
-    QString strPatt = QStringLiteral("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}\\b");
+    const QString strPatt = QStringLiteral("\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}\\b");
     QRegExp rx(strPatt);
     rx.setCaseSensitivity(Qt::CaseInsensitive);
     rx.setPatternSyntax(QRegExp::RegExp);
@@ -409,7 +409,7 @@ void AccountInfo::openGallery()
         return;
     }
 
-    QString path = gallery->url().toLocalFile();
+    const QString path = gallery->url().toLocalFile();
     m_info->face->setIcon(QIcon(path));
     m_infoToSave.insert(AccountModel::Face, path);
     emit changed(true);

@@ -49,11 +49,11 @@ class UserManager : public KCModule
         void removeUser();
 
     private:
-        bool m_saveNeeded;
-        AccountModel* m_model;
-        AccountInfo* m_widget;
-        Ui::KCMUserManager* m_ui;
-        QItemSelectionModel* m_selectionModel;
+        bool m_saveNeeded = false;
+        AccountModel* m_model = nullptr;
+        AccountInfo* m_widget = nullptr;
+        Ui::KCMUserManager* const m_ui;
+        QItemSelectionModel* m_selectionModel = nullptr;
         QMap<AccountModel::Role, QVariant> m_cachedInfo;
 };
 

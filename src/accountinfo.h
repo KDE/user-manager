@@ -59,7 +59,7 @@ class AccountInfo : public QWidget
         void changed(bool changed);
 
     private:
-        QString cleanName(QString name) const;
+        QString cleanName(const QString &name) const;
         bool validateName(const QString &name) const;
         QString cleanUsername(QString username);
         bool validateUsername(const QString &username) const;
@@ -69,9 +69,9 @@ class AccountInfo : public QWidget
 
         QPixmap m_positive;
         QPixmap m_negative;
-        Ui::AccountInfo * m_info;
-        AccountModel* m_model;
-        QPushButton *m_changePasswordButton;
+        Ui::AccountInfo * const m_info;
+        AccountModel* const m_model;
+        QPushButton *m_changePasswordButton = nullptr;
         QModelIndex m_index;
         QMap<AccountModel::Role, QVariant> m_infoToSave;
 };

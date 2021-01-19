@@ -39,7 +39,7 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     QVBoxLayout *layout = new QVBoxLayout(this);
     setupUi(widget);
     layout->addWidget(widget);
-    buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
     buttons->button(QDialogButtonBox::Ok)->setEnabled(false);
     buttons->button(QDialogButtonBox::Ok)->setShortcut(Qt::CTRL | Qt::Key_Return);
     layout->addWidget(buttons);
@@ -49,7 +49,7 @@ PasswordDialog::PasswordDialog(QWidget* parent, Qt::WindowFlags flags)
     m_timer->setInterval(400);
     m_timer->setSingleShot(true);
 
-    int size = QFontMetrics(QFontDatabase::systemFont(QFontDatabase::FixedFont)).xHeight();
+    const int size = QFontMetrics(QFontDatabase::systemFont(QFontDatabase::FixedFont)).xHeight();
     setMinimumWidth(size * 50);
 
     m_negative = strenghtLbl->palette();

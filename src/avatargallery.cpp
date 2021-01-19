@@ -37,7 +37,7 @@ AvatarGallery::AvatarGallery(QWidget *parent) : QDialog(parent)
     connect(ui.buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     connect(ui.m_FacesWidget, &QListWidget::currentItemChanged, this, [this](QListWidgetItem *current, QListWidgetItem *previous) {
-        Q_UNUSED(previous);
+        Q_UNUSED(previous)
         ui.buttonBox->button(QDialogButtonBox::Ok)->setEnabled(!current->icon().isNull());
     });
 
@@ -55,7 +55,7 @@ AvatarGallery::AvatarGallery(QWidget *parent) : QDialog(parent)
     const QDir avatarsDir(systemFacesPath);
 
     for (const QString &avatarStyle : avatarsDir.entryList(QDir::Dirs | QDir::NoDotDot)) {
-        QDir facesDir = (avatarsDir.filePath(avatarStyle));
+        const QDir facesDir = (avatarsDir.filePath(avatarStyle));
         const QStringList &avatarList = facesDir.entryList(QDir::Files);
         for (auto it = avatarList.constBegin(), end = avatarList.constEnd(); it != end; ++it) {
             const QString iconPath = (facesDir.absoluteFilePath(*it));
