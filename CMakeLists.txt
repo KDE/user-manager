@@ -24,10 +24,8 @@ include_directories(${PWQUALITY_INCLUDE_DIR})
 
 # Set KI18n translation domain
 add_definitions(-DTRANSLATION_DOMAIN=\"user_manager\")
-if (EXISTS "${CMAKE_SOURCE_DIR}/.git")
-   add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
-   add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x054200)
-endif()
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x060000)
+add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x050F00)
 
 add_subdirectory(src)
 
