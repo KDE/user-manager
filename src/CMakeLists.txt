@@ -57,7 +57,7 @@ if (NOT APPLE)
 target_link_libraries(user_manager crypt)
 endif()
 
-install(TARGETS user_manager DESTINATION ${PLUGIN_INSTALL_DIR})
+install(TARGETS user_manager DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
 install(FILES user_manager.desktop DESTINATION ${SERVICES_INSTALL_DIR})
 
