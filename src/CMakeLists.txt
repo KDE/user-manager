@@ -59,6 +59,6 @@ endif()
 
 install(TARGETS user_manager DESTINATION ${KDE_INSTALL_PLUGINDIR})
 
-install(FILES user_manager.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(FILES user_manager.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
 
-install(DIRECTORY pics/ DESTINATION ${DATA_INSTALL_DIR}/user-manager/avatars)
+install(DIRECTORY pics/ DESTINATION ${KDE_INSTALL_DATADIR}/user-manager/avatars)
